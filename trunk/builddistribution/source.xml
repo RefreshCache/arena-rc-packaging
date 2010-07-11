@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArenaPackage version="2009.2.100.1401">
+  <Modules>
+    <Module temp_module_id="-1" module_url="UserControls/HDC/test.ascx" module_name="Test Module" module_desc="No description" allows_child_modules="0" image_path="">
+      <File path="UserControls/HDC/test.ascx" _source="../../source.xml" />
+    </Module>
+  </Modules>
+  <Pages>
+    <Page temp_page_id="-1" page_order="2147483647" display_in_nav="0" page_name="Test Page" page_desc="Description of page" page_settings="" require_ssl="0" guid="" system_flag="0" friendly_url="" validate_request="1" />
+  </Pages>
+</ArenaPackage>
