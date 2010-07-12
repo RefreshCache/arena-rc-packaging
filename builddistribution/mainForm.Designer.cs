@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.btnRemoveFile = new System.Windows.Forms.Button();
@@ -36,6 +42,13 @@
             this.path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.source = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabModules = new System.Windows.Forms.TabPage();
+            this.btnModulesCancel = new System.Windows.Forms.Button();
+            this.btnModulesEdit = new System.Windows.Forms.Button();
+            this.tbModuleDescription = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbModuleAllowsChildModules = new System.Windows.Forms.CheckBox();
+            this.tbModuleSourceImagePath = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.tbModuleSourcePath = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tbModuleImagePath = new System.Windows.Forms.TextBox();
@@ -45,23 +58,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbModuleName = new System.Windows.Forms.TextBox();
             this.dgModules = new System.Windows.Forms.DataGridView();
-            this.btnRemoveModule = new System.Windows.Forms.Button();
-            this.btnAddModule = new System.Windows.Forms.Button();
-            this.tabPages = new System.Windows.Forms.TabPage();
-            this.mainMenu = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbModuleSourceImagePath = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbModuleAllowsChildModules = new System.Windows.Forms.CheckBox();
-            this.tbModuleDescription = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnModulesEdit = new System.Windows.Forms.Button();
-            this.btnModulesCancel = new System.Windows.Forms.Button();
             this.module_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.module_url = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.module_desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,11 +65,48 @@
             this.image_path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._source = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._source_image = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnRemoveModule = new System.Windows.Forms.Button();
+            this.btnAddModule = new System.Windows.Forms.Button();
+            this.tabPages = new System.Windows.Forms.TabPage();
+            this.tcPages = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.dgPageSettings = new System.Windows.Forms.DataGridView();
+            this.page_setting_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.page_setting_value = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbPageDescription = new System.Windows.Forms.TextBox();
+            this.cbPageRequireSSL = new System.Windows.Forms.CheckBox();
+            this.cbPageValidateRequest = new System.Windows.Forms.CheckBox();
+            this.cbPageDisplayInNav = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbPageName = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnPagesDelete = new System.Windows.Forms.Button();
+            this.btnPagesAddModule = new System.Windows.Forms.Button();
+            this.btnPagesAddPage = new System.Windows.Forms.Button();
+            this.tvPages = new System.Windows.Forms.TreeView();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).BeginInit();
             this.tabModules.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgModules)).BeginInit();
+            this.tabPages.SuspendLayout();
+            this.tcPages.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPageSettings)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,12 +160,36 @@
             this.dgFiles.AllowUserToDeleteRows = false;
             this.dgFiles.AllowUserToResizeRows = false;
             this.dgFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.path,
             this.source});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgFiles.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgFiles.Location = new System.Drawing.Point(6, 6);
             this.dgFiles.Name = "dgFiles";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgFiles.Size = new System.Drawing.Size(748, 467);
             this.dgFiles.TabIndex = 1;
             // 
@@ -175,6 +232,70 @@
             this.tabModules.TabIndex = 1;
             this.tabModules.Text = "Modules";
             this.tabModules.UseVisualStyleBackColor = true;
+            // 
+            // btnModulesCancel
+            // 
+            this.btnModulesCancel.Location = new System.Drawing.Point(598, 315);
+            this.btnModulesCancel.Name = "btnModulesCancel";
+            this.btnModulesCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnModulesCancel.TabIndex = 20;
+            this.btnModulesCancel.Text = "Cancel";
+            this.btnModulesCancel.UseVisualStyleBackColor = true;
+            this.btnModulesCancel.Click += new System.EventHandler(this.btnModulesCancel_Click);
+            // 
+            // btnModulesEdit
+            // 
+            this.btnModulesEdit.Location = new System.Drawing.Point(679, 315);
+            this.btnModulesEdit.Name = "btnModulesEdit";
+            this.btnModulesEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnModulesEdit.TabIndex = 19;
+            this.btnModulesEdit.Text = "Edit";
+            this.btnModulesEdit.UseVisualStyleBackColor = true;
+            this.btnModulesEdit.Click += new System.EventHandler(this.btnModulesEdit_Click);
+            // 
+            // tbModuleDescription
+            // 
+            this.tbModuleDescription.Location = new System.Drawing.Point(383, 162);
+            this.tbModuleDescription.Multiline = true;
+            this.tbModuleDescription.Name = "tbModuleDescription";
+            this.tbModuleDescription.Size = new System.Drawing.Size(371, 113);
+            this.tbModuleDescription.TabIndex = 18;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(271, 165);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(98, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Module Description";
+            // 
+            // cbModuleAllowsChildModules
+            // 
+            this.cbModuleAllowsChildModules.AutoSize = true;
+            this.cbModuleAllowsChildModules.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbModuleAllowsChildModules.Location = new System.Drawing.Point(269, 86);
+            this.cbModuleAllowsChildModules.Name = "cbModuleAllowsChildModules";
+            this.cbModuleAllowsChildModules.Size = new System.Drawing.Size(128, 17);
+            this.cbModuleAllowsChildModules.TabIndex = 16;
+            this.cbModuleAllowsChildModules.Text = "Allows Child Modules ";
+            this.cbModuleAllowsChildModules.UseVisualStyleBackColor = true;
+            // 
+            // tbModuleSourceImagePath
+            // 
+            this.tbModuleSourceImagePath.Location = new System.Drawing.Point(383, 136);
+            this.tbModuleSourceImagePath.Name = "tbModuleSourceImagePath";
+            this.tbModuleSourceImagePath.Size = new System.Drawing.Size(371, 20);
+            this.tbModuleSourceImagePath.TabIndex = 15;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(271, 139);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Source Image Path";
             // 
             // tbModuleSourcePath
             // 
@@ -247,6 +368,14 @@
             this.dgModules.AllowUserToResizeColumns = false;
             this.dgModules.AllowUserToResizeRows = false;
             this.dgModules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgModules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgModules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgModules.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.module_name,
@@ -256,13 +385,78 @@
             this.image_path,
             this._source,
             this._source_image});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgModules.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgModules.Location = new System.Drawing.Point(6, 6);
             this.dgModules.MultiSelect = false;
             this.dgModules.Name = "dgModules";
             this.dgModules.ReadOnly = true;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgModules.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgModules.RowHeadersVisible = false;
             this.dgModules.Size = new System.Drawing.Size(259, 467);
             this.dgModules.TabIndex = 3;
+            // 
+            // module_name
+            // 
+            this.module_name.HeaderText = "Module";
+            this.module_name.Name = "module_name";
+            this.module_name.ReadOnly = true;
+            this.module_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // module_url
+            // 
+            this.module_url.HeaderText = "module_url";
+            this.module_url.Name = "module_url";
+            this.module_url.ReadOnly = true;
+            this.module_url.Visible = false;
+            // 
+            // module_desc
+            // 
+            this.module_desc.HeaderText = "module_desc";
+            this.module_desc.Name = "module_desc";
+            this.module_desc.ReadOnly = true;
+            this.module_desc.Visible = false;
+            // 
+            // allows_child_modules
+            // 
+            this.allows_child_modules.HeaderText = "allows_child_modules";
+            this.allows_child_modules.Name = "allows_child_modules";
+            this.allows_child_modules.ReadOnly = true;
+            this.allows_child_modules.Visible = false;
+            // 
+            // image_path
+            // 
+            this.image_path.HeaderText = "image_path";
+            this.image_path.Name = "image_path";
+            this.image_path.ReadOnly = true;
+            this.image_path.Visible = false;
+            // 
+            // _source
+            // 
+            this._source.HeaderText = "_source";
+            this._source.Name = "_source";
+            this._source.ReadOnly = true;
+            this._source.Visible = false;
+            // 
+            // _source_image
+            // 
+            this._source_image.HeaderText = "_source_image";
+            this._source_image.Name = "_source_image";
+            this._source_image.ReadOnly = true;
+            this._source_image.Visible = false;
             // 
             // btnRemoveModule
             // 
@@ -286,12 +480,198 @@
             // 
             // tabPages
             // 
+            this.tabPages.Controls.Add(this.tcPages);
+            this.tabPages.Controls.Add(this.btnPagesDelete);
+            this.tabPages.Controls.Add(this.btnPagesAddModule);
+            this.tabPages.Controls.Add(this.btnPagesAddPage);
+            this.tabPages.Controls.Add(this.tvPages);
             this.tabPages.Location = new System.Drawing.Point(4, 22);
             this.tabPages.Name = "tabPages";
             this.tabPages.Size = new System.Drawing.Size(760, 508);
             this.tabPages.TabIndex = 2;
             this.tabPages.Text = "Pages";
             this.tabPages.UseVisualStyleBackColor = true;
+            // 
+            // tcPages
+            // 
+            this.tcPages.Controls.Add(this.tabPage1);
+            this.tcPages.Controls.Add(this.tabPage2);
+            this.tcPages.Location = new System.Drawing.Point(271, 6);
+            this.tcPages.Name = "tcPages";
+            this.tcPages.SelectedIndex = 0;
+            this.tcPages.Size = new System.Drawing.Size(483, 496);
+            this.tcPages.TabIndex = 5;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.dgPageSettings);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.tbPageDescription);
+            this.tabPage1.Controls.Add(this.cbPageRequireSSL);
+            this.tabPage1.Controls.Add(this.cbPageValidateRequest);
+            this.tabPage1.Controls.Add(this.cbPageDisplayInNav);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.tbPageName);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(475, 470);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Page Settings";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 214);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(45, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Settings";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // dgPageSettings
+            // 
+            this.dgPageSettings.AllowUserToAddRows = false;
+            this.dgPageSettings.AllowUserToDeleteRows = false;
+            this.dgPageSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgPageSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.page_setting_name,
+            this.page_setting_value});
+            this.dgPageSettings.Location = new System.Drawing.Point(6, 230);
+            this.dgPageSettings.Name = "dgPageSettings";
+            this.dgPageSettings.RowHeadersVisible = false;
+            this.dgPageSettings.Size = new System.Drawing.Size(463, 162);
+            this.dgPageSettings.TabIndex = 7;
+            // 
+            // page_setting_name
+            // 
+            this.page_setting_name.FillWeight = 101.5228F;
+            this.page_setting_name.HeaderText = "Name";
+            this.page_setting_name.Name = "page_setting_name";
+            this.page_setting_name.Width = 135;
+            // 
+            // page_setting_value
+            // 
+            this.page_setting_value.FillWeight = 98.47716F;
+            this.page_setting_value.HeaderText = "Value";
+            this.page_setting_value.Name = "page_setting_value";
+            this.page_setting_value.Width = 309;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(68, 104);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(60, 13);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Description";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbPageDescription
+            // 
+            this.tbPageDescription.Location = new System.Drawing.Point(134, 101);
+            this.tbPageDescription.Multiline = true;
+            this.tbPageDescription.Name = "tbPageDescription";
+            this.tbPageDescription.Size = new System.Drawing.Size(335, 106);
+            this.tbPageDescription.TabIndex = 5;
+            // 
+            // cbPageRequireSSL
+            // 
+            this.cbPageRequireSSL.AutoSize = true;
+            this.cbPageRequireSSL.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbPageRequireSSL.Location = new System.Drawing.Point(59, 55);
+            this.cbPageRequireSSL.Name = "cbPageRequireSSL";
+            this.cbPageRequireSSL.Size = new System.Drawing.Size(89, 17);
+            this.cbPageRequireSSL.TabIndex = 4;
+            this.cbPageRequireSSL.Text = "Require SSL ";
+            this.cbPageRequireSSL.UseVisualStyleBackColor = true;
+            // 
+            // cbPageValidateRequest
+            // 
+            this.cbPageValidateRequest.AutoSize = true;
+            this.cbPageValidateRequest.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbPageValidateRequest.Location = new System.Drawing.Point(38, 78);
+            this.cbPageValidateRequest.Name = "cbPageValidateRequest";
+            this.cbPageValidateRequest.Size = new System.Drawing.Size(110, 17);
+            this.cbPageValidateRequest.TabIndex = 3;
+            this.cbPageValidateRequest.Text = "Validate Request ";
+            this.cbPageValidateRequest.UseVisualStyleBackColor = true;
+            // 
+            // cbPageDisplayInNav
+            // 
+            this.cbPageDisplayInNav.AutoSize = true;
+            this.cbPageDisplayInNav.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbPageDisplayInNav.Location = new System.Drawing.Point(50, 32);
+            this.cbPageDisplayInNav.Name = "cbPageDisplayInNav";
+            this.cbPageDisplayInNav.Size = new System.Drawing.Size(98, 17);
+            this.cbPageDisplayInNav.TabIndex = 2;
+            this.cbPageDisplayInNav.Text = "Display In Nav ";
+            this.cbPageDisplayInNav.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(65, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(63, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Page Name";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbPageName
+            // 
+            this.tbPageName.Location = new System.Drawing.Point(134, 6);
+            this.tbPageName.Name = "tbPageName";
+            this.tbPageName.Size = new System.Drawing.Size(155, 20);
+            this.tbPageName.TabIndex = 0;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(475, 470);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Module Settings";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnPagesDelete
+            // 
+            this.btnPagesDelete.Location = new System.Drawing.Point(6, 318);
+            this.btnPagesDelete.Name = "btnPagesDelete";
+            this.btnPagesDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnPagesDelete.TabIndex = 4;
+            this.btnPagesDelete.Text = "Delete";
+            this.btnPagesDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnPagesAddModule
+            // 
+            this.btnPagesAddModule.Location = new System.Drawing.Point(109, 318);
+            this.btnPagesAddModule.Name = "btnPagesAddModule";
+            this.btnPagesAddModule.Size = new System.Drawing.Size(75, 23);
+            this.btnPagesAddModule.TabIndex = 3;
+            this.btnPagesAddModule.Text = "Add Module";
+            this.btnPagesAddModule.UseVisualStyleBackColor = true;
+            // 
+            // btnPagesAddPage
+            // 
+            this.btnPagesAddPage.Location = new System.Drawing.Point(190, 318);
+            this.btnPagesAddPage.Name = "btnPagesAddPage";
+            this.btnPagesAddPage.Size = new System.Drawing.Size(75, 23);
+            this.btnPagesAddPage.TabIndex = 2;
+            this.btnPagesAddPage.Text = "Add Page";
+            this.btnPagesAddPage.UseVisualStyleBackColor = true;
+            this.btnPagesAddPage.Click += new System.EventHandler(this.btnPagesAddPage_Click);
+            // 
+            // tvPages
+            // 
+            this.tvPages.HideSelection = false;
+            this.tvPages.Location = new System.Drawing.Point(6, 6);
+            this.tvPages.Name = "tvPages";
+            this.tvPages.Size = new System.Drawing.Size(259, 306);
+            this.tvPages.TabIndex = 0;
             // 
             // mainMenu
             // 
@@ -346,118 +726,55 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
-            // tbModuleSourceImagePath
+            // checkBox4
             // 
-            this.tbModuleSourceImagePath.Location = new System.Drawing.Point(383, 136);
-            this.tbModuleSourceImagePath.Name = "tbModuleSourceImagePath";
-            this.tbModuleSourceImagePath.Size = new System.Drawing.Size(371, 20);
-            this.tbModuleSourceImagePath.TabIndex = 15;
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox4.Location = new System.Drawing.Point(59, 55);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(89, 17);
+            this.checkBox4.TabIndex = 4;
+            this.checkBox4.Text = "Require SSL ";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // label6
+            // checkBox5
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(271, 139);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(98, 13);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Source Image Path";
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox5.Location = new System.Drawing.Point(38, 78);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(110, 17);
+            this.checkBox5.TabIndex = 3;
+            this.checkBox5.Text = "Validate Request ";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
-            // cbModuleAllowsChildModules
+            // checkBox6
             // 
-            this.cbModuleAllowsChildModules.AutoSize = true;
-            this.cbModuleAllowsChildModules.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbModuleAllowsChildModules.Location = new System.Drawing.Point(269, 86);
-            this.cbModuleAllowsChildModules.Name = "cbModuleAllowsChildModules";
-            this.cbModuleAllowsChildModules.Size = new System.Drawing.Size(128, 17);
-            this.cbModuleAllowsChildModules.TabIndex = 16;
-            this.cbModuleAllowsChildModules.Text = "Allows Child Modules ";
-            this.cbModuleAllowsChildModules.UseVisualStyleBackColor = true;
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox6.Location = new System.Drawing.Point(50, 32);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(98, 17);
+            this.checkBox6.TabIndex = 2;
+            this.checkBox6.Text = "Display In Nav ";
+            this.checkBox6.UseVisualStyleBackColor = true;
             // 
-            // tbModuleDescription
+            // label8
             // 
-            this.tbModuleDescription.Location = new System.Drawing.Point(383, 162);
-            this.tbModuleDescription.Multiline = true;
-            this.tbModuleDescription.Name = "tbModuleDescription";
-            this.tbModuleDescription.Size = new System.Drawing.Size(371, 113);
-            this.tbModuleDescription.TabIndex = 18;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(65, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(63, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Page Name";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label4
+            // textBox2
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(271, 165);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Module Description";
-            // 
-            // btnModulesEdit
-            // 
-            this.btnModulesEdit.Location = new System.Drawing.Point(679, 315);
-            this.btnModulesEdit.Name = "btnModulesEdit";
-            this.btnModulesEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnModulesEdit.TabIndex = 19;
-            this.btnModulesEdit.Text = "Edit";
-            this.btnModulesEdit.UseVisualStyleBackColor = true;
-            this.btnModulesEdit.Click += new System.EventHandler(this.btnModulesEdit_Click);
-            // 
-            // btnModulesCancel
-            // 
-            this.btnModulesCancel.Location = new System.Drawing.Point(598, 315);
-            this.btnModulesCancel.Name = "btnModulesCancel";
-            this.btnModulesCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnModulesCancel.TabIndex = 20;
-            this.btnModulesCancel.Text = "Cancel";
-            this.btnModulesCancel.UseVisualStyleBackColor = true;
-            this.btnModulesCancel.Click += new System.EventHandler(this.btnModulesCancel_Click);
-            // 
-            // module_name
-            // 
-            this.module_name.HeaderText = "Module";
-            this.module_name.Name = "module_name";
-            this.module_name.ReadOnly = true;
-            this.module_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // module_url
-            // 
-            this.module_url.HeaderText = "module_url";
-            this.module_url.Name = "module_url";
-            this.module_url.ReadOnly = true;
-            this.module_url.Visible = false;
-            // 
-            // module_desc
-            // 
-            this.module_desc.HeaderText = "module_desc";
-            this.module_desc.Name = "module_desc";
-            this.module_desc.ReadOnly = true;
-            this.module_desc.Visible = false;
-            // 
-            // allows_child_modules
-            // 
-            this.allows_child_modules.HeaderText = "allows_child_modules";
-            this.allows_child_modules.Name = "allows_child_modules";
-            this.allows_child_modules.ReadOnly = true;
-            this.allows_child_modules.Visible = false;
-            // 
-            // image_path
-            // 
-            this.image_path.HeaderText = "image_path";
-            this.image_path.Name = "image_path";
-            this.image_path.ReadOnly = true;
-            this.image_path.Visible = false;
-            // 
-            // _source
-            // 
-            this._source.HeaderText = "_source";
-            this._source.Name = "_source";
-            this._source.ReadOnly = true;
-            this._source.Visible = false;
-            // 
-            // _source_image
-            // 
-            this._source_image.HeaderText = "_source_image";
-            this._source_image.Name = "_source_image";
-            this._source_image.ReadOnly = true;
-            this._source_image.Visible = false;
+            this.textBox2.Location = new System.Drawing.Point(134, 6);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(155, 20);
+            this.textBox2.TabIndex = 0;
             // 
             // mainForm
             // 
@@ -476,6 +793,11 @@
             this.tabModules.ResumeLayout(false);
             this.tabModules.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgModules)).EndInit();
+            this.tabPages.ResumeLayout(false);
+            this.tcPages.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPageSettings)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -488,7 +810,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabFiles;
         private System.Windows.Forms.TabPage tabModules;
-        private System.Windows.Forms.TabPage tabPages;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
@@ -526,5 +847,29 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn image_path;
         private System.Windows.Forms.DataGridViewTextBoxColumn _source;
         private System.Windows.Forms.DataGridViewTextBoxColumn _source_image;
+        private System.Windows.Forms.TabPage tabPages;
+        private System.Windows.Forms.TabControl tcPages;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button btnPagesDelete;
+        private System.Windows.Forms.Button btnPagesAddModule;
+        private System.Windows.Forms.Button btnPagesAddPage;
+        private System.Windows.Forms.TreeView tvPages;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tbPageName;
+        private System.Windows.Forms.CheckBox cbPageRequireSSL;
+        private System.Windows.Forms.CheckBox cbPageValidateRequest;
+        private System.Windows.Forms.CheckBox cbPageDisplayInNav;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tbPageDescription;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DataGridView dgPageSettings;
+        private System.Windows.Forms.DataGridViewTextBoxColumn page_setting_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn page_setting_value;
     }
 }
