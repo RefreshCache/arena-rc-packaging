@@ -8,6 +8,7 @@ namespace BuildDistribution
 {
 	class MainClass
 	{
+        [STAThread()]
 		public static void Main (string[] args)
 		{
 			XmlDocument source;
