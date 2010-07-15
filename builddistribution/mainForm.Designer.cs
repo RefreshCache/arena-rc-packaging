@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.tcMain = new System.Windows.Forms.TabControl();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.btnRemoveFile = new System.Windows.Forms.Button();
             this.btnAddFile = new System.Windows.Forms.Button();
@@ -42,8 +42,6 @@
             this.path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.source = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabModules = new System.Windows.Forms.TabPage();
-            this.btnModulesCancel = new System.Windows.Forms.Button();
-            this.btnModulesEdit = new System.Windows.Forms.Button();
             this.tbModuleDescription = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbModuleAllowsChildModules = new System.Windows.Forms.CheckBox();
@@ -59,12 +57,6 @@
             this.tbModuleName = new System.Windows.Forms.TextBox();
             this.dgModules = new System.Windows.Forms.DataGridView();
             this.module_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.module_url = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.module_desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.allows_child_modules = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.image_path = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._source = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._source_image = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnRemoveModule = new System.Windows.Forms.Button();
             this.btnAddModule = new System.Windows.Forms.Button();
             this.tabPages = new System.Windows.Forms.TabPage();
@@ -82,6 +74,20 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbPageName = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.dgModuleInstanceSettings = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tbModuleInstanceDetails = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cbModuleInstanceType = new System.Windows.Forms.ComboBox();
+            this.cbModuleInstanceShowTitle = new System.Windows.Forms.CheckBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tbModuleInstanceTemplateFrameName = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tbModuleInstanceTitle = new System.Windows.Forms.TextBox();
             this.btnPagesDelete = new System.Windows.Forms.Button();
             this.btnPagesAddModule = new System.Windows.Forms.Button();
             this.btnPagesAddPage = new System.Windows.Forms.Button();
@@ -98,7 +104,7 @@
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.tabControl1.SuspendLayout();
+            this.tcMain.SuspendLayout();
             this.tabFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).BeginInit();
             this.tabModules.SuspendLayout();
@@ -107,19 +113,21 @@
             this.tcPages.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPageSettings)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgModuleInstanceSettings)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // tcMain
             // 
-            this.tabControl1.Controls.Add(this.tabFiles);
-            this.tabControl1.Controls.Add(this.tabModules);
-            this.tabControl1.Controls.Add(this.tabPages);
-            this.tabControl1.Location = new System.Drawing.Point(12, 27);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(768, 534);
-            this.tabControl1.TabIndex = 0;
+            this.tcMain.Controls.Add(this.tabFiles);
+            this.tcMain.Controls.Add(this.tabModules);
+            this.tcMain.Controls.Add(this.tabPages);
+            this.tcMain.Location = new System.Drawing.Point(12, 27);
+            this.tcMain.Name = "tcMain";
+            this.tcMain.SelectedIndex = 0;
+            this.tcMain.Size = new System.Drawing.Size(768, 534);
+            this.tcMain.TabIndex = 0;
             // 
             // tabFiles
             // 
@@ -160,36 +168,36 @@
             this.dgFiles.AllowUserToDeleteRows = false;
             this.dgFiles.AllowUserToResizeRows = false;
             this.dgFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFiles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.path,
             this.source});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgFiles.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgFiles.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgFiles.Location = new System.Drawing.Point(6, 6);
             this.dgFiles.Name = "dgFiles";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgFiles.Size = new System.Drawing.Size(748, 467);
             this.dgFiles.TabIndex = 1;
             // 
@@ -207,8 +215,6 @@
             // 
             // tabModules
             // 
-            this.tabModules.Controls.Add(this.btnModulesCancel);
-            this.tabModules.Controls.Add(this.btnModulesEdit);
             this.tabModules.Controls.Add(this.tbModuleDescription);
             this.tabModules.Controls.Add(this.label4);
             this.tabModules.Controls.Add(this.cbModuleAllowsChildModules);
@@ -232,26 +238,6 @@
             this.tabModules.TabIndex = 1;
             this.tabModules.Text = "Modules";
             this.tabModules.UseVisualStyleBackColor = true;
-            // 
-            // btnModulesCancel
-            // 
-            this.btnModulesCancel.Location = new System.Drawing.Point(598, 315);
-            this.btnModulesCancel.Name = "btnModulesCancel";
-            this.btnModulesCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnModulesCancel.TabIndex = 20;
-            this.btnModulesCancel.Text = "Cancel";
-            this.btnModulesCancel.UseVisualStyleBackColor = true;
-            this.btnModulesCancel.Click += new System.EventHandler(this.btnModulesCancel_Click);
-            // 
-            // btnModulesEdit
-            // 
-            this.btnModulesEdit.Location = new System.Drawing.Point(679, 315);
-            this.btnModulesEdit.Name = "btnModulesEdit";
-            this.btnModulesEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnModulesEdit.TabIndex = 19;
-            this.btnModulesEdit.Text = "Edit";
-            this.btnModulesEdit.UseVisualStyleBackColor = true;
-            this.btnModulesEdit.Click += new System.EventHandler(this.btnModulesEdit_Click);
             // 
             // tbModuleDescription
             // 
@@ -368,43 +354,37 @@
             this.dgModules.AllowUserToResizeColumns = false;
             this.dgModules.AllowUserToResizeRows = false;
             this.dgModules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgModules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgModules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgModules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgModules.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.module_name,
-            this.module_url,
-            this.module_desc,
-            this.allows_child_modules,
-            this.image_path,
-            this._source,
-            this._source_image});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgModules.DefaultCellStyle = dataGridViewCellStyle5;
+            this.module_name});
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgModules.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgModules.Location = new System.Drawing.Point(6, 6);
             this.dgModules.MultiSelect = false;
             this.dgModules.Name = "dgModules";
             this.dgModules.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgModules.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgModules.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgModules.RowHeadersVisible = false;
             this.dgModules.Size = new System.Drawing.Size(259, 467);
             this.dgModules.TabIndex = 3;
@@ -415,48 +395,6 @@
             this.module_name.Name = "module_name";
             this.module_name.ReadOnly = true;
             this.module_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // module_url
-            // 
-            this.module_url.HeaderText = "module_url";
-            this.module_url.Name = "module_url";
-            this.module_url.ReadOnly = true;
-            this.module_url.Visible = false;
-            // 
-            // module_desc
-            // 
-            this.module_desc.HeaderText = "module_desc";
-            this.module_desc.Name = "module_desc";
-            this.module_desc.ReadOnly = true;
-            this.module_desc.Visible = false;
-            // 
-            // allows_child_modules
-            // 
-            this.allows_child_modules.HeaderText = "allows_child_modules";
-            this.allows_child_modules.Name = "allows_child_modules";
-            this.allows_child_modules.ReadOnly = true;
-            this.allows_child_modules.Visible = false;
-            // 
-            // image_path
-            // 
-            this.image_path.HeaderText = "image_path";
-            this.image_path.Name = "image_path";
-            this.image_path.ReadOnly = true;
-            this.image_path.Visible = false;
-            // 
-            // _source
-            // 
-            this._source.HeaderText = "_source";
-            this._source.Name = "_source";
-            this._source.ReadOnly = true;
-            this._source.Visible = false;
-            // 
-            // _source_image
-            // 
-            this._source_image.HeaderText = "_source_image";
-            this._source_image.Name = "_source_image";
-            this._source_image.ReadOnly = true;
-            this._source_image.Visible = false;
             // 
             // btnRemoveModule
             // 
@@ -629,6 +567,17 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label15);
+            this.tabPage2.Controls.Add(this.dgModuleInstanceSettings);
+            this.tabPage2.Controls.Add(this.label14);
+            this.tabPage2.Controls.Add(this.tbModuleInstanceDetails);
+            this.tabPage2.Controls.Add(this.label13);
+            this.tabPage2.Controls.Add(this.cbModuleInstanceType);
+            this.tabPage2.Controls.Add(this.cbModuleInstanceShowTitle);
+            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.tbModuleInstanceTemplateFrameName);
+            this.tabPage2.Controls.Add(this.label11);
+            this.tabPage2.Controls.Add(this.tbModuleInstanceTitle);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -636,6 +585,135 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Module Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 224);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(45, 13);
+            this.label15.TabIndex = 12;
+            this.label15.Text = "Settings";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // dgModuleInstanceSettings
+            // 
+            this.dgModuleInstanceSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgModuleInstanceSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.Type,
+            this.dataGridViewTextBoxColumn2});
+            this.dgModuleInstanceSettings.Location = new System.Drawing.Point(6, 240);
+            this.dgModuleInstanceSettings.MultiSelect = false;
+            this.dgModuleInstanceSettings.Name = "dgModuleInstanceSettings";
+            this.dgModuleInstanceSettings.RowHeadersWidth = 24;
+            this.dgModuleInstanceSettings.Size = new System.Drawing.Size(463, 162);
+            this.dgModuleInstanceSettings.TabIndex = 11;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.FillWeight = 101.5228F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 135;
+            // 
+            // Type
+            // 
+            this.Type.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.Width = 125;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 98.47716F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Value";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 184;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(89, 111);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(39, 13);
+            this.label14.TabIndex = 10;
+            this.label14.Text = "Details";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbModuleInstanceDetails
+            // 
+            this.tbModuleInstanceDetails.Location = new System.Drawing.Point(134, 108);
+            this.tbModuleInstanceDetails.Multiline = true;
+            this.tbModuleInstanceDetails.Name = "tbModuleInstanceDetails";
+            this.tbModuleInstanceDetails.Size = new System.Drawing.Size(335, 106);
+            this.tbModuleInstanceDetails.TabIndex = 9;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(59, 84);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(69, 13);
+            this.label13.TabIndex = 8;
+            this.label13.Text = "Module Type";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // cbModuleInstanceType
+            // 
+            this.cbModuleInstanceType.DisplayMember = "Name";
+            this.cbModuleInstanceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbModuleInstanceType.FormattingEnabled = true;
+            this.cbModuleInstanceType.Location = new System.Drawing.Point(134, 81);
+            this.cbModuleInstanceType.Name = "cbModuleInstanceType";
+            this.cbModuleInstanceType.Size = new System.Drawing.Size(202, 21);
+            this.cbModuleInstanceType.TabIndex = 7;
+            this.cbModuleInstanceType.ValueMember = "ModuleID";
+            // 
+            // cbModuleInstanceShowTitle
+            // 
+            this.cbModuleInstanceShowTitle.AutoSize = true;
+            this.cbModuleInstanceShowTitle.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbModuleInstanceShowTitle.Location = new System.Drawing.Point(69, 32);
+            this.cbModuleInstanceShowTitle.Name = "cbModuleInstanceShowTitle";
+            this.cbModuleInstanceShowTitle.Size = new System.Drawing.Size(79, 17);
+            this.cbModuleInstanceShowTitle.TabIndex = 6;
+            this.cbModuleInstanceShowTitle.Text = "Show Title ";
+            this.cbModuleInstanceShowTitle.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(14, 58);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(114, 13);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "Template Frame Name";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbModuleInstanceTemplateFrameName
+            // 
+            this.tbModuleInstanceTemplateFrameName.Location = new System.Drawing.Point(134, 55);
+            this.tbModuleInstanceTemplateFrameName.Name = "tbModuleInstanceTemplateFrameName";
+            this.tbModuleInstanceTemplateFrameName.Size = new System.Drawing.Size(155, 20);
+            this.tbModuleInstanceTemplateFrameName.TabIndex = 4;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(63, 9);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 13);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "Module Title";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // tbModuleInstanceTitle
+            // 
+            this.tbModuleInstanceTitle.Location = new System.Drawing.Point(134, 6);
+            this.tbModuleInstanceTitle.Name = "tbModuleInstanceTitle";
+            this.tbModuleInstanceTitle.Size = new System.Drawing.Size(202, 20);
+            this.tbModuleInstanceTitle.TabIndex = 2;
             // 
             // btnPagesDelete
             // 
@@ -654,6 +732,7 @@
             this.btnPagesAddModule.TabIndex = 3;
             this.btnPagesAddModule.Text = "Add Module";
             this.btnPagesAddModule.UseVisualStyleBackColor = true;
+            this.btnPagesAddModule.Click += new System.EventHandler(this.btnPagesAddModule_Click);
             // 
             // btnPagesAddPage
             // 
@@ -781,13 +860,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 573);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tcMain);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "mainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Build Distribution";
-            this.tabControl1.ResumeLayout(false);
+            this.tcMain.ResumeLayout(false);
             this.tabFiles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).EndInit();
             this.tabModules.ResumeLayout(false);
@@ -798,6 +877,9 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPageSettings)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgModuleInstanceSettings)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -807,7 +889,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tabFiles;
         private System.Windows.Forms.TabPage tabModules;
         private System.Windows.Forms.MenuStrip mainMenu;
@@ -836,17 +918,8 @@
         private System.Windows.Forms.CheckBox cbModuleAllowsChildModules;
         private System.Windows.Forms.TextBox tbModuleSourceImagePath;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnModulesCancel;
-        private System.Windows.Forms.Button btnModulesEdit;
         private System.Windows.Forms.TextBox tbModuleDescription;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn module_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn module_url;
-        private System.Windows.Forms.DataGridViewTextBoxColumn module_desc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn allows_child_modules;
-        private System.Windows.Forms.DataGridViewTextBoxColumn image_path;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _source;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _source_image;
         private System.Windows.Forms.TabPage tabPages;
         private System.Windows.Forms.TabControl tcPages;
         private System.Windows.Forms.TabPage tabPage1;
@@ -871,5 +944,20 @@
         private System.Windows.Forms.DataGridView dgPageSettings;
         private System.Windows.Forms.DataGridViewTextBoxColumn page_setting_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn page_setting_value;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbModuleInstanceTitle;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tbModuleInstanceTemplateFrameName;
+        private System.Windows.Forms.CheckBox cbModuleInstanceShowTitle;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox cbModuleInstanceType;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tbModuleInstanceDetails;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DataGridView dgModuleInstanceSettings;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn module_name;
     }
 }

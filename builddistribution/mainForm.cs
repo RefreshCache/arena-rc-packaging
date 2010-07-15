@@ -13,15 +13,26 @@ namespace BuildDistribution
     public partial class mainForm : Form
     {
         private Boolean selectionChanging = false;
+        static public List<Module> Modules = null;
 
         public mainForm()
         {
             InitializeComponent();
+            Modules = new List<Module>();
+
             importFiles(null);
 
+            tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
             //
             // Setup all the module tab actions and events.
             //
+            tbModuleName.TextChanged += new EventHandler(tbModuleName_TextChanged);
+            tbModuleURL.TextChanged += new EventHandler(tbModuleURL_TextChanged);
+            tbModuleImagePath.TextChanged += new EventHandler(tbModuleImagePath_TextChanged);
+            cbModuleAllowsChildModules.CheckedChanged += new EventHandler(cbModuleAllowsChildModules_CheckedChanged);
+            tbModuleSourcePath.TextChanged += new EventHandler(tbModuleSourcePath_TextChanged);
+            tbModuleSourceImagePath.TextChanged += new EventHandler(tbModuleSourceImagePath_TextChanged);
+            tbModuleDescription.TextChanged += new EventHandler(tbModuleDescription_TextChanged);
             dgModules.SelectionChanged += new EventHandler(dgModules_SelectionChanged);
             dgModules_SelectionChanged(null, null);
 
@@ -39,6 +50,24 @@ namespace BuildDistribution
             dgPageSettings.CellValueNeeded += new DataGridViewCellValueEventHandler(dgPageSettings_CellValueNeeded);
             dgPageSettings.CellValuePushed += new DataGridViewCellValueEventHandler(dgPageSettings_CellValuePushed);
             dgPageSettings.RowCount = 0;
+            DataGridViewComboBoxColumn box = (DataGridViewComboBoxColumn)dgModuleInstanceSettings.Columns["Type"];
+            box.Items.AddRange(Enum.GetNames(typeof(ModuleInstanceSettingType)));
+            dgModuleInstanceSettings.VirtualMode = true;
+            dgModuleInstanceSettings.CellValueNeeded += new DataGridViewCellValueEventHandler(dgModuleInstanceSettings_CellValueNeeded);
+            dgModuleInstanceSettings.CellValuePushed += new DataGridViewCellValueEventHandler(dgModuleInstanceSettings_CellValuePushed);
+            dgModuleInstanceSettings.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgModuleInstanceSettings_UserDeletingRow);
+            dgModuleInstanceSettings.RowCount = 1;
+        }
+
+        void tcMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object selectedValue;
+
+            selectedValue = cbModuleInstanceType.SelectedValue;
+            Console.WriteLine("Value " + (selectedValue == null ? "null" : selectedValue.ToString()));
+            cbModuleInstanceType.DataSource = Modules.ToArray();
+            if (selectedValue != null)
+                cbModuleInstanceType.SelectedValue = selectedValue;
         }
 
         private PageInstance SelectedPageInstance()
@@ -50,6 +79,25 @@ namespace BuildDistribution
             }
 
             return (PageInstance)tvPages.SelectedNode.Tag;
+        }
+
+        private ModuleInstance SelectedModuleInstance()
+        {
+            if (tvPages.SelectedNode == null ||
+                typeof(ModuleInstance).IsAssignableFrom(tvPages.SelectedNode.Tag.GetType()) == false)
+            {
+                return null;
+            }
+
+            return (ModuleInstance)tvPages.SelectedNode.Tag;
+        }
+
+        private Module SelectedModule()
+        {
+            if (dgModules.SelectedCells.Count == 0)
+                return null;
+
+            return Modules[dgModules.SelectedCells[0].RowIndex];
         }
 
         #region Files Tab User Interface
@@ -72,11 +120,92 @@ namespace BuildDistribution
 
         #region Modules Tab User Interface
 
+        void tbModuleDescription_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.Description = tbModuleDescription.Text;
+        }
+
+        void tbModuleSourceImagePath_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.SourceImage = tbModuleSourceImagePath.Text;
+        }
+
+        void tbModuleSourcePath_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.Source = tbModuleSourcePath.Text;
+        }
+
+        void cbModuleAllowsChildModules_CheckedChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.AllowsChildModules = cbModuleAllowsChildModules.Checked;
+        }
+
+        void tbModuleImagePath_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.ImagePath = tbModuleImagePath.Text;
+        }
+
+        void tbModuleURL_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.URL = tbModuleURL.Text;
+        }
+
+        void tbModuleName_TextChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+            {
+                module.Name = tbModuleName.Text;
+                dgModules.Rows[dgModules.SelectedCells[0].RowIndex].Cells[0].Value = tbModuleName.Text;
+            }
+        }
+
         void dgModules_SelectionChanged(object sender, EventArgs e)
         {
+            Boolean enabled = false;
+
+
+            selectionChanging = true;
+
             if (dgModules.SelectedCells.Count > 0)
             {
-                btnModulesCancel_Click(null, null);
+                Module module = Modules[dgModules.SelectedCells[0].RowIndex];
+
+                tbModuleName.Text = module.Name;
+                tbModuleURL.Text = module.URL;
+                tbModuleImagePath.Text = module.ImagePath;
+                cbModuleAllowsChildModules.Checked = module.AllowsChildModules;
+                tbModuleSourcePath.Text = module.Source;
+                tbModuleSourceImagePath.Text = module.SourceImage;
+                tbModuleDescription.Text = module.Description;
+
+                enabled = true;
             }
             else
             {
@@ -92,28 +221,25 @@ namespace BuildDistribution
             //
             // Enable or disable everything.
             //
-            tbModuleName.Enabled = false;
-            tbModuleURL.Enabled = false;
-            tbModuleImagePath.Enabled = false;
-            cbModuleAllowsChildModules.Enabled = false;
-            tbModuleSourcePath.Enabled = false;
-            tbModuleSourceImagePath.Enabled = false;
-            tbModuleDescription.Enabled = false;
-            btnModulesEdit.Enabled = true;
-            btnModulesEdit.Text = "Edit";
-            btnModulesCancel.Enabled = false;
+            tbModuleName.Enabled = enabled;
+            tbModuleURL.Enabled = enabled;
+            tbModuleImagePath.Enabled = enabled;
+            cbModuleAllowsChildModules.Enabled = enabled;
+            tbModuleSourcePath.Enabled = enabled;
+            tbModuleSourceImagePath.Enabled = enabled;
+            tbModuleDescription.Enabled = enabled;
+
+            selectionChanging = false;
         }
 
         private void btnAddModule_Click(object sender, EventArgs e)
         {
+            Module module = new Module();
+
+
+            Modules.Add(module);
             dgModules.Rows.Add();
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["module_name"].Value = "New Module";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["module_url"].Value = "";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["image_path"].Value = "";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["allows_child_modules"].Value = "0";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["_source"].Value = "";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["_source_image"].Value = "";
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["module_desc"].Value = "";
+            dgModules.Rows[dgModules.Rows.Count - 1].Cells["module_name"].Value = module.Name;
 
             dgModules_SelectionChanged(null, null);
         }
@@ -122,83 +248,10 @@ namespace BuildDistribution
         {
             if (dgModules.SelectedCells.Count > 0)
             {
+                Modules.RemoveAt(dgModules.SelectedCells[0].RowIndex);
                 dgModules.Rows.RemoveAt(dgModules.SelectedCells[0].RowIndex);
             }
         }
-
-        private void btnModulesCancel_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow row;
-
-
-            row = dgModules.Rows[dgModules.SelectedCells[0].RowIndex];
-            try
-            {
-                tbModuleName.Text = row.Cells["module_name"].Value.ToString();
-                tbModuleURL.Text = row.Cells["module_url"].Value.ToString();
-                tbModuleImagePath.Text = row.Cells["image_path"].Value.ToString();
-                cbModuleAllowsChildModules.Checked = (row.Cells["allows_child_modules"].Value.ToString() == "1" ? true : false);
-                tbModuleSourcePath.Text = row.Cells["_source"].Value.ToString();
-                tbModuleSourceImagePath.Text = row.Cells["_source_image"].Value.ToString();
-                tbModuleDescription.Text = row.Cells["module_desc"].Value.ToString();
-            }
-            catch { }
-
-            tbModuleName.Enabled = false;
-            tbModuleURL.Enabled = false;
-            tbModuleImagePath.Enabled = false;
-            cbModuleAllowsChildModules.Enabled = false;
-            tbModuleSourcePath.Enabled = false;
-            tbModuleSourceImagePath.Enabled = false;
-            tbModuleDescription.Enabled = false;
-
-            btnModulesCancel.Enabled = false;
-            btnModulesEdit.Text = "Edit";
-        }
-
-        private void btnModulesEdit_Click(object sender, EventArgs e)
-        {
-            Boolean enabled = false;
-
-
-            if (btnModulesEdit.Text == "Edit")
-            {
-                //
-                // Edit...
-                //
-                btnModulesCancel.Enabled = true;
-                btnModulesEdit.Text = "Save";
-                enabled = true;
-            }
-            else
-            {
-                DataGridViewRow row;
-
-                //
-                // Save...
-                //
-                row = dgModules.Rows[dgModules.SelectedCells[0].RowIndex];
-                row.Cells["module_name"].Value = tbModuleName.Text;
-                row.Cells["module_url"].Value = tbModuleURL.Text;
-                row.Cells["image_path"].Value = tbModuleImagePath.Text;
-                row.Cells["allows_child_modules"].Value = (cbModuleAllowsChildModules.Checked ? "1" : "0");
-                row.Cells["_source"].Value = tbModuleSourcePath.Text;
-                row.Cells["_source_image"].Value = tbModuleSourceImagePath.Text;
-                row.Cells["module_desc"].Value = tbModuleDescription.Text;
-
-                btnModulesCancel.Enabled = false;
-                btnModulesEdit.Text = "Save";
-            }
-
-            tbModuleName.Enabled = enabled;
-            tbModuleURL.Enabled = enabled;
-            tbModuleImagePath.Enabled = enabled;
-            cbModuleAllowsChildModules.Enabled = enabled;
-            tbModuleSourcePath.Enabled = enabled;
-            tbModuleSourceImagePath.Enabled = enabled;
-            tbModuleDescription.Enabled = enabled;
-        }
-
 
         #endregion
 
@@ -219,6 +272,28 @@ namespace BuildDistribution
                 tvPages.Nodes.Add(page.TreeNode);
 
             tvPages.SelectedNode = page.TreeNode;
+        }
+
+        private void btnPagesAddModule_Click(object sender, EventArgs e)
+        {
+            ModuleInstance module;
+            PageInstance page;
+            int i, lastIndex = -1;
+
+
+            if (tvPages.SelectedNode == null || !typeof(PageInstance).IsAssignableFrom(tvPages.SelectedNode.Tag.GetType()))
+                return;
+            page = (PageInstance)tvPages.SelectedNode.Tag;
+
+            module = new ModuleInstance();
+            for (i = 0; i < page.TreeNode.Nodes.Count; i++)
+            {
+                if (typeof(ModuleInstance).IsAssignableFrom(page.TreeNode.Nodes[i].Tag.GetType()))
+                    lastIndex = i;
+            }
+            page.TreeNode.Nodes.Insert(lastIndex + 1, module.TreeNode);
+
+            tvPages.SelectedNode = module.TreeNode;
         }
 
         void tbPageDescription_TextChanged(object sender, EventArgs e)
@@ -269,6 +344,7 @@ namespace BuildDistribution
         void tvPages_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
             dgPageSettings.RowCount = 0;
+            dgModuleInstanceSettings.RowCount = 1;
         }
 
         void tvPages_AfterSelect(object sender, TreeViewEventArgs e)
@@ -277,7 +353,6 @@ namespace BuildDistribution
                 return;
 
             selectionChanging = true;
-            dgPageSettings.RowCount = 13;
 
             if (typeof(PageInstance).IsAssignableFrom(tvPages.SelectedNode.Tag.GetType()) == true)
             {
@@ -288,8 +363,22 @@ namespace BuildDistribution
                 cbPageRequireSSL.Checked = page.RequireSSL;
                 cbPageValidateRequest.Checked = page.ValidateRequest;
                 tbPageDescription.Text = page.PageDescription;
+                dgPageSettings.RowCount = 13;
 
                 tcPages.SelectedIndex = 0;
+            }
+            else if (typeof(ModuleInstance).IsAssignableFrom(tvPages.SelectedNode.Tag.GetType()) == true)
+            {
+                ModuleInstance module = (ModuleInstance)tvPages.SelectedNode.Tag;
+
+                tbModuleInstanceTitle.Text = module.ModuleTitle;
+                cbModuleInstanceShowTitle.Checked = module.ShowTitle;
+                tbModuleInstanceTemplateFrameName.Text = module.TemplateFrameName;
+//                cbModuleInstanceType.SelectedIndex = 0;
+                tbModuleInstanceDetails.Text = module.ModuleDetails;
+                dgModuleInstanceSettings.RowCount = module.Settings.Count + 1;
+
+                tcPages.SelectedIndex = 1;
             }
 
             selectionChanging = false;
@@ -319,6 +408,56 @@ namespace BuildDistribution
                 else
                     e.Value = page.Settings[e.RowIndex].Value;
             }
+        }
+
+        void dgModuleInstanceSettings_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            ModuleInstance module = SelectedModuleInstance();
+
+
+            if (module != null)
+            {
+                module.Settings.RemoveAt(e.Row.Index);
+            }
+        }
+
+        void dgModuleInstanceSettings_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
+        {
+            ModuleInstance module = SelectedModuleInstance();
+
+
+            if (module == null)
+                return;
+            if (e.RowIndex == module.Settings.Count)
+            {
+                module.Settings.Add(new ModuleInstanceSetting());
+                dgModuleInstanceSettings.UpdateCellValue(1, e.RowIndex);
+            }
+
+            if (e.ColumnIndex == 0)
+                module.Settings[e.RowIndex].Name = e.Value.ToString();
+            else if (e.ColumnIndex == 1)
+                module.Settings[e.RowIndex].Type = (ModuleInstanceSettingType)Enum.Parse(typeof(ModuleInstanceSettingType), e.Value.ToString());
+            else if (e.ColumnIndex == 2)
+                module.Settings[e.RowIndex].Value = e.Value.ToString();
+        }
+
+        void dgModuleInstanceSettings_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        {
+            ModuleInstance module = SelectedModuleInstance();
+
+
+            if (module == null || e.RowIndex == module.Settings.Count)
+            {
+                return;
+            }
+
+            if (e.ColumnIndex == 0)
+                e.Value = module.Settings[e.RowIndex].Name;
+            else if (e.ColumnIndex == 1)
+                e.Value = module.Settings[e.RowIndex].Type.ToString();
+            else if (e.ColumnIndex == 2)
+                e.Value = module.Settings[e.RowIndex].Value;
         }
 
         #endregion
@@ -469,12 +608,63 @@ namespace BuildDistribution
 
     }
 
+    public class Module
+    {
+        private int _ModuleID;
+
+        public int ModuleID
+        {
+            get
+            {
+                if (_ModuleID == 0)
+                    _ModuleID = NextAvailableModuleID();
+
+                return _ModuleID;
+            }
+        }
+        public String Name { get; set; }
+        public String URL { get; set; }
+        public String ImagePath { get; set; }
+        public Boolean AllowsChildModules { get; set; }
+        public String Source { get; set; }
+        public String SourceImage { get; set; }
+        public String Description { get; set; }
+
+        public Module()
+        {
+            _ModuleID = 0;
+            Name = "New Module";
+            URL = "";
+            ImagePath = "";
+            AllowsChildModules = false;
+            Source = "";
+            SourceImage = "";
+            Description = "";
+        }
+
+        static int NextAvailableModuleID()
+        {
+            int nextID = -1;
+
+
+            foreach (Module m in mainForm.Modules)
+            {
+                if (m._ModuleID <= nextID)
+                    nextID = m._ModuleID - 1;
+            }
+
+            Console.WriteLine("New ID is " + nextID.ToString());
+            return nextID;
+        }
+    }
+
     class PageInstance
     {
         private int _PageID;
         private TreeNode _TreeNode;
         private String _PageName;
         private List<PageSetting> _Settings;
+        private List<ModuleInstance> _Modules;
 
         public int PageID { get { if (_PageID == 0) _PageID = NextAvailablePageID((PageInstance)_TreeNode.TreeView.Nodes[0].Tag); return _PageID; } }
         public TreeNode TreeNode { get { return _TreeNode; } }
@@ -484,6 +674,7 @@ namespace BuildDistribution
         public Boolean ValidateRequest;
         public String PageDescription;
         public List<PageSetting> Settings { get { return _Settings; } }
+        public List<ModuleInstance> Modules { get { return _Modules; } }
         public Guid Guid;
 
         static private int NextAvailablePageID(PageInstance parentPage)
@@ -503,7 +694,7 @@ namespace BuildDistribution
 
                 if (typeof(PageInstance).IsAssignableFrom(node.Tag.GetType()))
                 {
-                    NextAvailablePageID((PageInstance)node.Tag);
+                    tempID = NextAvailablePageID((PageInstance)node.Tag);
 
                     if (tempID <= nextID)
                         nextID = tempID - 1;
@@ -525,6 +716,7 @@ namespace BuildDistribution
             ValidateRequest = true;
             PageDescription = "";
             Guid = Guid.NewGuid();
+            _Modules = new List<ModuleInstance>();
             SetupSettings();
         }
 
@@ -674,4 +866,169 @@ namespace BuildDistribution
             return Name + "=" + Value.Replace(";", "^^");
         }
     }
+
+    class ModuleInstance
+    {
+        //
+        // Automatic attributes:
+        // template_frame_order
+        //
+        // Unknown attributes:
+        // description="", image_path="", mandatory="0", movable="0".
+        //
+        // For backwards compatibility:
+        // temp_page_or_template_id, page_instance
+        //
+        private int _ModuleInstanceID;
+        private String _ModuleTitle;
+        private TreeNode _TreeNode;
+        private List<ModuleInstanceSetting> _Settings;
+
+        public TreeNode TreeNode { get { return _TreeNode; } }
+        public int ModuleInstanceID
+        {
+            get
+            {
+                if (_ModuleInstanceID == -1)
+                    _ModuleInstanceID = NextAvailableModuleInstanceID(Page);
+                
+                return _ModuleInstanceID;
+            }
+        }
+        public int TemplateFrameOrder
+        {
+            get
+            {
+                int order = 0;
+
+                foreach (TreeNode node in Page.TreeNode.Nodes)
+                {
+                    if (typeof(ModuleInstance).IsAssignableFrom(node.Tag.GetType()))
+                    {
+                        if (this == (ModuleInstance)node.Tag)
+                            return order;
+
+                        order += 1;
+                    }
+                }
+
+                return Int32.MaxValue;
+            }
+        }
+        public Boolean ShowTitle { get; set; }
+        public String ModuleTitle { get { return _ModuleTitle; } set { _ModuleTitle = value; _TreeNode.Text = value; } }
+        public String TemplateFrameName { get; set; }
+        public String ModuleDetails { get; set; }
+        public PageInstance Page { get; set; }
+        public List<ModuleInstanceSetting> Settings { get { return _Settings; } }
+
+        static private int NextAvailableModuleInstanceID(PageInstance parentPage)
+        {
+            int nextID = -1;
+
+
+            if (parentPage == null)
+                return -1;
+
+            foreach (TreeNode node in parentPage.TreeNode.Nodes)
+            {
+                int tempID;
+
+                if (typeof(PageInstance).IsAssignableFrom(node.Tag.GetType()))
+                {
+                    tempID = NextAvailableModuleInstanceID((PageInstance)node.Tag);
+
+                    if (tempID <= nextID)
+                        nextID = tempID - 1;
+                }
+                else if (typeof(ModuleInstance).IsAssignableFrom(node.Tag.GetType()))
+                {
+                    tempID = ((ModuleInstance)node.Tag).ModuleInstanceID;
+
+                    if (tempID <= nextID)
+                        nextID = tempID - 1;
+                }
+            }
+
+            return nextID;
+        }
+
+
+        public ModuleInstance()
+        {
+            _ModuleInstanceID = -1;
+            ShowTitle = false;
+            _ModuleTitle = "New Module";
+            TemplateFrameName = "Main";
+            ModuleDetails = "";
+            Page = null;
+            _Settings = new List<ModuleInstanceSetting>();
+
+            _TreeNode = new TreeNode(ModuleTitle);
+            _TreeNode.Tag = this;
+        }
+    }
+
+    class ModuleInstanceSetting
+    {
+        public String Name;
+        public String Value;
+        public ModuleInstanceSettingType Type;
+
+        public ModuleInstanceSetting()
+        {
+            Name = "";
+            Value = "";
+            Type = ModuleInstanceSettingType.None;
+        }
+
+        public ModuleInstanceSetting(String name)
+        {
+            Name = name;
+            Value = "";
+            Type = ModuleInstanceSettingType.None;
+        }
+
+        public ModuleInstanceSetting(String name, ModuleInstanceSettingType type, String value)
+        {
+            Name = name;
+            Value = value;
+            Type = type;
+        }
+
+        public String SettingString()
+        {
+            if (String.IsNullOrEmpty(Name) || String.IsNullOrEmpty(Value))
+                return "";
+
+            return Name + "=" + Value.Replace(";", "^^");
+        }
+    }
+
+    enum ModuleInstanceSettingType
+    {
+        None = 0,
+        Text = 1,
+        Number = 2,
+        Page = 3,
+        Boolean = 4,
+        Css = 5,
+        Image = 6,
+        Tag = 7,
+        Metric = 8,
+        Date = 9,
+        Lookup = 10,
+        Cluster = 11,
+        ClusterType = 12,
+        CustomList = 13,
+        File = 14,
+        GatewayAccount = 15,
+        PagesAsTabs = 16,
+        ListFromSql = 17,
+        Report = 18,
+        Campus = 19,
+        DocumentType = 20,
+        Person = 21
+    }
+
 }
