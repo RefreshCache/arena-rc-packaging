@@ -12,17 +12,23 @@ namespace BuildDistribution
 {
     public partial class mainForm : Form
     {
+        private String currentFileName = null;
         private Boolean selectionChanging = false;
-        static public List<Module> Modules = null;
 
         public mainForm()
         {
             InitializeComponent();
-            Modules = new List<Module>();
 
-            importFiles(null);
+            //
+            // Initialize everything to empty.
+            //
+            Module.Modules = new List<Module>();
 
+            //
+            // Setup all the top-level actions and events.
+            //
             tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
+
             //
             // Setup all the module tab actions and events.
             //
@@ -34,6 +40,9 @@ namespace BuildDistribution
             tbModuleSourceImagePath.TextChanged += new EventHandler(tbModuleSourceImagePath_TextChanged);
             tbModuleDescription.TextChanged += new EventHandler(tbModuleDescription_TextChanged);
             dgModules.SelectionChanged += new EventHandler(dgModules_SelectionChanged);
+            dgModules.VirtualMode = true;
+            dgModules.CellValueNeeded += new DataGridViewCellValueEventHandler(dgModules_CellValueNeeded);
+            dgModules.RowCount = 0;
             dgModules_SelectionChanged(null, null);
 
             //
@@ -50,6 +59,11 @@ namespace BuildDistribution
             dgPageSettings.CellValueNeeded += new DataGridViewCellValueEventHandler(dgPageSettings_CellValueNeeded);
             dgPageSettings.CellValuePushed += new DataGridViewCellValueEventHandler(dgPageSettings_CellValuePushed);
             dgPageSettings.RowCount = 0;
+            tbModuleInstanceTitle.TextChanged += new EventHandler(tbModuleInstanceTitle_TextChanged);
+            tbModuleInstanceTemplateFrameName.TextChanged += new EventHandler(tbModuleInstanceTemplateFrameName_TextChanged);
+            tbModuleInstanceDetails.TextChanged += new EventHandler(tbModuleInstanceDetails_TextChanged);
+            cbModuleInstanceShowTitle.CheckedChanged += new EventHandler(cbModuleInstanceShowTitle_CheckedChanged);
+            cbModuleInstanceType.SelectedValueChanged += new EventHandler(cbModuleInstanceType_SelectedValueChanged);
             DataGridViewComboBoxColumn box = (DataGridViewComboBoxColumn)dgModuleInstanceSettings.Columns["Type"];
             box.Items.AddRange(Enum.GetNames(typeof(ModuleInstanceSettingType)));
             dgModuleInstanceSettings.VirtualMode = true;
@@ -59,16 +73,7 @@ namespace BuildDistribution
             dgModuleInstanceSettings.RowCount = 1;
         }
 
-        void tcMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            object selectedValue;
-
-            selectedValue = cbModuleInstanceType.SelectedValue;
-            Console.WriteLine("Value " + (selectedValue == null ? "null" : selectedValue.ToString()));
-            cbModuleInstanceType.DataSource = Modules.ToArray();
-            if (selectedValue != null)
-                cbModuleInstanceType.SelectedValue = selectedValue;
-        }
+        #region Helper methods
 
         private PageInstance SelectedPageInstance()
         {
@@ -97,8 +102,30 @@ namespace BuildDistribution
             if (dgModules.SelectedCells.Count == 0)
                 return null;
 
-            return Modules[dgModules.SelectedCells[0].RowIndex];
+            return Module.Modules[dgModules.SelectedCells[0].RowIndex];
         }
+
+        //
+        // Work around idiot framework trying to make the XML utf-16 instead
+        // of what I tell it to be.
+        //
+        public static String XmlDocumentToString(XmlDocument doc)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+            xmlWriterSettings.Encoding = new UTF8Encoding(false);
+            xmlWriterSettings.ConformanceLevel = ConformanceLevel.Document;
+            xmlWriterSettings.Indent = true;
+
+            XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
+            doc.Save(xmlWriter);
+            xmlWriter.Flush();
+            xmlWriter.Close();
+
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
+        }
+
+        #endregion
 
         #region Files Tab User Interface
 
@@ -182,7 +209,7 @@ namespace BuildDistribution
             if (module != null && selectionChanging == false)
             {
                 module.Name = tbModuleName.Text;
-                dgModules.Rows[dgModules.SelectedCells[0].RowIndex].Cells[0].Value = tbModuleName.Text;
+                dgModules.InvalidateCell(dgModules.CurrentCell.ColumnIndex, dgModules.CurrentCell.RowIndex);
             }
         }
 
@@ -195,7 +222,7 @@ namespace BuildDistribution
 
             if (dgModules.SelectedCells.Count > 0)
             {
-                Module module = Modules[dgModules.SelectedCells[0].RowIndex];
+                Module module = Module.Modules[dgModules.SelectedCells[0].RowIndex];
 
                 tbModuleName.Text = module.Name;
                 tbModuleURL.Text = module.URL;
@@ -232,23 +259,26 @@ namespace BuildDistribution
             selectionChanging = false;
         }
 
+        void dgModules_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        {
+            e.Value = Module.Modules[e.RowIndex].Name;
+        }
+
         private void btnAddModule_Click(object sender, EventArgs e)
         {
             Module module = new Module();
 
 
-            Modules.Add(module);
+            Module.Modules.Add(module);
             dgModules.Rows.Add();
-            dgModules.Rows[dgModules.Rows.Count - 1].Cells["module_name"].Value = module.Name;
-
-            dgModules_SelectionChanged(null, null);
+            dgModules.CurrentCell = dgModules.Rows[dgModules.RowCount - 1].Cells[0];
         }
 
         private void btnRemoveModule_Click(object sender, EventArgs e)
         {
             if (dgModules.SelectedCells.Count > 0)
             {
-                Modules.RemoveAt(dgModules.SelectedCells[0].RowIndex);
+                Module.Modules.RemoveAt(dgModules.SelectedCells[0].RowIndex);
                 dgModules.Rows.RemoveAt(dgModules.SelectedCells[0].RowIndex);
             }
         }
@@ -374,7 +404,7 @@ namespace BuildDistribution
                 tbModuleInstanceTitle.Text = module.ModuleTitle;
                 cbModuleInstanceShowTitle.Checked = module.ShowTitle;
                 tbModuleInstanceTemplateFrameName.Text = module.TemplateFrameName;
-//                cbModuleInstanceType.SelectedIndex = 0;
+                cbModuleInstanceType.SelectedValue = module.ModuleTypeID;
                 tbModuleInstanceDetails.Text = module.ModuleDetails;
                 dgModuleInstanceSettings.RowCount = module.Settings.Count + 1;
 
@@ -460,9 +490,280 @@ namespace BuildDistribution
                 e.Value = module.Settings[e.RowIndex].Value;
         }
 
+        void cbModuleInstanceType_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                instance.ModuleTypeID = Convert.ToInt32(cbModuleInstanceType.SelectedValue);
+            }
+        }
+
+        void cbModuleInstanceShowTitle_CheckedChanged(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                instance.ShowTitle = cbModuleInstanceShowTitle.Checked;
+            }
+        }
+
+        void tbModuleInstanceDetails_TextChanged(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                instance.ModuleDetails = tbModuleInstanceDetails.Text;
+            }
+        }
+
+        void tbModuleInstanceTemplateFrameName_TextChanged(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                instance.TemplateFrameName = tbModuleInstanceTemplateFrameName.Text;
+            }
+        }
+
+        void tbModuleInstanceTitle_TextChanged(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                instance.ModuleTitle = tbModuleInstanceTitle.Text;
+            }
+        }
+
         #endregion
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        #region Top Level User Interface
+
+        void tcMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object selectedValue;
+
+            selectedValue = cbModuleInstanceType.SelectedValue;
+            cbModuleInstanceType.DataSource = Module.Modules.ToArray();
+            if (selectedValue != null)
+                cbModuleInstanceType.SelectedValue = selectedValue;
+        }
+
+        private void newMenu_Click(object sender, EventArgs e)
+        {
+            currentFileName = null;
+
+            importFiles(null);
+            importModules(null);
+            importPages(null);
+        }
+
+        private void openMenu_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+
+            dialog.InitialDirectory = Environment.CurrentDirectory;
+            dialog.Filter = "XML Files|*.xml";
+            dialog.FilterIndex = 0;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                openFromFile(dialog.FileName);
+            }
+        }
+
+        private void saveMenu_Click(object sender, EventArgs e)
+        {
+            if (currentFileName == null)
+                saveAsMenu_Click(null, null);
+            else
+                saveToFile(currentFileName);
+        }
+
+        private void saveAsMenu_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+
+
+            dialog.InitialDirectory = Environment.CurrentDirectory;
+            dialog.Filter = "XML Files|*.xml";
+            dialog.FilterIndex = 0;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                saveToFile(dialog.FileName);
+            }
+        }
+
+        private void exitMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #endregion
+
+        #region Import/Export methods
+
+        private void importFiles(XmlDocument doc)
+        {
+            dgFiles.RowCount = 0;
+
+            if (doc != null)
+            {
+                XmlNode filesNode = doc.SelectSingleNode("//ArenaPackage/Files");
+
+                foreach (XmlNode node in filesNode.ChildNodes)
+                {
+                    dgFiles.Rows.Add(node.Attributes["path"].Value, node.Attributes["_source"].Value);
+                }
+            }
+        }
+
+        private void importModules(XmlDocument doc)
+        {
+            Module.Modules.Clear();
+            dgModules.RowCount = 0;
+
+            if (doc != null)
+            {
+                XmlNode modulesNode = doc.SelectSingleNode("//ArenaPackage/Modules");
+
+                foreach (XmlNode node in modulesNode.ChildNodes)
+                {
+                    Module module = new Module(node);
+
+                    Module.Modules.Add(module);
+                    dgModules.Rows.Add();
+                }
+            }
+        }
+
+        private void importPages(XmlDocument doc)
+        {
+            tvPages.Nodes.Clear();
+
+            if (doc != null)
+            {
+                XmlNode pagesNode = doc.SelectSingleNode("//ArenaPackage/Pages");
+
+                if (pagesNode.ChildNodes.Count > 0)
+                {
+                    PageInstance page = new PageInstance(pagesNode.ChildNodes[0]);
+
+                    tvPages.Nodes.Add(page.TreeNode);
+                }
+            }
+        }
+
+        private XmlNode BuildFilesNode(XmlDocument doc)
+        {
+            XmlNode nodeFiles, nodeFile;
+            XmlAttribute attrib;
+            int i;
+
+
+            //
+            // Process standalone files.
+            //
+            nodeFiles = doc.CreateElement("Files");
+            for (i = 0; i < dgFiles.Rows.Count; i++)
+            {
+                nodeFile = doc.CreateElement("File");
+                attrib = doc.CreateAttribute("path");
+                attrib.InnerText = dgFiles.Rows[i].Cells[0].Value.ToString();
+                nodeFile.Attributes.Append(attrib);
+                attrib = doc.CreateAttribute("_source");
+                attrib.InnerText = dgFiles.Rows[i].Cells[1].Value.ToString();
+                nodeFile.Attributes.Append(attrib);
+
+                nodeFiles.AppendChild(nodeFile);
+            }
+
+            return nodeFiles;
+        }
+
+        private XmlNode BuildModulesNode(XmlDocument doc)
+        {
+            XmlNode nodeModules;
+
+
+            //
+            // Process standalone files.
+            //
+            nodeModules = doc.CreateElement("Modules");
+            foreach (Module module in Module.Modules)
+            {
+                nodeModules.AppendChild(module.Export(doc));
+            }
+
+            return nodeModules;
+        }
+
+        private XmlNode BuildPagesNode(XmlDocument doc)
+        {
+            //
+            // Only allow a single root page.
+            // When a module is selected show module editor:
+            //      module_title, show_title, template_frame_name, template_frame_order,
+            //      temp_module_id (drop down select from modules), module_settings,
+            //      module_details (temp_page_or_template_id = temp_page_id, page_instance = 1)
+            //
+            XmlNode nodePages;
+
+
+            //
+            // Process standalone files.
+            //
+            nodePages = doc.CreateElement("Pages");
+            if (tvPages.Nodes.Count > 0)
+                BuildPageNode(doc, nodePages, (PageInstance)tvPages.Nodes[0].Tag);
+
+            return nodePages;
+        }
+
+        private void BuildPageNode(XmlDocument doc, XmlNode pagesNode, PageInstance page)
+        {
+            XmlNode pageNode = page.Export(doc);
+
+            
+            pagesNode.AppendChild(pageNode);
+
+            foreach (TreeNode node in page.TreeNode.Nodes)
+            {
+                if (typeof(PageInstance).IsAssignableFrom(node.Tag.GetType()))
+                {
+                    BuildPageNode(doc, pagesNode, (PageInstance)node.Tag);
+                }
+            }
+        }
+
+        private void openFromFile(String filename)
+        {
+
+            StreamReader reader = new StreamReader(filename);
+            XmlDocument doc = new XmlDocument();
+
+
+            doc.Load(reader);
+            reader.Close();
+
+            importFiles(doc);
+            importModules(doc);
+            importPages(doc);
+
+            currentFileName = filename;
+        }
+
+        private void saveToFile(String filename)
         {
             XmlDocument doc;
             XmlDeclaration decl;
@@ -500,116 +801,21 @@ namespace BuildDistribution
             //
             // Dump result.
             //
-            StringBuilder sb = new StringBuilder();
-            StringWriter writer = new StringWriter(sb);
-            doc.Save(writer);
-            Console.WriteLine(sb.ToString());
-        }
+            StreamWriter writer = new StreamWriter(filename);
+            writer.Write(XmlDocumentToString(doc));
+            writer.Close();
 
-        #region Import/Export methods
-
-        private void importFiles(XmlDocument doc)
-        {
-            dgFiles.Rows.Add(new string[] { "UserControls/Test.ascx", "../../test.ascx" });
-        }
-
-        private void importModules(XmlDocument doc)
-        {
-        }
-
-        private XmlNode BuildFilesNode(XmlDocument doc)
-        {
-            XmlNode nodeFiles, nodeFile;
-            XmlAttribute attrib;
-            int i;
-
-
-            //
-            // Process standalone files.
-            //
-            nodeFiles = doc.CreateElement("Files");
-            for (i = 0; i < dgFiles.Rows.Count; i++)
-            {
-                nodeFile = doc.CreateElement("File");
-                attrib = doc.CreateAttribute("path");
-                attrib.InnerText = dgFiles.Rows[i].Cells[0].Value.ToString();
-                nodeFile.Attributes.Append(attrib);
-                attrib = doc.CreateAttribute("_source");
-                attrib.InnerText = dgFiles.Rows[i].Cells[1].Value.ToString();
-                nodeFile.Attributes.Append(attrib);
-
-                nodeFiles.AppendChild(nodeFile);
-            }
-
-            return nodeFiles;
-        }
-
-        private XmlNode BuildModulesNode(XmlDocument doc)
-        {
-            XmlNode nodeModules, nodeModule;
-            XmlAttribute attrib;
-            int i;
-
-
-            //
-            // Process standalone files.
-            //
-            nodeModules = doc.CreateElement("Modules");
-            for (i = 0; i < dgModules.Rows.Count; i++)
-            {
-                nodeModule = doc.CreateElement("Module");
-
-                attrib = doc.CreateAttribute("module_name");
-                attrib.InnerText = dgModules.Rows[i].Cells["module_name"].Value.ToString();
-                nodeModule.Attributes.Append(attrib);
-                
-                nodeModules.AppendChild(nodeModule);
-            }
-
-            return nodeModules;
-        }
-
-        private XmlNode BuildPagesNode(XmlDocument doc)
-        {
-            //
-            // Only allow a single root page.
-            // When a module is selected show module editor:
-            //      module_title, show_title, template_frame_name, template_frame_order,
-            //      temp_module_id (drop down select from modules), module_settings,
-            //      module_details (temp_page_or_template_id = temp_page_id, page_instance = 1)
-            //
-            XmlNode nodePages;
-
-
-            //
-            // Process standalone files.
-            //
-            nodePages = doc.CreateElement("Pages");
-            if (tvPages.Nodes.Count > 0)
-                BuildPageNode(doc, nodePages, (PageInstance)tvPages.Nodes[0].Tag);
-
-            return nodePages;
-        }
-
-        void BuildPageNode(XmlDocument doc, XmlNode pagesNode, PageInstance page)
-        {
-            pagesNode.AppendChild(page.Export(doc));
-
-            foreach (TreeNode node in page.TreeNode.Nodes)
-            {
-                if (typeof(PageInstance).IsAssignableFrom(node.Tag.GetType()))
-                {
-                    BuildPageNode(doc, pagesNode, (PageInstance)node.Tag);
-                }
-            }
+            currentFileName = filename;
         }
 
         #endregion
 
     }
 
-    public class Module
+    class Module
     {
+        static public List<Module> Modules { get; set; }
+
         private int _ModuleID;
 
         public int ModuleID
@@ -642,19 +848,71 @@ namespace BuildDistribution
             Description = "";
         }
 
+        public Module(XmlNode node)
+        {
+            _ModuleID = Convert.ToInt32(node.Attributes["temp_module_id"].Value);
+            Name = node.Attributes["module_name"].Value;
+            URL = node.Attributes["module_url"].Value;
+            ImagePath = node.Attributes["image_path"].Value;
+            AllowsChildModules = (node.Attributes["allows_child_modules"].Value == "1" ? true : false);
+            Source = node.Attributes["_source"].Value;
+            SourceImage = node.Attributes["_source_image"].Value;
+            Description = node.Attributes["module_desc"].Value;
+        }
+
         static int NextAvailableModuleID()
         {
             int nextID = -1;
 
 
-            foreach (Module m in mainForm.Modules)
+            foreach (Module m in Modules)
             {
                 if (m._ModuleID <= nextID)
                     nextID = m._ModuleID - 1;
             }
 
-            Console.WriteLine("New ID is " + nextID.ToString());
             return nextID;
+        }
+
+        public XmlElement Export(XmlDocument doc)
+        {
+            XmlElement node = doc.CreateElement("Module");
+            XmlAttribute attrib;
+
+
+            attrib = doc.CreateAttribute("temp_module_id");
+            attrib.InnerText = ModuleID.ToString();
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_url");
+            attrib.InnerText = URL;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_name");
+            attrib.InnerText = Name;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_desc");
+            attrib.InnerText = Description;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("allows_child_modules");
+            attrib.InnerText = (AllowsChildModules == true ? "1" : "0");
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("image_path");
+            attrib.InnerText = ImagePath;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("_source");
+            attrib.InnerText = Source;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("_source_image");
+            attrib.InnerText = SourceImage;
+            node.Attributes.Append(attrib);
+
+            return node;
         }
     }
 
@@ -664,8 +922,17 @@ namespace BuildDistribution
         private TreeNode _TreeNode;
         private String _PageName;
         private List<PageSetting> _Settings;
-        private List<ModuleInstance> _Modules;
 
+        public PageInstance ParentPage
+        {
+            get
+            {
+                if (_TreeNode.Parent == null)
+                    return null;
+
+                return (PageInstance)_TreeNode.Parent.Tag;
+            }
+        }
         public int PageID { get { if (_PageID == 0) _PageID = NextAvailablePageID((PageInstance)_TreeNode.TreeView.Nodes[0].Tag); return _PageID; } }
         public TreeNode TreeNode { get { return _TreeNode; } }
         public String PageName { get { return _PageName; } set { _PageName = value; _TreeNode.Text = value; } }
@@ -674,7 +941,6 @@ namespace BuildDistribution
         public Boolean ValidateRequest;
         public String PageDescription;
         public List<PageSetting> Settings { get { return _Settings; } }
-        public List<ModuleInstance> Modules { get { return _Modules; } }
         public Guid Guid;
 
         static private int NextAvailablePageID(PageInstance parentPage)
@@ -706,25 +972,42 @@ namespace BuildDistribution
 
         public PageInstance()
         {
-            _PageID = 0;
             _TreeNode = new TreeNode();
             _TreeNode.Tag = this;
 
+            _PageID = 0;
             PageName = "New Page";
             DisplayInNav = false;
             RequireSSL = false;
             ValidateRequest = true;
             PageDescription = "";
             Guid = Guid.NewGuid();
-            _Modules = new List<ModuleInstance>();
             SetupSettings();
         }
 
-        public PageInstance(XmlElement node)
+        public PageInstance(XmlNode node)
         {
-            _PageID = 0;
             _TreeNode = new TreeNode();
             _TreeNode.Tag = this;
+
+            _PageID = Convert.ToInt32(node.Attributes["temp_page_id"].Value);
+            PageName = node.Attributes["page_name"].Value;
+            DisplayInNav = (node.Attributes["display_in_nav"].Value == "1" ? true : false);
+            RequireSSL = (node.Attributes["require_ssl"].Value == "1" ? true : false);
+            ValidateRequest = (node.Attributes["validate_request"].Value == "1" ? true : false);
+            PageDescription = node.Attributes["page_desc"].Value;
+            Guid = new Guid(node.Attributes["guid"].Value);
+            SetupSettings(node.Attributes["page_settings"].Value.Split(new char[] { ';' }));
+
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                if (child.Name == "ModuleInstance")
+                {
+                    ModuleInstance module = new ModuleInstance(child);
+
+                    _TreeNode.Nodes.Add(module.TreeNode);
+                }
+            }
         }
 
         private void SetupSettings()
@@ -744,6 +1027,22 @@ namespace BuildDistribution
             _Settings.Add(new PageSetting("ItemBgColor", "DataGrid Item BG Color", ""));
             _Settings.Add(new PageSetting("ItemAltBgColor", "DataGrid Alt Item BG Color", ""));
             _Settings.Add(new PageSetting("ItemMouseOverColor", "DataGrid Mouse BG Color", ""));
+        }
+
+        private void SetupSettings(String[] savedSettings)
+        {
+            SetupSettings();
+
+            foreach (String s in savedSettings)
+            {
+                String[] splits = s.Split(new char[] { '=' });
+
+                foreach (PageSetting setting in Settings)
+                {
+                    if (setting.Name == splits[0])
+                        setting.Value = splits[1].Replace("^^", ";");
+                }
+            }
         }
 
         public XmlElement Export(XmlDocument doc)
@@ -800,6 +1099,17 @@ namespace BuildDistribution
             attrib.InnerText = (_TreeNode.Parent == null ? "0" : ((PageInstance)_TreeNode.Parent.Tag).PageID.ToString());
             pageNode.Attributes.Append(attrib);
 
+            //
+            // Add all module instances.
+            //
+            foreach (TreeNode node in _TreeNode.Nodes)
+            {
+                if (typeof(ModuleInstance).IsAssignableFrom(node.Tag.GetType()))
+                {
+                    pageNode.AppendChild(((ModuleInstance)node.Tag).Export(doc));
+                }
+            }
+
             return pageNode;
         }
 
@@ -812,7 +1122,7 @@ namespace BuildDistribution
             {
                 String value = setting.SettingString();
 
-                if (String.IsNullOrEmpty(value))
+                if (!String.IsNullOrEmpty(value))
                 {
                     if (sb.Length > 0)
                         sb.Append(";");
@@ -869,16 +1179,6 @@ namespace BuildDistribution
 
     class ModuleInstance
     {
-        //
-        // Automatic attributes:
-        // template_frame_order
-        //
-        // Unknown attributes:
-        // description="", image_path="", mandatory="0", movable="0".
-        //
-        // For backwards compatibility:
-        // temp_page_or_template_id, page_instance
-        //
         private int _ModuleInstanceID;
         private String _ModuleTitle;
         private TreeNode _TreeNode;
@@ -889,7 +1189,7 @@ namespace BuildDistribution
         {
             get
             {
-                if (_ModuleInstanceID == -1)
+                if (_ModuleInstanceID == 0)
                     _ModuleInstanceID = NextAvailableModuleInstanceID(Page);
                 
                 return _ModuleInstanceID;
@@ -919,7 +1219,8 @@ namespace BuildDistribution
         public String ModuleTitle { get { return _ModuleTitle; } set { _ModuleTitle = value; _TreeNode.Text = value; } }
         public String TemplateFrameName { get; set; }
         public String ModuleDetails { get; set; }
-        public PageInstance Page { get; set; }
+        public Int32 ModuleTypeID { get; set; }
+        public PageInstance Page { get { return (PageInstance)_TreeNode.Parent.Tag; } }
         public List<ModuleInstanceSetting> Settings { get { return _Settings; } }
 
         static private int NextAvailableModuleInstanceID(PageInstance parentPage)
@@ -939,11 +1240,11 @@ namespace BuildDistribution
                     tempID = NextAvailableModuleInstanceID((PageInstance)node.Tag);
 
                     if (tempID <= nextID)
-                        nextID = tempID - 1;
+                        nextID = tempID;
                 }
                 else if (typeof(ModuleInstance).IsAssignableFrom(node.Tag.GetType()))
                 {
-                    tempID = ((ModuleInstance)node.Tag).ModuleInstanceID;
+                    tempID = ((ModuleInstance)node.Tag)._ModuleInstanceID;
 
                     if (tempID <= nextID)
                         nextID = tempID - 1;
@@ -953,33 +1254,159 @@ namespace BuildDistribution
             return nextID;
         }
 
-
         public ModuleInstance()
         {
-            _ModuleInstanceID = -1;
+            _TreeNode = new TreeNode();
+            _TreeNode.Tag = this;
+
+            _ModuleInstanceID = 0;
+            ModuleTitle = "New Module";
             ShowTitle = false;
-            _ModuleTitle = "New Module";
             TemplateFrameName = "Main";
             ModuleDetails = "";
-            Page = null;
+            ModuleTypeID = -1;
             _Settings = new List<ModuleInstanceSetting>();
+        }
 
-            _TreeNode = new TreeNode(ModuleTitle);
+        public ModuleInstance(XmlNode node)
+        {
+            _TreeNode = new TreeNode();
             _TreeNode.Tag = this;
+
+            _ModuleInstanceID = Convert.ToInt32(node.Attributes["temp_module_instance_id"].Value);
+            ModuleTitle = node.Attributes["module_title"].Value;
+            ShowTitle = (node.Attributes["show_title"].Value == "1" ? true : false);
+            TemplateFrameName = node.Attributes["template_frame_name"].Value;
+            ModuleDetails = node.Attributes["module_details"].Value;
+            ModuleTypeID = Convert.ToInt32(node.Attributes["temp_module_id"].Value);
+
+            _Settings = new List<ModuleInstanceSetting>();
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                if (child.Name == "Setting")
+                {
+                    ModuleInstanceSetting setting = new ModuleInstanceSetting(child);
+
+                    Settings.Add(setting);
+                }
+            }
+        }
+
+        public XmlElement Export(XmlDocument doc)
+        {
+            XmlElement instNode = doc.CreateElement("ModuleInstance");
+            XmlAttribute attrib;
+
+
+            attrib = doc.CreateAttribute("temp_module_instance_id");
+            attrib.InnerText = ModuleInstanceID.ToString();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_title");
+            attrib.InnerText = ModuleTitle;
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("show_title");
+            attrib.InnerText = (ShowTitle == true ? "1" : "0");
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("template_frame_name");
+            attrib.InnerText = TemplateFrameName;
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("template_frame_order");
+            attrib.InnerText = TemplateFrameOrder.ToString();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_details");
+            attrib.InnerText = ModuleDetails;
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("system_flag");
+            attrib.InnerText = "0";
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("mandatory");
+            attrib.InnerText = "0";
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("movable");
+            attrib.InnerText = "0";
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("description");
+            attrib.InnerText = "";
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("image_path");
+            attrib.InnerText = "";
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("temp_module_id");
+            attrib.InnerText = ModuleTypeID.ToString();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("temp_page_id");
+            attrib.InnerText = Page.PageID.ToString();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_settings");
+            attrib.InnerText = ModuleSettings();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("temp_page_or_template_id");
+            attrib.InnerText = Page.PageID.ToString();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("page_instance");
+            attrib.InnerText = "1";
+            instNode.Attributes.Append(attrib);
+
+            //
+            // Add all the module instance settings.
+            //
+            foreach (ModuleInstanceSetting setting in Settings)
+            {
+                instNode.AppendChild(setting.Export(doc));
+            }
+
+            return instNode;
+        }
+
+        private String ModuleSettings()
+        {
+            StringBuilder sb = new StringBuilder();
+
+
+            foreach (ModuleInstanceSetting setting in Settings)
+            {
+                String value = setting.SettingString();
+
+                if (String.IsNullOrEmpty(value))
+                {
+                    if (sb.Length > 0)
+                        sb.Append(";");
+                    sb.Append(value);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 
     class ModuleInstanceSetting
     {
-        public String Name;
-        public String Value;
-        public ModuleInstanceSettingType Type;
+        public String Name { get; set; }
+        public String Value { get; set; }
+        public ModuleInstanceSettingType Type { get; set; }
+        public String Guid { get; set; }
 
         public ModuleInstanceSetting()
         {
             Name = "";
             Value = "";
             Type = ModuleInstanceSettingType.None;
+            Guid = "";
         }
 
         public ModuleInstanceSetting(String name)
@@ -987,13 +1414,18 @@ namespace BuildDistribution
             Name = name;
             Value = "";
             Type = ModuleInstanceSettingType.None;
+            Guid = "";
         }
 
-        public ModuleInstanceSetting(String name, ModuleInstanceSettingType type, String value)
+        public ModuleInstanceSetting(XmlNode node)
         {
-            Name = name;
-            Value = value;
-            Type = type;
+            Name = node.Attributes["name"].Value;
+            Value = node.Attributes["value"].Value;
+            Type = (ModuleInstanceSettingType)Convert.ToInt32(node.Attributes["type_id"].Value);
+            if (node.Attributes["guid"] != null)
+                Guid = node.Attributes["guid"].Value;
+            else
+                Guid = "";
         }
 
         public String SettingString()
@@ -1002,6 +1434,34 @@ namespace BuildDistribution
                 return "";
 
             return Name + "=" + Value.Replace(";", "^^");
+        }
+
+        public XmlElement Export(XmlDocument doc)
+        {
+            XmlElement node = doc.CreateElement("Setting");
+            XmlAttribute attrib;
+
+
+            attrib = doc.CreateAttribute("name");
+            attrib.InnerText = Name;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("value");
+            attrib.InnerText = Value;
+            node.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("type_id");
+            attrib.InnerText = ((int)Type).ToString();
+            node.Attributes.Append(attrib);
+
+            if (!String.IsNullOrEmpty(Guid))
+            {
+                attrib = doc.CreateAttribute("guid");
+                attrib.InnerText = Guid;
+                node.Attributes.Append(attrib);
+            }
+
+            return node;
         }
     }
 
@@ -1030,5 +1490,4 @@ namespace BuildDistribution
         DocumentType = 20,
         Person = 21
     }
-
 }
