@@ -22,6 +22,10 @@ namespace Arena.Custom.RC.Packager
 			//sourceFile = "../../source.xml";
 			if (sourceFile == null)
 			{
+                //
+                // The user provided no command line parameters, so load up the GUI
+                // and begin running as a full Application.
+                //
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new mainForm());
