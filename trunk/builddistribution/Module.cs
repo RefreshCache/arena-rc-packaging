@@ -41,6 +41,12 @@ namespace Arena.Custom.RC.Packager
         public String Name { get; set; }
 
         /// <summary>
+        /// Determines if this is a System module. System modules do not need
+        /// any path information set.
+        /// </summary>
+        public Boolean IsSystem { get; set; }
+
+        /// <summary>
         /// The URL location of the .ascx file for this module relative to the
         /// Arena web folder (contains the web.config file).
         /// </summary>
@@ -109,6 +115,7 @@ namespace Arena.Custom.RC.Packager
         {
             _ModuleID = Convert.ToInt32(node.Attributes["temp_module_id"].Value);
             Name = node.Attributes["module_name"].Value;
+            IsSystem = (node.Attributes["_system"] != null ? (node.Attributes["_system"].Value == "1" ? true : false) : false);
             URL = node.Attributes["module_url"].Value;
             ImagePath = node.Attributes["image_path"].Value;
             AllowsChildModules = (node.Attributes["allows_child_modules"].Value == "1" ? true : false);
@@ -163,9 +170,13 @@ namespace Arena.Custom.RC.Packager
                 attrib = doc.CreateAttribute("_source_image");
                 attrib.InnerText = SourceImage;
                 node.Attributes.Append(attrib);
+
+                attrib = doc.CreateAttribute("_system");
+                attrib.InnerText = (IsSystem ? "1" : "0");
+                node.Attributes.Append(attrib);
             }
 
-            if (isExport)
+            if (isExport && !IsSystem)
             {
                 //
                 // Export the contents of the Source file if there is one.
