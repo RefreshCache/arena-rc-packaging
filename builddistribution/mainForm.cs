@@ -131,6 +131,7 @@ namespace Arena.Custom.RC.Packager
             xmlWriterSettings.Encoding = new UTF8Encoding(false);
             xmlWriterSettings.ConformanceLevel = ConformanceLevel.Document;
             xmlWriterSettings.Indent = true;
+            xmlWriterSettings.OmitXmlDeclaration = true;
 
             XmlWriter xmlWriter = XmlWriter.Create(memoryStream, xmlWriterSettings);
             doc.Save(xmlWriter);
