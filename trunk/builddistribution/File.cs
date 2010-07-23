@@ -46,7 +46,7 @@ namespace Arena.Custom.RC.Packager
 
                 try
                 {
-                    fi = new FileInfo(Source);
+                    fi = new FileInfo((Source[1] == ':' ? "" : Package.BasePath) + Source);
                 }
                 catch { }
 
@@ -126,7 +126,7 @@ namespace Arena.Custom.RC.Packager
 
                 try
                 {
-                    fi = new FileInfo(Source);
+                    fi = new FileInfo((Source[1] == ':' ? "" : Package.BasePath) + Source);
                 }
                 catch { }
 

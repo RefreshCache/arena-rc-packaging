@@ -58,6 +58,12 @@ namespace Arena.Custom.RC.Packager
         private BuildMessageCollection _BuildMessages;
 
         /// <summary>
+        /// The base path to use for relative file names while building the package.
+        /// </summary>
+        internal String BasePath { get { return _BasePath; } }
+        private String _BasePath;
+
+        /// <summary>
         /// Retrieve the XmlPackage after calling the Build method.
         /// </summary>
         public XmlDocument XmlPackage { get { return _XmlPackage; } }
@@ -211,15 +217,18 @@ namespace Arena.Custom.RC.Packager
         /// the build then the XmlPackage will remain null, otherwise it will be set
         /// to a valid XmlDocument.
         /// </summary>
+        /// <param name="basePath">The base path to use for relative file names while building package.</param>
         /// <returns>A list of messages as a result of the build.</returns>
-        public BuildMessageCollection Build()
+        public BuildMessageCollection Build(String basePath)
         {
             //
             // Begin building the package and log messages.
             //
             _BuildMessages = new BuildMessageCollection();
             _XmlPackage = null;
+            _BasePath = basePath + (basePath.EndsWith("\\") ? "" : "\\");
             _XmlPackage = this.Save(true);
+            _BasePath = null;
 
             //
             // Check if there were any errors during the build.

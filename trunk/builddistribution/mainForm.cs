@@ -697,50 +697,62 @@ namespace Arena.Custom.RC.Packager
 
         private void buildMenu_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
+            BuildMessageCollection messages;
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            SaveFileDialog save = new SaveFileDialog();
 
 
-            dialog.InitialDirectory = Environment.CurrentDirectory;
-            dialog.Filter = "Arena Page Export|*.xml";
-            dialog.FilterIndex = 0;
-            if (dialog.ShowDialog() == DialogResult.OK)
+            //
+            // Get the file to save the built package as.
+            //
+            save.InitialDirectory = Environment.CurrentDirectory;
+            save.Filter = "Arena Page Export|*.xml";
+            save.FilterIndex = 0;
+            if (save.ShowDialog() != DialogResult.OK)
+                return;
+
+            //
+            // Get the base path to build from.
+            //
+            folder.Description = "Select the path to use as the base path when accessing local files.";
+            folder.ShowNewFolderButton = false;
+            if (!String.IsNullOrEmpty(currentFileName))
+                folder.SelectedPath = new FileInfo(currentFileName).DirectoryName;
+            if (folder.ShowDialog() != DialogResult.OK)
+                return;
+
+            //
+            // Save the package to XML.
+            //
+            messages = package.Build(folder.SelectedPath);
+
+            //
+            // Check if there were any errors during the build.
+            if (package.XmlPackage == null)
             {
-                BuildMessageCollection messages;
+                MessageBox.Show(messages.ToString(), "Errors during build",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-
-                //
-                // Save the package to XML.
-                //
-                messages = package.Build();
-
-                //
-                // Check if there were any errors during the build.
-                if (package.XmlPackage == null)
-                {
-                    MessageBox.Show(messages.ToString(), "Errors during build",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    return;
-                }
-
-                if (messages.Count > 0)
-                {
-                    DialogResult result;
-
-                    result = MessageBox.Show(messages.ToString(), "Continue with export?",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (result != DialogResult.Yes)
-                        return;
-                }
-
-                //
-                // Dump result.
-                //
-                StreamWriter writer = new StreamWriter(dialog.FileName);
-                writer.Write(XmlDocumentToString(package.XmlPackage));
-                writer.Close();
+                return;
             }
+
+            if (messages.Count > 0)
+            {
+                DialogResult result;
+
+                result = MessageBox.Show(messages.ToString(), "Continue with export?",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                    return;
+            }
+
+            //
+            // Dump result.
+            //
+            StreamWriter writer = new StreamWriter(save.FileName);
+            writer.Write(XmlDocumentToString(package.XmlPackage));
+            writer.Close();
         }
 
         private void exitMenu_Click(object sender, EventArgs e)
