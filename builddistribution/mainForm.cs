@@ -728,6 +728,7 @@ namespace Arena.Custom.RC.Packager
 
             //
             // Check if there were any errors during the build.
+            //
             if (package.XmlPackage == null)
             {
                 MessageBox.Show(messages.ToString(), "Errors during build",
@@ -736,6 +737,9 @@ namespace Arena.Custom.RC.Packager
                 return;
             }
 
+            //
+            // If there were any warnings during the build, show those.
+            //
             if (messages.Count > 0)
             {
                 DialogResult result;
