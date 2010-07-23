@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Xml;
 
 namespace Arena.Custom.RC.Packager
@@ -34,6 +35,25 @@ namespace Arena.Custom.RC.Packager
         /// </summary>
         public Package Package { get; set; }
 
+        /// <summary>
+        /// Determine if the file at the Source path exists or not.
+        /// </summary>
+        internal Boolean Exists
+        {
+            get
+            {
+                FileInfo fi = null;
+
+                try
+                {
+                    fi = new FileInfo(Source);
+                }
+                catch { }
+
+                return (fi != null ? fi.Exists : false);
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -44,6 +64,21 @@ namespace Arena.Custom.RC.Packager
         {
             Path = "";
             Source = "";
+        }
+
+        /// <summary>
+        /// Build a new File object that is ready to be exported. This is an
+        /// internal use only method and should not be used by anything outside
+        /// the Packager framework.
+        /// </summary>
+        /// <param name="path">The path in Arena for the file.</param>
+        /// <param name="source">The path in the local filesystem for the file.</param>
+        /// <param name="package">The Package object this File is associated with.</param>
+        internal File(String path, String source, Package package)
+        {
+            Path = path;
+            Source = source;
+            Package = package;
         }
 
         /// <summary>
@@ -66,8 +101,9 @@ namespace Arena.Custom.RC.Packager
         /// output that can be used to import into Arena.
         /// </summary>
         /// <param name="doc">The XmlDocument that the new node will be a part of.</param>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>New XmlNode object which represents this File object.</returns>
-        public XmlNode Save(XmlDocument doc)
+        public XmlNode Save(XmlDocument doc, Boolean isExport)
         {
             XmlNode node = doc.CreateElement("File");
             XmlAttribute attrib;
@@ -77,9 +113,47 @@ namespace Arena.Custom.RC.Packager
             attrib.InnerText = Path;
             node.Attributes.Append(attrib);
 
-            attrib = doc.CreateAttribute("_source");
-            attrib.InnerText = Source;
-            node.Attributes.Append(attrib);
+            if (isExport == false)
+            {
+                attrib = doc.CreateAttribute("_source");
+                attrib.InnerText = Source;
+                node.Attributes.Append(attrib);
+            }
+
+            if (isExport)
+            {
+                FileInfo fi = null;
+
+                try
+                {
+                    fi = new FileInfo(Source);
+                }
+                catch { }
+
+                if (fi == null)
+                {
+                    Package.BuildMessages.Add(new BuildMessage(BuildMessageType.Error,
+                        String.Format("Arena file at path {0} has no local file set.", Path)));
+                }
+                else if (fi.Exists == false)
+                {
+                    Package.BuildMessages.Add(new BuildMessage(BuildMessageType.Error,
+                        String.Format("The local file {0} does not exist.", Source)));
+                }
+                else
+                {
+                    byte[] buffer = null;
+
+                    using (FileStream stream = fi.OpenRead())
+                    {
+                        buffer = new byte[stream.Length];
+                        stream.Read(buffer, 0, Convert.ToInt32(stream.Length));
+                        stream.Close();
+                    }
+
+                    node.InnerText = Convert.ToBase64String(buffer);
+                }
+            }
 
             return node;
         }

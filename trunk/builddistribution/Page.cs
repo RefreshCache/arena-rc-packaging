@@ -216,8 +216,9 @@ namespace Arena.Custom.RC.Packager
         /// point in time.
         /// </summary>
         /// <param name="doc">The XmlDocument that will contain this node.</param>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>A new XmlNode that can then be added to the parent node.</returns>
-        public XmlNode Save(XmlDocument doc)
+        public XmlNode Save(XmlDocument doc, Boolean isExport)
         {
             XmlNode pageNode = doc.CreateElement("Page");
             XmlAttribute attrib;
@@ -276,7 +277,7 @@ namespace Arena.Custom.RC.Packager
             //
             foreach (ModuleInstance module in Modules)
             {
-                pageNode.AppendChild(module.Save(doc));
+                pageNode.AppendChild(module.Save(doc, isExport));
             }
 
             //
@@ -284,7 +285,7 @@ namespace Arena.Custom.RC.Packager
             //
             foreach (PageInstance page in Pages)
             {
-                pageNode.AppendChild(page.Save(doc));
+                pageNode.AppendChild(page.Save(doc, isExport));
             }
 
             return pageNode;

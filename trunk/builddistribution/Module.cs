@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -121,8 +122,9 @@ namespace Arena.Custom.RC.Packager
         /// continue editing and otherwise working with the Module.
         /// </summary>
         /// <param name="doc">The XmlDocument that the node will be a member of.</param>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>A new XmlNode object containing all information about this object.</returns>
-        public XmlNode Save(XmlDocument doc)
+        public XmlNode Save(XmlDocument doc, Boolean isExport)
         {
             XmlNode node = doc.CreateElement("Module");
             XmlAttribute attrib;
@@ -152,13 +154,56 @@ namespace Arena.Custom.RC.Packager
             attrib.InnerText = ImagePath;
             node.Attributes.Append(attrib);
 
-            attrib = doc.CreateAttribute("_source");
-            attrib.InnerText = Source;
-            node.Attributes.Append(attrib);
+            if (isExport == false)
+            {
+                attrib = doc.CreateAttribute("_source");
+                attrib.InnerText = Source;
+                node.Attributes.Append(attrib);
 
-            attrib = doc.CreateAttribute("_source_image");
-            attrib.InnerText = SourceImage;
-            node.Attributes.Append(attrib);
+                attrib = doc.CreateAttribute("_source_image");
+                attrib.InnerText = SourceImage;
+                node.Attributes.Append(attrib);
+            }
+
+            if (isExport)
+            {
+                //
+                // Export the contents of the Source file if there is one.
+                //
+                if (String.IsNullOrEmpty(Source))
+                {
+                    Package.BuildMessages.Add(new BuildMessage(BuildMessageType.Error,
+                        String.Format("The module {0} does not include a source file path.", Name)));
+                }
+                else
+                {
+                    File f;
+
+                    //
+                    // Export the .ascx file.
+                    //
+                    f = new File(URL, Source, Package);
+                    node.AppendChild(f.Save(doc, isExport));
+
+                    //
+                    // Export the .ascx.cs file if it exists.
+                    //
+                    f = new File(URL + ".cs", Source + ".cs", Package);
+                    if (f.Exists)
+                        node.AppendChild(f.Save(doc, isExport));
+                }
+
+                //
+                // Export the contents of the SourceImage file if there is one.
+                //
+                if (!String.IsNullOrEmpty(SourceImage))
+                {
+                    File f;
+
+                    f = new File(ImagePath, SourceImage, Package);
+                    node.AppendChild(f.Save(doc, isExport));
+                }
+            }
 
             return node;
         }
@@ -400,8 +445,9 @@ namespace Arena.Custom.RC.Packager
         /// working with this object.
         /// </summary>
         /// <param name="doc">The XmlDocument that this node will be a part of.</param>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>New XmlNode representing this object.</returns>
-        public XmlNode Save(XmlDocument doc)
+        public XmlNode Save(XmlDocument doc, Boolean isExport)
         {
             XmlNode instNode = doc.CreateElement("ModuleInstance");
             XmlAttribute attrib;
@@ -476,7 +522,7 @@ namespace Arena.Custom.RC.Packager
             //
             foreach (ModuleInstanceSetting setting in Settings)
             {
-                instNode.AppendChild(setting.Save(doc));
+                instNode.AppendChild(setting.Save(doc, isExport));
             }
 
             return instNode;
@@ -695,8 +741,9 @@ namespace Arena.Custom.RC.Packager
         /// needed to re-load the object for later use.
         /// </summary>
         /// <param name="doc">The XmlDocument that this node will be a part of.</param>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>New XmlNode object which identifies this ModuleInstanceSetting.</returns>
-        public XmlNode Save(XmlDocument doc)
+        public XmlNode Save(XmlDocument doc, Boolean isExport)
         {
             XmlElement node = doc.CreateElement("Setting");
             XmlAttribute attrib;

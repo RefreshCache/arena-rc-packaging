@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Xml;
 
@@ -47,6 +48,20 @@ namespace Arena.Custom.RC.Packager
         /// import operation.
         /// </summary>
         public String Readme { get; set; }
+
+        /// <summary>
+        /// This list is reset each time the Export method is called and
+        /// will contain a textual list of messages generated during the
+        /// export. If no messages exist this list will be empty.
+        /// </summary>
+        internal BuildMessageCollection BuildMessages { get { return _BuildMessages; } }
+        private BuildMessageCollection _BuildMessages;
+
+        /// <summary>
+        /// Retrieve the XmlPackage after calling the Build method.
+        /// </summary>
+        public XmlDocument XmlPackage { get { return _XmlPackage; } }
+        private XmlDocument _XmlPackage;
 
         #endregion
 
@@ -111,8 +126,9 @@ namespace Arena.Custom.RC.Packager
         /// does not create an Xml document that can be used to Import directly
         /// into Arena.
         /// </summary>
+        /// <param name="isExport">Identifies if this Save operation is for exporting to Arena.</param>
         /// <returns>A XmlDocument that can be written to disc or other storage medium.</returns>
-        public XmlDocument Save()
+        private XmlDocument Save(Boolean isExport)
         {
             XmlDocument doc;
             XmlDeclaration decl;
@@ -140,22 +156,12 @@ namespace Arena.Custom.RC.Packager
             nodeRoot.AppendChild(node);
 
             //
-            // Process the stand alone files.
-            //
-            node = doc.CreateElement("Files");
-            foreach (File file in Files)
-            {
-                node.AppendChild(file.Save(doc));
-            }
-            nodeRoot.AppendChild(node);
-
-            //
             // Process the modules.
             //
             node = doc.CreateElement("Modules");
             foreach (Module module in Modules)
             {
-                node.AppendChild(module.Save(doc));
+                node.AppendChild(module.Save(doc, isExport));
             }
             nodeRoot.AppendChild(node);
 
@@ -165,11 +171,69 @@ namespace Arena.Custom.RC.Packager
             node = doc.CreateElement("Pages");
             foreach (PageInstance page in Pages)
             {
-                node.AppendChild(page.Save(doc));
+                node.AppendChild(page.Save(doc, isExport));
             }
             nodeRoot.AppendChild(node);
 
+            //
+            // Process the stand alone files.
+            //
+            if (node.ChildNodes.Count > 0)
+            {
+                node = node.ChildNodes[0];
+            }
+            else
+            {
+                node = doc.CreateElement("Files");
+                nodeRoot.AppendChild(node);
+            }
+            foreach (File file in Files)
+            {
+                node.AppendChild(file.Save(doc, isExport));
+            }
+
             return doc;
+        }
+
+        /// <summary>
+        /// Save this package as an XmlDocument that can be reloaded later to continue
+        /// working with it.
+        /// </summary>
+        /// <returns>New XmlDocument that can be later reloaded.</returns>
+        public XmlDocument Save()
+        {
+            return this.Save(false);
+        }
+
+        /// <summary>
+        /// Build the Package information into a format that can be imported into
+        /// Arena via the standard Page Import wizard. If any errors occurred during
+        /// the build then the XmlPackage will remain null, otherwise it will be set
+        /// to a valid XmlDocument.
+        /// </summary>
+        /// <returns>A list of messages as a result of the build.</returns>
+        public BuildMessageCollection Build()
+        {
+            //
+            // Begin building the package and log messages.
+            //
+            _BuildMessages = new BuildMessageCollection();
+            _XmlPackage = null;
+            _XmlPackage = this.Save(true);
+
+            //
+            // Check if there were any errors during the build.
+            //
+            foreach (BuildMessage message in BuildMessages)
+            {
+                if (message.Type == BuildMessageType.Error)
+                {
+                    _XmlPackage = null;
+                    break;
+                }
+            }
+
+            return BuildMessages;
         }
 
         #region Traversal methods for determining next available ID numbers.
@@ -389,5 +453,81 @@ namespace Arena.Custom.RC.Packager
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// An object that contains information about a single message that
+    /// was the result of building a Package.
+    /// </summary>
+    public class BuildMessage
+    {
+        internal BuildMessageType Type { get { return _Type; } }
+        private BuildMessageType _Type;
+        private String Message;
+
+
+        /// <summary>
+        /// Create a new BuildMessage object with the given mesage type and
+        /// textual description of the message.
+        /// </summary>
+        /// <param name="type">The type of BuildMessage object to create.</param>
+        /// <param name="message">The user readable message.</param>
+        internal BuildMessage(BuildMessageType type, String message)
+        {
+            _Type = type;
+            Message = message;
+        }
+
+        /// <summary>
+        /// Convert the BuildMessage object into a String that can be
+        /// displayed to the user.
+        /// </summary>
+        /// <returns>Textual representation of the message in a manner the user can read.</returns>
+        public override String ToString()
+        {
+            return Type.ToString() + ": " + Message;
+        }
+    }
+
+    public class BuildMessageCollection : Collection<BuildMessage>
+    {
+        internal BuildMessageCollection()
+            : base()
+        {
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+
+            foreach (BuildMessage message in this)
+            {
+                if (sb.Length == 0)
+                    sb.Append(message.ToString());
+                else
+                    sb.Append("\n" + message.ToString());
+            }
+
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// The type of build message, warning, error etc.
+    /// </summary>
+    public enum BuildMessageType
+    {
+        /// <summary>
+        /// Warning messages should denote messages that are probably not
+        /// critical but should be fixed anyway.
+        /// </summary>
+        Warning = 0,
+
+        /// <summary>
+        /// Error messages are those that prevent a build from being successful
+        /// such as trying to reference a file that doesn't exist.
+        /// </summary>
+        Error = 1
     }
 }

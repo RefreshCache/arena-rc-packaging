@@ -553,6 +553,8 @@ namespace Arena.Custom.RC.Packager
                 module.Settings[e.RowIndex].Type = (ModuleInstanceSettingType)Enum.Parse(typeof(ModuleInstanceSettingType), e.Value.ToString());
             else if (e.ColumnIndex == 2)
                 module.Settings[e.RowIndex].Value = e.Value.ToString();
+            else if (e.ColumnIndex == 3)
+                module.Settings[e.RowIndex].Guid = e.Value.ToString();
         }
 
         void dgModuleInstanceSettings_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
@@ -571,6 +573,8 @@ namespace Arena.Custom.RC.Packager
                 e.Value = module.Settings[e.RowIndex].Type.ToString();
             else if (e.ColumnIndex == 2)
                 e.Value = module.Settings[e.RowIndex].Value;
+            else if (e.ColumnIndex == 3)
+                e.Value = module.Settings[e.RowIndex].Guid;
         }
 
         void cbModuleInstanceType_SelectedValueChanged(object sender, EventArgs e)
@@ -688,6 +692,54 @@ namespace Arena.Custom.RC.Packager
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 saveToFile(dialog.FileName);
+            }
+        }
+
+        private void buildMenu_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+
+
+            dialog.InitialDirectory = Environment.CurrentDirectory;
+            dialog.Filter = "Arena Page Export|*.xml";
+            dialog.FilterIndex = 0;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                BuildMessageCollection messages;
+
+
+                //
+                // Save the package to XML.
+                //
+                messages = package.Build();
+
+                //
+                // Check if there were any errors during the build.
+                if (package.XmlPackage == null)
+                {
+                    MessageBox.Show(messages.ToString(), "Errors during build",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                if (messages.Count > 0)
+                {
+                    DialogResult result;
+
+                    result = MessageBox.Show(messages.ToString(), "Continue with export?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result != DialogResult.Yes)
+                        return;
+                }
+
+                //
+                // Dump result.
+                //
+                StreamWriter writer = new StreamWriter(dialog.FileName);
+                writer.Write(XmlDocumentToString(package.XmlPackage));
+                writer.Close();
             }
         }
 
