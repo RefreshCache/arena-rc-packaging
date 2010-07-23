@@ -184,7 +184,7 @@ namespace Arena.Custom.RC.Packager
             //
             // Process the stand alone files.
             //
-            if (node.ChildNodes.Count > 0)
+            if (isExport && node.ChildNodes.Count > 0)
             {
                 node = node.ChildNodes[0];
             }

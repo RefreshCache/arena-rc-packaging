@@ -45,6 +45,7 @@ namespace Arena.Custom.RC.Packager
             // Setup all the module tab actions and events.
             //
             tbModuleName.TextChanged += new EventHandler(tbModuleName_TextChanged);
+            cbModuleSystem.CheckedChanged += new EventHandler(cbModuleSystem_CheckedChanged);
             tbModuleURL.TextChanged += new EventHandler(tbModuleURL_TextChanged);
             tbModuleImagePath.TextChanged += new EventHandler(tbModuleImagePath_TextChanged);
             cbModuleAllowsChildModules.CheckedChanged += new EventHandler(cbModuleAllowsChildModules_CheckedChanged);
@@ -67,6 +68,7 @@ namespace Arena.Custom.RC.Packager
             cbPageRequireSSL.CheckedChanged += new EventHandler(cbPageRequireSSL_CheckedChanged);
             cbPageValidateRequest.CheckedChanged += new EventHandler(cbPageValidateRequest_CheckedChanged);
             tbPageDescription.TextChanged += new EventHandler(tbPageDescription_TextChanged);
+            tbPageGuid.TextChanged += new EventHandler(tbPageGuid_TextChanged);
             dgPageSettings.VirtualMode = true;
             dgPageSettings.CellValueNeeded += new DataGridViewCellValueEventHandler(dgPageSettings_CellValueNeeded);
             dgPageSettings.CellValuePushed += new DataGridViewCellValueEventHandler(dgPageSettings_CellValuePushed);
@@ -284,6 +286,15 @@ namespace Arena.Custom.RC.Packager
             }
         }
 
+        void cbModuleSystem_CheckedChanged(object sender, EventArgs e)
+        {
+            Module module = SelectedModule();
+
+
+            if (module != null && selectionChanging == false)
+                module.IsSystem = cbModuleSystem.Checked;
+        }
+
         void dgModules_SelectionChanged(object sender, EventArgs e)
         {
             Boolean enabled = false;
@@ -296,6 +307,7 @@ namespace Arena.Custom.RC.Packager
                 Module module = package.Modules[dgModules.SelectedCells[0].RowIndex];
 
                 tbModuleName.Text = module.Name;
+                cbModuleSystem.Checked = module.IsSystem;
                 tbModuleURL.Text = module.URL;
                 tbModuleImagePath.Text = module.ImagePath;
                 cbModuleAllowsChildModules.Checked = module.AllowsChildModules;
@@ -308,6 +320,7 @@ namespace Arena.Custom.RC.Packager
             else
             {
                 tbModuleName.Text = "";
+                cbModuleSystem.Checked = false;
                 tbModuleURL.Text = "";
                 tbModuleImagePath.Text = "";
                 cbModuleAllowsChildModules.Checked = false;
@@ -320,6 +333,7 @@ namespace Arena.Custom.RC.Packager
             // Enable or disable everything.
             //
             tbModuleName.Enabled = enabled;
+            cbModuleSystem.Enabled = enabled;
             tbModuleURL.Enabled = enabled;
             tbModuleImagePath.Enabled = enabled;
             cbModuleAllowsChildModules.Enabled = enabled;
@@ -406,6 +420,15 @@ namespace Arena.Custom.RC.Packager
             tvPages.SelectedNode = node;
         }
 
+        void tbPageGuid_TextChanged(object sender, EventArgs e)
+        {
+            PageInstance page = SelectedPageInstance();
+
+
+            if (page != null && selectionChanging == false)
+                page.Guid = tbPageGuid.Text;
+        }
+
         void tbPageDescription_TextChanged(object sender, EventArgs e)
         {
             PageInstance page = SelectedPageInstance();
@@ -472,10 +495,12 @@ namespace Arena.Custom.RC.Packager
                 PageInstance page = (PageInstance)tvPages.SelectedNode.Tag;
 
                 tbPageName.Text = page.PageName;
+                lbPageID.Text = "Page ID: " + page.PageID;
                 cbPageDisplayInNav.Checked = page.DisplayInNav;
                 cbPageRequireSSL.Checked = page.RequireSSL;
                 cbPageValidateRequest.Checked = page.ValidateRequest;
                 tbPageDescription.Text = page.PageDescription;
+                tbPageGuid.Text = page.Guid;
                 dgPageSettings.RowCount = 13;
 
                 tcPages.SelectedIndex = 0;
@@ -664,7 +689,6 @@ namespace Arena.Custom.RC.Packager
             OpenFileDialog dialog = new OpenFileDialog();
 
 
-            dialog.InitialDirectory = Environment.CurrentDirectory;
             dialog.Filter = "XML Files|*.xml";
             dialog.FilterIndex = 0;
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -686,7 +710,6 @@ namespace Arena.Custom.RC.Packager
             SaveFileDialog dialog = new SaveFileDialog();
 
 
-            dialog.InitialDirectory = Environment.CurrentDirectory;
             dialog.Filter = "XML Files|*.xml";
             dialog.FilterIndex = 0;
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -757,6 +780,34 @@ namespace Arena.Custom.RC.Packager
             StreamWriter writer = new StreamWriter(save.FileName);
             writer.Write(XmlDocumentToString(package.XmlPackage));
             writer.Close();
+        }
+        
+        private void verifyMenu_Click(object sender, EventArgs e)
+        {
+            BuildMessageCollection messages;
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+
+
+            //
+            // Get the base path to build from.
+            //
+            folder.Description = "Select the path to use as the base path when accessing local files.";
+            folder.ShowNewFolderButton = false;
+            if (!String.IsNullOrEmpty(currentFileName))
+                folder.SelectedPath = new FileInfo(currentFileName).DirectoryName;
+            if (folder.ShowDialog() != DialogResult.OK)
+                return;
+
+            //
+            // Save the package to XML.
+            //
+            messages = package.Build(folder.SelectedPath);
+
+            //
+            // Display any messages that might have occurred.
+            //
+            MessageBox.Show((messages.Count > 0 ? messages.ToString() : "No errors or warnings."), "Verify Results",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void exitMenu_Click(object sender, EventArgs e)
