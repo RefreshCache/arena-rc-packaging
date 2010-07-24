@@ -1039,7 +1039,7 @@
             this.MainMenuStrip = this.mainMenu;
             this.Name = "mainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Build Distribution";
+            this.Text = "Package Builder";
             this.tcMain.ResumeLayout(false);
             this.tabPackage.ResumeLayout(false);
             this.tabPackage.PerformLayout();

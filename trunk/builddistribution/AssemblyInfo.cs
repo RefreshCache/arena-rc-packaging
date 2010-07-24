@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("BuildDistribution")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Package Builder")]
+[assembly: AssemblyDescription("This is a GUI front-end to the Packager Framework from the RefreshCache group.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("RefreshCache")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright (c) 2010 RefreshCache")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
