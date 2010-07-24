@@ -729,7 +729,6 @@ namespace Arena.Custom.RC.Packager
             //
             // Get the file to save the built package as.
             //
-            save.InitialDirectory = Environment.CurrentDirectory;
             save.Filter = "Arena Page Export|*.xml";
             save.FilterIndex = 0;
             if (save.ShowDialog() != DialogResult.OK)
