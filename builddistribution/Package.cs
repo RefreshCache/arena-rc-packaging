@@ -308,8 +308,10 @@ namespace Arena.Custom.RC.Packager
 
             foreach (PageInstance page in parentPage.Pages)
             {
-                if (page._PageID <= nextID)
-                    nextID = page._PageID;
+                int tempID = NextAvailablePageID(page);
+
+                if (tempID <= nextID)
+                    nextID = tempID;
             }
 
             return nextID;
