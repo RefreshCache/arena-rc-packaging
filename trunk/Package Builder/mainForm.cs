@@ -668,6 +668,9 @@ namespace Arena.Custom.RC.Packager
             object selectedValue;
 
             selectedValue = cbModuleInstanceType.SelectedValue;
+            cbModuleInstanceType.DataSource = null;
+            cbModuleInstanceType.ValueMember = "ModuleID";
+            cbModuleInstanceType.DisplayMember = "Name";
             cbModuleInstanceType.DataSource = package.Modules;
             if (selectedValue != null)
                 cbModuleInstanceType.SelectedValue = selectedValue;
