@@ -301,7 +301,7 @@ namespace Arena.Custom.RC.Packager
     /// </summary>
     public class ModuleInstance
     {
-        #region
+        #region Properties
 
         internal int _ModuleInstanceID;
         private List<ModuleInstanceSetting> _Settings;
@@ -317,7 +317,7 @@ namespace Arena.Custom.RC.Packager
             get
             {
                 if (_ModuleInstanceID == 0 && Package != null)
-                    _ModuleInstanceID = Package.NextAvailableModuleID();
+                    _ModuleInstanceID = Package.NextAvailableModuleInstanceID();
 
                 return _ModuleInstanceID;
             }
