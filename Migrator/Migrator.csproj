@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0A1A47D4-D0BF-4B0C-92B8-9632D57BCD1A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -37,17 +37,16 @@
     <Reference Include="nunit.framework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Column.cs" />
-    <Compile Include="Table.cs" />
-    <Compile Include="Constraints.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="Migration.cs" />
-    <Compile Include="Unit Tests\Test.cs" />
+    <Compile Include="Classes\Column.cs" />
+    <Compile Include="Classes\Constraints.cs" />
+    <Compile Include="Classes\Database.cs" />
+    <Compile Include="Classes\Main.cs" />
+    <Compile Include="Classes\Migration.cs" />
+    <Compile Include="Classes\Table.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Unit Tests\" />
-  </ItemGroup>
 </Project>

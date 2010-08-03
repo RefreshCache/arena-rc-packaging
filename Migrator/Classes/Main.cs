@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 
 
-namespace RefreshCache.Database
+namespace RefreshCache.Migrator
 {
 	class MainClass
 	{
