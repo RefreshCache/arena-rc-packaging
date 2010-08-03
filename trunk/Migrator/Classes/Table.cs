@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 
 
-namespace RefreshCache.Database
+namespace RefreshCache.Migrator
 {
 	/// <summary>
 	/// Defines a SQL Table that can then be created by the database engine. All attributes

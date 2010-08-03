@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace RefreshCache.Database
+namespace RefreshCache.Migrator
 {
 	/// <summary>
 	/// This class defines basic information about a constraint in a database. It cannot be

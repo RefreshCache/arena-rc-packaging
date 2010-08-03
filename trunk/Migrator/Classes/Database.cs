@@ -1,7 +1,7 @@
 using System;
 using System.Data.SqlClient;
 
-namespace RefreshCache.Database
+namespace RefreshCache.Migrator
 {
 	public class Database
 	{
