@@ -100,10 +100,7 @@ namespace RefreshCache.Migrator
 		/// <returns>
 		/// Never returns.
 		/// </returns>
-		public override String ToString ()
-		{
-			throw new NotSupportedException("Constraint subclasses must override the ToString method.");
-		}
+		public abstract new String ToString ();
 	}
 
 
