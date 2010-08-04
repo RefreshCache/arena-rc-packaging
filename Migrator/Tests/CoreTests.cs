@@ -35,8 +35,8 @@ namespace RefreshCache.Migrator.Tests
             db = null;
         }
 
+
         [Test]
-        [Description("Create a simple table.")]
         public void CreateTable()
         {
             Table tb = new Table("test_table");
@@ -45,6 +45,21 @@ namespace RefreshCache.Migrator.Tests
             tb.Columns.Add(new Column("primary_key", ColumnType.Int, ColumnAttribute.PrimaryKeyIdentity));
 
             db.CreateTable(tb);
+            db.DropTable("test_table");
+        }
+
+
+        [Test]
+        public void CreateTableWithMultipleColumns()
+        {
+            Table tb = new Table("test_table");
+
+
+            tb.Columns.Add(new Column("primary_key", ColumnType.Int, ColumnAttribute.PrimaryKeyIdentity));
+            tb.Columns.Add(new Column("column2", ColumnType.VarChar, 20));
+
+            db.CreateTable(tb);
+            db.DropTable("test_table");
         }
     }
 }
