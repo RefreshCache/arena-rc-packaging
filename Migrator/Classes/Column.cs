@@ -60,8 +60,13 @@ namespace RefreshCache.Migrator
 		
 		#region Constructors and Destructors
 		
-		internal Column(String name, ColumnType type, ColumnAttribute flags, Int32 length, Int32 precision, Int32 scale)
+		public Column(String name, ColumnType type, ColumnAttribute flags, Int32 length, Int32 precision, Int32 scale)
 		{
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+            if (!Enum.IsDefined(typeof(ColumnType), type))
+                throw new ArgumentOutOfRangeException("type");
+
 			Name = name;
 			Type = type;
 			Flags = flags;
@@ -125,6 +130,28 @@ namespace RefreshCache.Migrator
 			: this(name, type, ColumnAttribute.None, length, -1, -1)
 		{
 		}
+
+        /// <summary>
+        /// Construct a new database column by specifying the name, type precision and
+        /// scale of the data type for the new column. Appropriate for use when constructing
+        /// generic decimal style columns.
+        /// </summary>
+        /// <param name="name">
+        /// A <see cref="String"/> which identifies the name of this column in the database.
+        /// </param>
+        /// <param name="type">
+        /// A <see cref="ColumnType"/> that identifies the data type this column will have.
+        /// </param>
+        /// <param name="precision">
+        /// A <see cref="Int32"/> value which specifies the precision of the data type.
+        /// </param>
+        /// <param name="scale">
+        /// A <see cref="Int32"/> value which specifies the scale of the data type.
+        /// </param>
+        public Column(String name, ColumnType type, Int32 precision, Int32 scale)
+            : this(name, type, ColumnAttribute.None, -1, precision, scale)
+        {
+        }
 		
 		#endregion
 		
@@ -222,7 +249,7 @@ namespace RefreshCache.Migrator
 				return "uniqueidentifier";
 				
 			default:
-				return "";
+                throw new InvalidOperationException("Invalid column type specified");
 			}
 		}
 		

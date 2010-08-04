@@ -9,7 +9,7 @@ namespace RefreshCache.Migrator
 	/// collection.  It should then include nested subclasses of DatabaseMigrator
 	/// to perform the migration steps.
 	/// </summary>
-	abstract class Migration
+	public abstract class Migration
 	{
 		/// <summary>
 		/// Retrieve the list of DatabaseMigrator nested classes inside of this class. The
@@ -450,11 +450,11 @@ namespace RefreshCache.Migrator
 					return result;
 				
 				//
-				// If the step is greater than or equal to 0 and the other object is a base
-				// version number (without steps) then this object is greater than the other
+				// If the step is greater than 0 and the other object is a base version
+				// number (without steps) then this object is greater than the other
 				// object.
 				//
-				if (this.Step >= 0)
+				if (this.Step > 0)
 					return 1;
 				
 				return 0;

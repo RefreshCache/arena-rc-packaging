@@ -34,14 +34,6 @@ namespace RefreshCache.Migrator
 		
 		
 		/// <summary>
-		/// Used internally for test purposes only.
-		/// </summary>
-		internal Database()
-		{
-		}
-		
-		
-		/// <summary>
 		/// Create a new database object with the specifies SQL connection.
 		/// </summary>
 		/// <param name="connection">
@@ -49,9 +41,16 @@ namespace RefreshCache.Migrator
 		/// </param>
 		public Database(SqlConnection connection)
 		{
-			if (connection.State != System.Data.ConnectionState.Open)
-				connection.Open();
-			dbConnection = connection;
+            if (connection != null)
+            {
+                if (connection.State != System.Data.ConnectionState.Open)
+                    connection.Open();
+                dbConnection = connection;
+            }
+            else
+            {
+                Dryrun = true;
+            }
 		}
 		
 
@@ -146,7 +145,7 @@ namespace RefreshCache.Migrator
 			
 			TestOperationState();
 
-			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "')";
+			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
 			reader = dbCommand.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
@@ -175,7 +174,7 @@ namespace RefreshCache.Migrator
 			
 			TestOperationState();
 
-			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "')";
+			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "'";
 			reader = dbCommand.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
