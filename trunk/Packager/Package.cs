@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Xml;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager
 {
     /// <summary>
     /// The Package class is a self-contained object that provides all
