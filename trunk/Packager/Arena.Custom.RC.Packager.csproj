@@ -8,8 +8,8 @@
     <ProjectGuid>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arena.Custom.RC.Packager</RootNamespace>
-    <AssemblyName>Arena.Custom.RC.Packager</AssemblyName>
+    <RootNamespace>RefreshCache.Packager</RootNamespace>
+    <AssemblyName>RefreshCache.Packager</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Arena.Custom.RC.Packager.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\RefreshCache.Packager.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +49,7 @@
     <Compile Include="File.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Package.cs" />
+    <Compile Include="PackageInfo.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,7 +57,7 @@
     <Content Include="Documentation\API.shfbproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documentation\Arena.Custom.RC.Packager.chm" />
+    <None Include="Documentation\RefreshCache.Packager.chm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

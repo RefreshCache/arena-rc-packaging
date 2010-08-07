@@ -15,11 +15,11 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\</OutputPath>
-    <HtmlHelpName>Arena.Custom.RC.Packager</HtmlHelpName>
+    <HtmlHelpName>RefreshCache.Packager</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\bin\Debug\Arena.Custom.RC.Packager.dll" />
-<DocumentationSource sourceFile="..\bin\Debug\Arena.Custom.RC.Packager.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\bin\Debug\RefreshCache.Packager.dll" />
+<DocumentationSource sourceFile="..\bin\Debug\RefreshCache.Packager.xml" /></DocumentationSources>
     <KeepLogFile>False</KeepLogFile>
     <VendorName>RefreshCache</VendorName>
     <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
