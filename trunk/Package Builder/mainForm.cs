@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RefreshCache.Packager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager.Builder
 {
     public partial class mainForm : Form
     {

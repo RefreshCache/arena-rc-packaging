@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Windows.Forms;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager.Builder
 {
 	class MainClass
 	{
