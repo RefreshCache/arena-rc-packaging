@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager
 {
     /// <summary>
     /// This class identifies a single Module in a Package. The information

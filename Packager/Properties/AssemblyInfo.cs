@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Arena.Custom.RC.Packager")]
+[assembly: AssemblyTitle("RefreshCache.Packager")]
 [assembly: AssemblyDescription("The RefreshCache Packager Framework for Arena.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RefreshCache")]
-[assembly: AssemblyProduct("Arena.Custom.RC.Packager")]
+[assembly: AssemblyProduct("RefreshCache.Packager")]
 [assembly: AssemblyCopyright("Copyright © RefreshCache 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

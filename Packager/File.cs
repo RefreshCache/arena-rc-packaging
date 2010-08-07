@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager
 {
     /// <summary>
     /// The File class contains all information required to export a

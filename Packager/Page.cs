@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Xml;
 
-namespace Arena.Custom.RC.Packager
+namespace RefreshCache.Packager
 {
     /// <summary>
     /// This class provides all the information needed to construct a page
