@@ -49,7 +49,6 @@
     <Compile Include="File.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Package.cs" />
-    <Compile Include="PackageInfo.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
