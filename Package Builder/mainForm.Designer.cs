@@ -1,4 +1,4 @@
-﻿namespace Arena.Custom.RC.Packager
+﻿namespace RefreshCache.Packager.Builder
 {
     partial class mainForm
     {
