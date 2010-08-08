@@ -78,20 +78,16 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="Database"/> object that identifies which database is to be upgraded.
 		/// </param>
 		/// <param name="fromVersion">
-		/// A <see cref="String"/> that contains the current version number in the format of
-		/// "1.0.0", or null if there is nothing currently installed.
+		/// The current version number or null if there is nothing currently installed.
 		/// </param>
-		public void Upgrade(Database db, String fromVersion)
+		public void Upgrade(Database db, PackageVersion fromVersion)
 		{
-			MigratorVersion version = new MigratorVersion((fromVersion != null ? fromVersion : "0.0.0"));
-			
-			
 			foreach (DatabaseMigrator migrator in Migrators)
 			{
 				//
 				// Skip versions that are less than or equal to the version we are upgrading from.
 				//
-				if (migrator.Version.CompareTo(version) <= 0)
+				if (migrator.Version.CompareTo(fromVersion) <= 0)
 					continue;
 				
 				migrator.Upgrade(db);
@@ -108,12 +104,10 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="Database"/> object that identifies which database is to be downgraded.
 		/// </param>
 		/// <param name="toVersion">
-		/// A <see cref="String"/> that contains the target version number in the format of
-		/// "1.0.0", or null if this is a complete uninstall.
+		/// The target version number or null if this is a complete uninstall.
 		/// </param>
-		public void Downgrade(Database db, String toVersion)
+		public void Downgrade(Database db, PackageVersion toVersion)
 		{
-			MigratorVersion version = new MigratorVersion((toVersion != null ? toVersion : "0.0.0"));
 			int i;
 			
 			
@@ -124,7 +118,7 @@ namespace RefreshCache.Packager.Migrator
 				//
 				// Skip versions that are less than or equal to the version we are downgrading to.
 				//
-				if (migrator.Version.CompareTo(version) <= 0)
+				if (migrator.Version.CompareTo(toVersion) <= 0)
 					continue;
 				
 				migrator.Downgrade(db);
@@ -141,25 +135,21 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="Database"/> object that identifies which database is to be configured.
 		/// </param>
 		/// <param name="fromVersion">
-		/// A <see cref="String"/> that contains the current version number in the format of
-		/// "1.0.0", or null if there is nothing currently installed (or if it is a dependency
-		/// configuration).
+        /// The current version number of the package being configured or null if there is
+        /// nothing currently installed or if a new recommended package has been installed.
 		/// </param>
 		/// <param name="dependency">
 		/// A <see cref="String"/> that contains the dependency this configuration operation is
 		/// for or null if this is a new install/upgrade.
 		/// </param>
-		public void Configure(Database db, String fromVersion, String dependency)
+		public void Configure(Database db, PackageVersion fromVersion, String dependency)
 		{
-			MigratorVersion version = new MigratorVersion((fromVersion != null ? fromVersion : "0.0.0"));
-			
-			
 			foreach (DatabaseMigrator migrator in Migrators)
 			{
 				//
 				// Skip versions that are less than or equal to the version we are configuring from.
 				//
-				if (migrator.Version.CompareTo(version) <= 0)
+				if (migrator.Version.CompareTo(fromVersion) <= 0)
 					continue;
 				
 				migrator.Configure(db, dependency);
@@ -176,17 +166,15 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="Database"/> object that identifies which database is to be un-configured.
 		/// </param>
 		/// <param name="toVersion">
-		/// A <see cref="String"/> that contains the target version number in the format of
-		/// "1.0.0", or null if this is a complete uninstall (or if it is a dependency
-		/// un-configuration).
+        /// The target version number that we are un-configuring to or null if this is
+        /// a complete uninstall (or if a recommended dependency has been removed).
 		/// </param>
 		/// <param name="dependency">
 		/// A <see cref="String"/> that contains the dependency this un-configuration operation is
 		/// for or null if this is a full uninstall/downgrade.
 		/// </param>
-		public void Unconfigure(Database db, String toVersion, String dependency)
+		public void Unconfigure(Database db, PackageVersion toVersion, String dependency)
 		{
-			MigratorVersion version = new MigratorVersion((toVersion != null ? toVersion : "0.0.0"));
 			int i;
 			
 			
@@ -197,7 +185,7 @@ namespace RefreshCache.Packager.Migrator
 				//
 				// Skip versions that are less than or equal to the version we are downgrading to.
 				//
-				if (migrator.Version.CompareTo(version) <= 0)
+				if (migrator.Version.CompareTo(toVersion) <= 0)
 					continue;
 				
 				migrator.Unconfigure(db, dependency);
@@ -245,149 +233,10 @@ namespace RefreshCache.Packager.Migrator
 	
 	
 	/// <summary>
-	/// Identifies the version number for use with a migration. It is comparable
-	/// and can be used when comparing and working with version numbers.
-	/// </summary>
-	public class MigratorVersion : IComparable
-	{
-		/// <summary>
-		/// The minor version number is the X in a version number of "X.Y.Z Step N".
-		/// </summary>
-		public Int32 Major { get; set; }
-		
-		/// <summary>
-		/// The minor version number is the Y in a version number of "X.Y.Z Step N".
-		/// </summary>
-		public Int32 Minor { get; set; }
-		
-		/// <summary>
-		/// The revision number is the Z in a version number of "X.Y.Z Step N".
-		/// </summary>
-		public Int32 Revision { get; set; }
-		
-		
-		/// <summary>
-		/// Create a new MigratorVersion object with the specified version values.
-		/// </summary>
-		/// <param name="major">
-		/// A <see cref="Int32"/> representing the major version.
-		/// </param>
-		/// <param name="minor">
-		/// A <see cref="Int32"/> representing the minor version.
-		/// </param>
-		/// <param name="revision">
-		/// A <see cref="Int32"/> representing the revision number.
-		/// </param>
-		public MigratorVersion(Int32 major, Int32 minor, Int32 revision)
-		{
-			Major = major;
-			Minor = minor;
-			Revision = revision;
-		}
-		
-		
-		/// <summary>
-		/// Create a new MigratorVersion object from the given version string.
-		/// </summary>
-		/// <param name="version">
-		/// A <see cref="String"/> in the format of "Major[.Minor[.Revision]]".
-		/// </param>
-		public MigratorVersion(String version)
-		{
-			String[] pts = version.Split('.');
-			
-			
-			try
-			{
-				Major = Convert.ToInt32(pts[0]);
-			}
-			catch
-			{
-				Major = 0;
-			}
-			
-			try
-			{
-				Minor = Convert.ToInt32(pts[1]);
-			}
-			catch
-			{
-				Minor = 0;
-			}
-			
-			try
-			{
-				Revision = Convert.ToInt32(pts[2]);
-			}
-			catch
-			{
-				Revision = 0;
-			}
-		}
-		
-		
-		/// <summary>
-		/// Compare this version number with that of another version number.
-        /// </summary>
-		/// <param name="obj">
-		/// A <see cref="MigratorVersion"/> cast as an object to be compared against.
-		/// </param>
-		/// <returns>
-		/// 0 if the two version are the same; -1 if this version is less than the passed
-		/// version and 1 if this version is greater than the passed verison.
-		/// </returns>
-		public int CompareTo(object obj)
-		{
-			MigratorVersion other = (MigratorVersion)obj;
-			int result;
-			
-			
-			result = this.Major.CompareTo(other.Major);
-			if (result != 0)
-				return result;
-			
-			result = this.Minor.CompareTo(other.Minor);
-			if (result != 0)
-				return result;
-			
-			result = this.Revision.CompareTo(other.Revision);
-			if (result != 0)
-				return result;
-			
-			//
-			// A basic version number is always less than a stepped version number
-			// if the step is greater than or equal to 0.
-			//
-			if (this.GetType() == typeof(MigratorVersion) && typeof(MigratorVersionStep).IsInstanceOfType(obj))
-			{
-				if (((MigratorVersionStep)obj).Step >= 0)
-				{
-					return -1;
-				}
-			}
-			
-			return 0;
-		}
-		
-		
-		/// <summary>
-		/// Returns a textual representation of this version number.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="String"/> in the format of "3.1.4".
-		/// </returns>
-		public new String ToString()
-		{
-			return String.Format("{0}.{1}.{2}", Major, Minor, Revision);
-		}
-	}
-	
-	
-	/// <summary>
 	/// This class is used to identify version numbers and the sequence step in
 	/// that version number. It is primarily used internally for sorting operations.
 	/// </summary>
-	public class MigratorVersionStep : MigratorVersion, IComparable
+	public class MigratorVersionStep : PackageVersion, IComparable
 	{
 		/// <summary>
 		/// The sequence step of this version migration during an upgrade or downgrade

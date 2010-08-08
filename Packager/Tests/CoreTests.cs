@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using NUnit.Framework;
+using RefreshCache.Packager;
 using RefreshCache.Packager.Migrator;
 
 
@@ -40,10 +41,10 @@ namespace RefreshCache.Migrator.Tests
         [Test]
         public void VersionsAreEqual()
         {
-            MigratorVersion v1, v2;
+            PackageVersion v1, v2;
 
-            v1 = new MigratorVersion("1.3.7");
-            v2 = new MigratorVersion(1, 3, 7);
+            v1 = new PackageVersion("1.3.7");
+            v2 = new PackageVersion(1, 3, 7);
 
             Assert.AreEqual(v1.Major, v2.Major);
             Assert.AreEqual(v1.Minor, v2.Minor);
@@ -54,30 +55,30 @@ namespace RefreshCache.Migrator.Tests
         [Test]
         public void VersionsAreNotEqual()
         {
-            MigratorVersion v;
+            PackageVersion v;
 
-            v = new MigratorVersion("1.3.7");
-            Assert.True((v.CompareTo(new MigratorVersion("2.7.1")) != 0));
-            Assert.True((v.CompareTo(new MigratorVersion("1.7.1")) != 0));
-            Assert.True((v.CompareTo(new MigratorVersion("1.3.1")) != 0));
+            v = new PackageVersion("1.3.7");
+            Assert.True((v.CompareTo(new PackageVersion("2.7.1")) != 0));
+            Assert.True((v.CompareTo(new PackageVersion("1.7.1")) != 0));
+            Assert.True((v.CompareTo(new PackageVersion("1.3.1")) != 0));
         }
 
         [Test]
         public void VersionToString()
         {
-            MigratorVersion v;
+            PackageVersion v;
 
-            v = new MigratorVersion("1.3.7");
+            v = new PackageVersion("1.3.7");
             Assert.True(v.ToString().Equals("1.3.7"));
         }
 
         [Test]
         public void VersionDefaultValues()
         {
-            MigratorVersion v;
+            PackageVersion v;
 
-            v = new MigratorVersion("");
-            Assert.True(v.CompareTo(new MigratorVersion("0.0.0")) == 0);
+            v = new PackageVersion("");
+            Assert.True(v.CompareTo(new PackageVersion("0.0.0")) == 0);
         }
 
         [Test]
@@ -119,10 +120,10 @@ namespace RefreshCache.Migrator.Tests
         [Test]
         public void VersionLessThanVersionStep()
         {
-            MigratorVersion v1;
+            PackageVersion v1;
             MigratorVersionStep v2;
 
-            v1 = new MigratorVersion("1.3.7");
+            v1 = new PackageVersion("1.3.7");
             v2 = new MigratorVersionStep(1, 3, 7, 6);
             Assert.True((v1.CompareTo(v2) == -1));
         }
@@ -131,13 +132,13 @@ namespace RefreshCache.Migrator.Tests
         public void VersionStepGreaterThanVersion()
         {
             MigratorVersionStep v1;
-            MigratorVersion v2;
+            PackageVersion v2;
 
             v1 = new MigratorVersionStep(1, 3, 7, 6);
-            v2 = new MigratorVersion("1.3.7");
+            v2 = new PackageVersion("1.3.7");
             Assert.True((v1.CompareTo(v2) == 1));
 
-            v2 = new MigratorVersion("1.3.6");
+            v2 = new PackageVersion("1.3.6");
             Assert.True((v1.CompareTo(v2) == 1));
         }
 
@@ -145,10 +146,10 @@ namespace RefreshCache.Migrator.Tests
         public void VersionStepEqualToVersion()
         {
             MigratorVersionStep v1;
-            MigratorVersion v2;
+            PackageVersion v2;
 
             v1 = new MigratorVersionStep(1, 3, 6, 0);
-            v2 = new MigratorVersion("1.3.6");
+            v2 = new PackageVersion("1.3.6");
             Assert.True((v1.CompareTo(v2) == 0));
         }
 

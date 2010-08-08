@@ -50,6 +50,13 @@ namespace RefreshCache.Packager
         public String Readme { get; set; }
 
         /// <summary>
+        /// Contains information about the package such as name, version,
+        /// dependencies, etc.
+        /// </summary>
+        public PackageInfo Info { get { return _Info; } }
+        private PackageInfo _Info;
+
+        /// <summary>
         /// This list is reset each time the Export method is called and
         /// will contain a textual list of messages generated during the
         /// export. If no messages exist this list will be empty.
