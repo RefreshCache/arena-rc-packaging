@@ -3,6 +3,12 @@ using System.Data.SqlClient;
 
 namespace RefreshCache.Packager.Migrator
 {
+    /// <summary>
+    /// This class houses all the methods that will allow a Migration
+    /// to interface with the SQL database. A Migration class should not
+    /// connect to the database directly, instead use the instance of
+    /// this class that is passed to it.
+    /// </summary>
 	public class Database
 	{
 		#region Parameters

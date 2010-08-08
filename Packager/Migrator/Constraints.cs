@@ -69,7 +69,7 @@ namespace RefreshCache.Packager.Migrator
 		/// SQL query.
 		/// </summary>
 		/// <param name="cols">
-		/// A <see cref="List<String>"/> collection that contains the column names.
+		/// A <see cref="String"/> collection that contains the column names.
 		/// </param>
 		/// <returns>
 		/// A <see cref="String"/> in the format of "[col1], [col2], ...".
@@ -209,13 +209,13 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="String"/> that uniquely identifies this constraint in the database.
 		/// </param>
 		/// <param name="cols">
-		/// A <see cref="List<String>"/> collection of the source columns to be used in the constraint.
+		/// A <see cref="String"/> collection of the source columns to be used in the constraint.
 		/// </param>
 		/// <param name="ref_table">
 		/// A <see cref="String"/> that identifies which table will be referenced by this foreign key.
 		/// </param>
 		/// <param name="ref_cols">
-		/// A <see cref="List<String>"/> collection that identifies which columns in the referenced table.
+		/// A <see cref="String"/> collection that identifies which columns in the referenced table.
 		/// </param>
 		public ForeignKeyConstraint(String name, List<String> cols, String ref_table, List<String> ref_cols)
 			: base(name, cols)

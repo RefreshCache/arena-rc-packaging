@@ -789,24 +789,69 @@ namespace RefreshCache.Packager
     /// </summary>
     public enum ModuleInstanceSettingType
     {
+        /// <summary>
+        /// Used internally to identify a module instance setting that does not
+        /// have a type associated with it yet.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Text string module instance setting.
+        /// </summary>
         Text = 1,
+
+        /// <summary>
+        /// Generic number module instance setting.
+        /// </summary>
         Number = 2,
+
+        /// <summary>
+        /// Page reference module instance setting. Inclue the GUID to the page
+        /// as well as it's temporary ID.
+        /// </summary>
         Page = 3,
+
+        /// <summary>
+        /// Boolean value specified as a string of "true" or "false".
+        /// </summary>
         Boolean = 4,
+
         Css = 5,
         Image = 6,
+
+        /// <summary>
+        /// Tag reference module instance setting. Include the GUID of the tag
+        /// as well as it's temporary ID.
+        /// </summary>
         Tag = 7,
+
         Metric = 8,
         Date = 9,
+
+        /// <summary>
+        /// Core Lookup reference module instance setting. Include the GUID of the
+        /// lookup as well as it's temporary ID.
+        /// </summary>
         Lookup = 10,
+
         Cluster = 11,
         ClusterType = 12,
+
+        /// <summary>
+        /// A custom name/value list, value is stored as a string.
+        /// </summary>
         CustomList = 13,
+
         File = 14,
         GatewayAccount = 15,
         PagesAsTabs = 16,
+
+        /// <summary>
+        /// A name/value list based on the results of a SQL query string. The value
+        /// is stored as a string.
+        /// </summary>
         ListFromSql = 17,
+
         Report = 18,
         Campus = 19,
         DocumentType = 20,

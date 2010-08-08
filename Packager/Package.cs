@@ -466,6 +466,7 @@ namespace RefreshCache.Packager
         #endregion
     }
 
+
     /// <summary>
     /// An object that contains information about a single message that
     /// was the result of building a Package.
@@ -500,6 +501,12 @@ namespace RefreshCache.Packager
         }
     }
 
+
+    /// <summary>
+    /// A collection of build messages that should be displayed to the user.
+    /// If any of the build messages is marked as an error then the build
+    /// has failed.
+    /// </summary>
     public class BuildMessageCollection : Collection<BuildMessage>
     {
         internal BuildMessageCollection()
@@ -507,6 +514,12 @@ namespace RefreshCache.Packager
         {
         }
 
+        /// <summary>
+        /// Convert the collection of build messages into a single string that
+        /// can be displayed to the user. Each build message is separated by
+        /// a newline character.
+        /// </summary>
+        /// <returns>A <see cref="String"/> object that should be displayed to the user.</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -523,6 +536,7 @@ namespace RefreshCache.Packager
             return sb.ToString();
         }
     }
+
 
     /// <summary>
     /// The type of build message, warning, error etc.

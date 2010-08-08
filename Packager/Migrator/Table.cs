@@ -43,7 +43,7 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="String"/> which identifies the name this table will have in the database.
 		/// </param>
 		/// <param name="cols">
-		/// A <see cref="Column[]"/> collection which specifies the columns to define in this table.
+		/// A <see cref="Column"/> collection which specifies the columns to define in this table.
 		/// </param>
 		public Table(String name, params Column[] cols)
 		{
