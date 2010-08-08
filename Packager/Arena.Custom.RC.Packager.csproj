@@ -48,6 +48,11 @@
   <ItemGroup>
     <Compile Include="File.cs" />
     <Compile Include="Installer\PackageInstaller.cs" />
+    <Compile Include="Migrator\Column.cs" />
+    <Compile Include="Migrator\Constraints.cs" />
+    <Compile Include="Migrator\Database.cs" />
+    <Compile Include="Migrator\Migration.cs" />
+    <Compile Include="Migrator\Table.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="Page.cs" />
@@ -58,9 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Documentation\RefreshCache.Packager.chm" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

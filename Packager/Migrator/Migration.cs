@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace RefreshCache.Migrator
+namespace RefreshCache.Packager.Migrator
 {
 	/// <summary>
 	/// The Migration class must be subclassed by any database migration
