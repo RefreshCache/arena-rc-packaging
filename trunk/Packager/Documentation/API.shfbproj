@@ -19,11 +19,14 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\bin\Debug\RefreshCache.Packager.dll" />
-<DocumentationSource sourceFile="..\bin\Debug\RefreshCache.Packager.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\bin\Debug\RefreshCache.Packager.xml" />
+    </DocumentationSources>
     <KeepLogFile>False</KeepLogFile>
     <VendorName>RefreshCache</VendorName>
     <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
     <HelpTitle>RefreshCache Packager Framework for Arena</HelpTitle>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
+    <SyntaxFilters>CSharp</SyntaxFilters>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

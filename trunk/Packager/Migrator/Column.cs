@@ -59,7 +59,30 @@ namespace RefreshCache.Packager.Migrator
 		
 		
 		#region Constructors and Destructors
-		
+
+        /// <summary>
+        /// Construct a new database column by specifying the name, type precision and
+        /// scale of the data type for the new column. Appropriate for use when constructing
+        /// generic decimal style columns.
+        /// </summary>
+        /// <param name="name">
+        /// A <see cref="String"/> which identifies the name of this column in the database.
+        /// </param>
+        /// <param name="type">
+        /// A <see cref="ColumnType"/> that identifies the data type this column will have.
+        /// </param>
+        /// <param name="flags">
+        /// One or more <see cref="ColumnAttribute"/> bit flags that provide column behavior.
+        /// </param>
+        /// <param name="length">
+        /// The length of the data type for this column.
+        /// </param>
+        /// <param name="precision">
+        /// A <see cref="Int32"/> value which specifies the precision of the data type.
+        /// </param>
+        /// <param name="scale">
+        /// A <see cref="Int32"/> value which specifies the scale of the data type.
+        /// </param>
 		public Column(String name, ColumnType type, ColumnAttribute flags, Int32 length, Int32 precision, Int32 scale)
 		{
             if (String.IsNullOrEmpty(name))
@@ -104,7 +127,7 @@ namespace RefreshCache.Packager.Migrator
 		/// A <see cref="ColumnType"/> that identifies the data type for this column.
 		/// </param>
 		/// <param name="flags">
-		/// A collection of one or more <see cref="ColumnFlags"/> values that set special attributes for this column.
+		/// A collection of one or more <see cref="ColumnAttribute"/> values that set special attributes for this column.
 		/// </param>
 		public Column(String name, ColumnType type, ColumnAttribute flags)
 			: this(name, type, flags, -1, -1, -1)
@@ -348,31 +371,150 @@ namespace RefreshCache.Packager.Migrator
 	/// </summary>
 	public enum ColumnType
 	{
+        /// <summary>
+        /// A column that has only two values, true or false.
+        /// </summary>
 		Bit = 1,
+
+        /// <summary>
+        /// Numeric value between 0 and 255.
+        /// </summary>
 		TinyInt = 2,
+
+        /// <summary>
+        /// Numeric value between -32,768 and 32,767.
+        /// </summary>
 		SmallInt = 3,
+
+        /// <summary>
+        /// Numeric value between -2,147,483,648 and 2,147,483,647.
+        /// </summary>
 		Int = 4,
+
+        /// <summary>
+        /// Numeric value between -9,223,372,036,854,775,808 and 9,223,372,036,854,775,807.
+        /// </summary>
 		BigInt = 5,
+
+        /// <summary>
+        /// Fixed precision and scale numbers. When maximum precision is used,
+        /// valid values are from - 10^38 +1 through 10^38 - 1.
+        /// </summary>
 		Numeric = 6,
+
+        /// <summary>
+        /// Fixed precision and scale numbers. When maximum precision is used,
+        /// valid values are from - 10^38 +1 through 10^38 - 1.
+        /// </summary>
 		Decimal = 7,
+
+        /// <summary>
+        /// Represents monetary or currency values between -214,748.3648 and 214,748.3647.
+        /// </summary>
 		SmallMoney = 8,
+
+        /// <summary>
+        /// Represents monetary or currency values between -922,337,203,685,477.5808 and
+        /// 922,337,203,685,477.5807.
+        /// </summary>
 		Money = 9,
+
+        /// <summary>
+        /// Approximate-number data types for use with floating point numeric data. Floating
+        /// point data is approximate; therefore, not all values in the data type range can
+        /// be represented exactly.
+        /// </summary>
 		Float = 10,
+
+        /// <summary>
+        /// Approximate-number data types for use with floating point numeric data. Floating
+        /// point data is approximate; therefore, not all values in the data type range can
+        /// be represented exactly.
+        /// </summary>
 		Real = 11,
+
+        /// <summary>
+        /// Defines a time of a day. The time is without time zone awareness and is based on
+        /// a 24-hour clock.
+        /// </summary>
 		Time = 12,
+
+        /// <summary>
+        /// Defines a calendar date. The range is 0001-01-01 through 9999-12-31.
+        /// </summary>
 		Date = 13,
+
+        /// <summary>
+        /// Defines a calendar date and time. The date range is 1900-01-01 through 2079-06-06
+        /// while the time is only accurate to 1 minute (no seconds).
+        /// </summary>
 		SmallDateTime = 14,
+
+        /// <summary>
+        /// Defines a calendar date and time. The date range is 1753-01-01 through 9999-12-31
+        /// while the time is accurate to 0.003 seconds.
+        /// </summary>
 		DateTime = 15,
+
+        /// <summary>
+        /// Defines a calendar date and time. The date range is 0001-01-01 through 9999-12-31
+        /// while the time is accurate to 100 nanoseconds.
+        /// </summary>
 		DateTimeOffset = 16,
+
+        /// <summary>
+        /// Fixed-length, non-Unicode character data with a length of n bytes. n must be a
+        /// value from 1 through 8,000. The storage size is n bytes.
+        /// </summary>
 		Char = 17,
+
+        /// <summary>
+        /// Variable-length, non-Unicode character data. n can be a value from 1 through 8,000.
+        /// </summary>
 		VarChar = 18,
+
+        /// <summary>
+        /// Variable-length non-Unicode data in the code page of the server and with a maximum
+        /// length of 2^31-1 (2,147,483,647) characters.
+        /// </summary>
 		Text = 19,
+
+        /// <summary>
+        /// Fixed-length Unicode character data of n characters. n must be a value from 1
+        /// through 4,000.
+        /// </summary>
 		NChar = 20,
+
+        /// <summary>
+        /// Variable-length Unicode character data. ncan be a value from 1 through 4,000.
+        /// </summary>
 		NVarChar = 21,
+
+        /// <summary>
+        /// Variable-length Unicode data with a maximum length of 2^30 - 1 (1,073,741,823)
+        /// characters.
+        /// </summary>
 		NText = 22,
+
+        /// <summary>
+        /// Fixed-length binary data with a length of n bytes, where n is a value from 1
+        /// through 8,000.
+        /// </summary>
 		Binary = 23,
+
+        /// <summary>
+        /// Variable-length binary data. n can be a value from 1 through 8,000.
+        /// </summary>
 		VarBinary = 24,
+
+        /// <summary>
+        /// Variable-length binary data from 0 through 2^31-1 (2,147,483,647) bytes.
+        /// </summary>
 		Image = 25,
+
+        /// <summary>
+        /// A 16-byte GUID.
+        /// </summary>
 		UniqueIdentifier = 26
 	}
 }
