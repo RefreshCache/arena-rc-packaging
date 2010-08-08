@@ -22,6 +22,18 @@ namespace RefreshCache.Packager.Migrator
 		/// The current SqlCommand (and transaction) that we have running.
 		/// </summary>
 		private SqlCommand dbCommand;
+
+        /// <summary>
+        /// Retrieve the SqlTransaction that is currently in effect. Value is
+        /// null is no transaction is currently active.
+        /// </summary>
+        public SqlTransaction dbTransaction
+        {
+            get
+            {
+                return (dbCommand != null ? dbCommand.Transaction : null);
+            }
+        }
 		
 		/// <summary>
 		/// If this parameter is set to True then all SQL commands will be output
@@ -151,6 +163,7 @@ namespace RefreshCache.Packager.Migrator
 			
 			TestOperationState();
 
+            dbCommand.CommandType = System.Data.CommandType.Text;
 			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
 			reader = dbCommand.ExecuteReader();
 			result = reader.HasRows;
