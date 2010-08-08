@@ -50,9 +50,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Migrator.csproj">
-      <Project>{0A1A47D4-D0BF-4B0C-92B8-9632D57BCD1A}</Project>
-      <Name>Migrator</Name>
+    <ProjectReference Include="..\Arena.Custom.RC.Packager.csproj">
+      <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
+      <Name>Arena.Custom.RC.Packager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

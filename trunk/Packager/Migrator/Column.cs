@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Text;
 
 
-namespace RefreshCache.Migrator
+namespace RefreshCache.Packager.Migrator
 {
 	/// <summary>
 	/// A TableColumn identifies a single column that will be created in a table. It
