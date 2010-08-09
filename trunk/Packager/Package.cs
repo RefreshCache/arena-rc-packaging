@@ -52,9 +52,20 @@ namespace RefreshCache.Packager
         /// <summary>
         /// Contains information about the package such as name, version,
         /// dependencies, etc.
+        /// TODO: This must be populated.
         /// </summary>
         public PackageInfo Info { get { return _Info; } }
         private PackageInfo _Info;
+
+        /// <summary>
+        /// Retrieves the byte array of raw assembly data that comprises the
+        /// Migration assembly that allows the package to install database
+        /// changes. This property cannot be set, it is automatically set
+        /// when a package is loaded that has Migration data.
+        /// TODO: This must be populated.
+        /// </summary>
+        public Byte[] Migration { get { return _Migration; } }
+        private Byte[] _Migration;
 
         /// <summary>
         /// This list is reset each time the Export method is called and
@@ -250,6 +261,32 @@ namespace RefreshCache.Packager
             }
 
             return BuildMessages;
+        }
+
+        /// <summary>
+        /// Retrieve a list of all File objects that are contained in this
+        /// package. Base files as well as files for pages, modules, etc.
+        /// are included in this list.
+        /// </summary>
+        /// <returns>A List of File objects for this package.</returns>
+        public List<File> AllFiles()
+        {
+            List<File> files = new List<File>();
+
+
+            files.AddRange(Files);
+
+            foreach (Module m in Modules)
+            {
+                files.AddRange(m.Files);
+            }
+
+            foreach (PageInstance p in Pages)
+            {
+                files.AddRange(p.Files);
+            }
+
+            return files;
         }
 
         #region Traversal methods for determining next available ID numbers.

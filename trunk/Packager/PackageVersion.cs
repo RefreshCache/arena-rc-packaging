@@ -92,7 +92,7 @@ namespace RefreshCache.Packager
         /// Compare this version number with that of another version number.
         /// </summary>
         /// <param name="obj">
-        /// A <see cref="MigratorVersion"/> cast as an object to be compared against.
+        /// A <see cref="PackageVersion"/> cast as an object to be compared against.
         /// </param>
         /// <returns>
         /// 0 if the two version are the same; -1 if this version is less than the passed
