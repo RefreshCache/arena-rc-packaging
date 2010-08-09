@@ -21,6 +21,15 @@ namespace RefreshCache.Packager
         public String Path { get; set; }
 
         /// <summary>
+        /// When loading a full package this parameter is filled with the
+        /// file contents and can be used to create the file on the target
+        /// machine.
+        /// TODO: This must be populated.
+        /// </summary>
+        public Byte[] Contents { get { return _Contents; } }
+        private Byte[] _Contents;
+
+        /// <summary>
         /// The path which identifies the source data for this File
         /// object. While this path can be absolute it should be
         /// relative to the directory the package will be built

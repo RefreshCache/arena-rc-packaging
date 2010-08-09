@@ -271,7 +271,7 @@ namespace RefreshCache.Packager.Migrator
 		/// Compare this version number with that of another version number.
 		/// </summary>
 		/// <param name="obj">
-		/// A <see cref="MigratorVersionStep"/> or <see cref="MigratorVersion"/> cast as an
+		/// A <see cref="MigratorVersionStep"/> or <see cref="PackageVersion"/> cast as an
 		/// object to be compared against.
 		/// </param>
 		/// <returns>

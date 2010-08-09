@@ -16,8 +16,6 @@ namespace RefreshCache.Packager
     {
         #region Properties
 
-        internal int _ModuleID;
-
         /// <summary>
         /// The ID that uniquely identifies this module inside of the Package. If
         /// this module has not yet been associated with a Package this value will
@@ -33,6 +31,7 @@ namespace RefreshCache.Packager
                 return _ModuleID;
             }
         }
+        internal int _ModuleID;
 
         /// <summary>
         /// The name of this module as it will appear in the Modules list and
@@ -81,6 +80,14 @@ namespace RefreshCache.Packager
         /// The description of this module as it will appear in Arena.
         /// </summary>
         public String Description { get; set; }
+
+        /// <summary>
+        /// Retrieves a list of all File objects for this module. This property
+        /// will contain an empty list if the package loaded is not a fully
+        /// built package.
+        /// TODO: Fill this property.
+        /// </summary>
+        public FileCollection Files { get { return null; } }
 
         /// <summary>
         /// The Package object that owns this Module. This property should

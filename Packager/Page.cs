@@ -70,6 +70,14 @@ namespace RefreshCache.Packager
         public String Guid { get; set; }
 
         /// <summary>
+        /// Retrieves a list of all File objects for this page. This property
+        /// will contain an empty list if the package loaded is not a fully
+        /// built package.
+        /// TODO: Fill this property.
+        /// </summary>
+        public FileCollection Files { get { return null; } }
+
+        /// <summary>
         /// The Package object that owns this PageInstance.
         /// </summary>
         public Package Package
