@@ -289,6 +289,42 @@ namespace RefreshCache.Packager
             return files;
         }
 
+        /// <summary>
+        /// Retrieve an ordered list of all pages for this package. This
+        /// list is ordered in such a way that stepping forward through the
+        /// list would allow the caller to create pages from the top down.
+        /// Reversing the order would allow the caller to delete pages from
+        /// the bottom up.
+        /// </summary>
+        /// <returns>A list of PageInstance objects that is order-safe.</returns>
+        public List<PageInstance> OrderedPages()
+        {
+            List<PageInstance> pages = new List<PageInstance>();
+
+
+            foreach (PageInstance page in Pages)
+            {
+                pages.Add(page);
+                OrderedPages(page, ref pages);
+            }
+
+            return pages;
+        }
+
+        /// <summary>
+        /// Recursively add all child pages into the list of pages.
+        /// </summary>
+        /// <param name="page">The page to add all child pages of into the list.</param>
+        /// <param name="pages">The list of pages to add pages into.</param>
+        private void OrderedPages(PageInstance page, ref List<PageInstance> pages)
+        {
+            foreach (PageInstance p in page.Pages)
+            {
+                pages.Add(p);
+                OrderedPages(p, ref pages);
+            }
+        }
+
         #region Traversal methods for determining next available ID numbers.
         
         /// <summary>

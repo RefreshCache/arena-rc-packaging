@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 
 namespace RefreshCache.Packager.Installer
 {
@@ -30,6 +31,10 @@ namespace RefreshCache.Packager.Installer
         private SqlCommand Command;
         private String RootPath;
 
+        private Dictionary<Int32, Int32> ModuleMap;
+        private Dictionary<Int32, Int32> PageMap;
+        private Dictionary<Int32, Int32> ModuleInstanceMap;
+
         #endregion
 
 
@@ -47,6 +52,9 @@ namespace RefreshCache.Packager.Installer
 
             _Connection = connection;
             Command = _Connection.CreateCommand();
+
+            ModuleMap = new Dictionary<int, int>();
+            PageMap = new Dictionary<int, int>();
         }
 
 
@@ -267,15 +275,427 @@ namespace RefreshCache.Packager.Installer
         }
 
 
+        /// <summary>
+        /// Install or update all modules for this package. If a module does
+        /// not exist in the old package but exists in the new package it is
+        /// created. If a module exists in the old package but does not exist
+        /// in the new package, it is removed (and all associated module
+        /// instances as well as any pages that become empty due to the
+        /// removal). If a module exists in both the old package and the new
+        /// package then no action is taken.
+        /// </summary>
+        /// <param name="package">The new package that is being installed.</param>
+        /// <param name="oldPackage">The previous version of the package, or null if this is a new install.</param>
+        /// <exception cref="PackageLocalConflictException">Indicates a local module with the same name or url already exists.</exception>
         private void InstallPackageModules(Package package, Package oldPackage)
         {
+            //
+            // Check for any modules that need to be removed.
+            //
+            if (oldPackage != null)
+            {
+                foreach (Module m in oldPackage.Modules)
+                {
+                    Boolean remove = true;
+
+                    foreach (Module m2 in package.Modules)
+                    {
+                        if (m2.URL == m.URL)
+                        {
+                            remove = false;
+                            break;
+                        }
+                    }
+
+                    //
+                    // The module has been deleted from the package, remove it from the
+                    // database.
+                    //
+                    if (remove)
+                    {
+                        SqlDataReader rdr;
+                        Int32 module_id;
+                        Dictionary<Int32, Int32> module_instances;
+
+                        //
+                        // Find the database ID of this old module.
+                        //
+                        Command.CommandType = CommandType.Text;
+                        Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_url] = @ModuleUrl";
+                        Command.Parameters.Clear();
+                        Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
+                        module_id = Convert.ToInt32(Command.ExecuteScalar());
+
+                        //
+                        // Get a list of all module instances that need to be removed,
+                        // as well as the pages that might need to be removed.
+                        //
+                        Command.CommandType = CommandType.Text;
+                        Command.CommandText = "SELECT [module_instance_id],[page_id] FROM [port_module_instance] WHERE [module_id] = @ModuleID";
+                        Command.Parameters.Clear();
+                        Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
+                        rdr = Command.ExecuteReader();
+                        module_instances = new Dictionary<int, int>();
+                        while (rdr.Read())
+                        {
+                            module_instances.Add(Convert.ToInt32(rdr["module_instance_id"]),
+                                Convert.ToInt32(rdr["page_id"]));
+                        }
+                        rdr.Close();
+
+                        //
+                        // Walk through each module instance, delete it and then check
+                        // if the page should be deleted.
+                        //
+                        foreach (KeyValuePair<Int32, Int32> kvp in module_instances)
+                        {
+                            Int32 Count;
+
+                            //
+                            // Delete the module instance.
+                            //
+                            Command.CommandType = CommandType.StoredProcedure;
+                            Command.CommandText = "port_sp_del_module_instance";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", kvp.Key));
+                            Command.ExecuteNonQuery();
+
+                            //
+                            // If the page still has any module instances on it then
+                            // we do not want to delete it.
+                            //
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "SELECT COUNT([module_instance_id]) FROM [port_module_instance] WHERE [page_id] = @PageID";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@PageID", kvp.Value));
+                            Count = Convert.ToInt32(Command.ExecuteScalar());
+                            if (Count > 0)
+                                continue;
+
+                            //
+                            // If the page has any child pages then we do not want to
+                            // delete it.
+                            //
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "SELECT COUNT([page_id]) FROM [port_portal_page] WHERE [parent_page_id] = @PageID";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@PageID", kvp.Value));
+                            Count = Convert.ToInt32(Command.ExecuteScalar());
+                            if (Count > 0)
+                                continue;
+
+                            //
+                            // Okay, nuke it. No existing modules and no child pages.
+                            //
+                            Command.CommandType = CommandType.StoredProcedure;
+                            Command.CommandText = "port_sp_del_portal_page";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@PageID", kvp.Value));
+                            Command.ExecuteNonQuery();
+                        }
+
+                        //
+                        // Now delete the module.
+                        //
+                        Command.CommandType = CommandType.StoredProcedure;
+                        Command.CommandText = "port_sp_del_module";
+                        Command.Parameters.Clear();
+                        Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
+                        Command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            //
+            // Check for any modules that need to be created.
+            //
+            foreach (Module m in package.Modules)
+            {
+                Boolean create = true;
+
+                if (oldPackage != null)
+                {
+                    foreach (Module m2 in oldPackage.Modules)
+                    {
+                        if (m2.URL == m.URL)
+                        {
+                            create = false;
+                            break;
+                        }
+                    }
+                }
+
+                //
+                // The module is new in this version and must be created.
+                //
+                if (create)
+                {
+                    //
+                    // Check if there is a module with the same name, this would
+                    // mean the user has something that will conflict.
+                    //
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_name] = @ModuleName";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleName", m.Name));
+                    if (Command.ExecuteScalar() != null)
+                        throw new PackageLocalConflictException(String.Format("There is an existing module with the name '{0}'.", m.Name));
+
+                    //
+                    // Check if there is a module with the same url, this would
+                    // mean the user has something that will conflict.
+                    //
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_url] = @ModuleUr";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
+                    if (Command.ExecuteScalar() != null)
+                        throw new PackageLocalConflictException(String.Format("There is an existing module with the url '{0}'.", m.URL));
+
+                    //
+                    // Create the new module in the database.
+                    //
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.CommandText = "port_sp_save_module";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleId", -1));
+                    Command.Parameters.Add(new SqlParameter("@UserId", "PackageInstaller"));
+                    Command.Parameters.Add(new SqlParameter("@ModuleName", m.Name));
+                    Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
+                    Command.Parameters.Add(new SqlParameter("@ModuleDesc", m.Description));
+                    Command.Parameters.Add(new SqlParameter("@AllowsChildModules", m.AllowsChildModules));
+                    Command.Parameters.Add(new SqlParameter("@ImagePath", m.ImagePath));
+                    Command.Parameters.Add(new SqlParameter(@"ID", null));
+                    Command.Parameters[Command.Parameters.Count - 1].Direction = ParameterDirection.Output;
+                    Command.ExecuteNonQuery();
+
+                    //
+                    // Add the new module ID to the database map.
+                    //
+                    ModuleMap.Add(m.ModuleID, Convert.ToInt32(Command.Parameters[Command.Parameters.Count - 1].Value));
+                }
+                else
+                {
+                    //
+                    // Update the database ID map.
+                    //
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.CommandText = "port_sp_get_moduleByUrl";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
+                    SqlDataReader rdr = Command.ExecuteReader();
+
+                    ModuleMap.Add(m.ModuleID, Convert.ToInt32(rdr["module_id"]));
+                    rdr.Close();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// This is a fun one. Create, delete and merge pages. First, go through
+        /// and delete any pages that existed in the old package but do not
+        /// exist in the new package being installed.
+        /// Next we step through each page that exists in both and delete any
+        /// module instances that have been removed, update any module instance
+        /// settings and add any new module instances to the page.
+        /// Finally we add any new pages that have been added since the previous
+        /// version.
+        /// </summary>
+        /// <remarks>
+        /// TODO: To do this properly we need a guid of some kind on each
+        /// module instance, we can't assume each page will have only one module
+        /// type on each page.
+        /// Before this method is called the user should be prompted about what
+        /// will be modified that the user might have created (user-created child
+        /// pages of any deleted page here will also be deleted automatically).
+        /// </remarks>
+        /// <param name="package">The new package being installed or upgraded.</param>
+        /// <param name="oldPackage">The previous version of the package or null if this is a new install.</param>
+        private void InstallPackagePages(Package package, Package oldPackage)
+        {
+            Dictionary<ModuleInstance, ModuleInstance> moduleInstances = new Dictionary<ModuleInstance, ModuleInstance>();
+            List<PageInstance> oldPageList = null;
+
+
+            //
+            // Retrieve the list of old pages and reverse the order.
+            //
+            oldPageList = oldPackage.OrderedPages();
+            oldPageList.Reverse();
+
+            //
+            // Delete any pages that have been completely removed since the
+            // previous version.
+            //
+            if (oldPackage != null)
+            {
+                foreach (PageInstance page in oldPageList)
+                {
+                    Boolean delete = true;
+
+                    //
+                    // Check if this page exists in the new package.
+                    //
+                    foreach (PageInstance p2 in package.OrderedPages())
+                    {
+                        if (p2.Guid == page.Guid)
+                        {
+                            delete = false;
+                            break;
+                        }
+                    }
+
+                    //
+                    // Delete the page from the system.
+                    //
+                    if (delete)
+                    {
+                        Int32 page_id;
+
+                        //
+                        // Find the database ID of this old page.
+                        //
+                        Command.CommandType = CommandType.Text;
+                        Command.CommandText = "SELECT [page_id] FROM [port_portal_page] WHERE [guid] = @Guid";
+                        Command.Parameters.Clear();
+                        Command.Parameters.Add(new SqlParameter("@Guid", page.Guid));
+                        page_id = Convert.ToInt32(Command.ExecuteScalar());
+
+                        //
+                        // Delete the page from the database.
+                        //
+                        Command.CommandType = CommandType.StoredProcedure;
+                        Command.CommandText = "port_sp_del_portal_page";
+                        Command.Parameters.Clear();
+                        Command.Parameters.Add(new SqlParameter("@PageID", page_id));
+                        Command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            //
+            // Update any pages that exist in both the old package and the new
+            // package.
+            //
+            if (oldPackage != null)
+            {
+                foreach (PageInstance page in oldPageList)
+                {
+                    PageInstance NewPage = null;
+
+                    //
+                    // Check if this page exists in the new package.
+                    //
+                    foreach (PageInstance p2 in package.OrderedPages())
+                    {
+                        if (p2.Guid == page.Guid)
+                        {
+                            NewPage = p2;
+                            break;
+                        }
+                    }
+
+                    //
+                    // Update the page in the system.
+                    //
+                    if (NewPage != null)
+                    {
+                        UpdateSinglePage(page, NewPage, ref moduleInstances);
+                    }
+                }
+            }
+
+            //
+            // Create any pages that exist in the new package but do not exist
+            // in the old package.
+            //
+            foreach (PageInstance page in package.OrderedPages())
+            {
+                Boolean create = true;
+
+                if (oldPackage != null)
+                {
+                    foreach (PageInstance oldPage in oldPageList)
+                    {
+                        if (oldPage.Guid == page.Guid)
+                        {
+                            create = false;
+                            break;
+                        }
+                    }
+                }
+
+                //
+                // If the page did not exist already, create it.
+                //
+                if (create)
+                {
+                    CreateSinglePage(page, ref moduleInstances);
+                }
+            }
+
+            //
+            // Set or update all module instance settings now that the page
+            // structure has been created.
+            //
             // TODO: do this.
         }
 
 
-        private void InstallPackagePages(Package package, Package oldPackage)
+        /// <summary>
+        /// Create a single page (non-recursively) in the database that did not
+        /// exist before.
+        /// </summary>
+        /// <param name="newPage">The new page information to create with.</param>
+        /// <param name="moduleInstances">The module instance collection that will be configured later.</param>
+        private void CreateSinglePage(PageInstance newPage, ref Dictionary<ModuleInstance, ModuleInstance> moduleInstances)
         {
             // TODO: do this.
+
+            //
+            // Add the new page ID to the database map.
+            //
+            ModuleMap.Add(newPage.PageID, Convert.ToInt32(Command.Parameters[Command.Parameters.Count - 1].Value));
+        }
+
+
+        /// <summary>
+        /// Update a single page in the database to match the new package
+        /// information.
+        /// </summary>
+        /// <param name="oldPage">The old page that is being updated, never null.</param>
+        /// <param name="newPage">The new page that should be updated to.</param>
+        /// <param name="moduleInstances">The list of module instances that will need their settings updated later.</param>
+        private void UpdateSinglePage(PageInstance oldPage, PageInstance newPage, ref Dictionary<ModuleInstance, ModuleInstance> moduleInstances)
+        {
+            // TODO: do this.
+
+            //
+            // Remove any module instances that exist in the old but
+            // do not exist in the new page.
+            //
+
+            //
+            // Update any default module instance settings for module
+            // instances that exist in both the old package and the
+            // new package.
+            //
+
+            //
+            // Create any new module instances that do not exist in
+            // the old page but exist in the new page.
+            //
+
+            //
+            // Store the database page_id in our map.
+            //
+            Command.CommandType = CommandType.Text;
+            Command.CommandText = "SELECT [page_id] FROM [port_portal_page] WHERE [guid] = @Guid";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@Guid", oldPage.Guid));
+            PageMap[oldPage.PageID] = Convert.ToInt32(Command.ExecuteScalar());
+
         }
 
 
@@ -288,8 +708,20 @@ namespace RefreshCache.Packager.Installer
         /// <returns>Package object identified by the packageName, or null if the package is not installed.</returns>
         public Package GetInstalledPackage(String packageName)
         {
-            // TODO: do this.
-            return null;
+            XmlDocument xdoc;
+            XmlReader rdr;
+
+
+            Command.CommandText = "cust_rc_packager_get_installed_package";
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+
+            rdr = Command.ExecuteXmlReader();
+            xdoc = new XmlDocument();
+            xdoc.Load(rdr);
+            
+            return new Package(xdoc);
         }
 
 
