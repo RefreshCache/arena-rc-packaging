@@ -135,4 +135,49 @@ namespace RefreshCache.Packager.Installer
         {
         }
     }
+
+    /// <summary>
+    /// Represents a conflict with something that is going to be
+    /// created by installing a package.
+    /// </summary>
+    public class PackageLocalConflictException : Exception
+    {
+        /// <summary>
+        /// Create a new exception with a default error mesage.
+        /// </summary>
+        public PackageLocalConflictException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Create a new exception with the specified error message.
+        /// </summary>
+        /// <param name="message">The message to include in the exception.</param>
+        public PackageLocalConflictException(String message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Create a new exception with the specified error message and an
+        /// inner exception that provides more information about the error.
+        /// </summary>
+        /// <param name="message">The message to include in the exception.</param>
+        /// <param name="innerException">The inner exception to this one.</param>
+        public PackageLocalConflictException(String message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the exception with serialized data.
+        /// </summary>
+        /// <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        public PackageLocalConflictException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+    }
 }
