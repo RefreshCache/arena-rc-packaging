@@ -303,7 +303,7 @@ namespace RefreshCache.Packager
         /// Retrieve a textual representation of this page's settings.
         /// </summary>
         /// <returns>A string in the format of Name=Value;Name=Value.</returns>
-        private String PageSettings()
+        public String PageSettings()
         {
             StringBuilder sb = new StringBuilder();
 
