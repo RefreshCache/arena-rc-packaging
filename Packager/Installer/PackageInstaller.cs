@@ -446,7 +446,7 @@ namespace RefreshCache.Packager.Installer
                     // mean the user has something that will conflict.
                     //
                     Command.CommandType = CommandType.Text;
-                    Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_url] = @ModuleUr";
+                    Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_url] = @ModuleUrl";
                     Command.Parameters.Clear();
                     Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
                     if (Command.ExecuteScalar() != null)
@@ -502,14 +502,6 @@ namespace RefreshCache.Packager.Installer
         /// Finally we add any new pages that have been added since the previous
         /// version.
         /// </summary>
-        /// <remarks>
-        /// TODO: To do this properly we need a guid of some kind on each
-        /// module instance, we can't assume each page will have only one module
-        /// type on each page.
-        /// Before this method is called the user should be prompted about what
-        /// will be modified that the user might have created (user-created child
-        /// pages of any deleted page here will also be deleted automatically).
-        /// </remarks>
         /// <param name="package">The new package being installed or upgraded.</param>
         /// <param name="oldPackage">The previous version of the package or null if this is a new install.</param>
         private void InstallPackagePages(Package package, Package oldPackage)
@@ -651,12 +643,91 @@ namespace RefreshCache.Packager.Installer
         /// <param name="moduleInstances">The module instance collection that will be configured later.</param>
         private void CreateSinglePage(PageInstance newPage, ref Dictionary<ModuleInstance, ModuleInstance> moduleInstances)
         {
-            // TODO: do this.
+            Int32 parent_page_id, template_id;
+
 
             //
-            // Add the new page ID to the database map.
+            // Determine the parent page and the template from that
+            // parent page.
             //
-            ModuleMap.Add(newPage.PageID, Convert.ToInt32(Command.Parameters[Command.Parameters.Count - 1].Value));
+            if (newPage.ParentPage != null)
+            {
+                parent_page_id = PageMap[newPage.ParentPage.PageID];
+
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "SELECT [template_id] FROM [port_portal_page] WHERE [page_id] = " + parent_page_id.ToString();
+                Command.Parameters.Clear();
+                template_id = Convert.ToInt32(Command.ExecuteScalar());
+            }
+            else
+            {
+                parent_page_id = -1;
+                template_id = 1;
+            }
+
+            //
+            // Execute the stored procedure to create the portal page.
+            //
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandText = "INSERT INTO [port_portal_page] (" +
+                "[created_by], [modified_by], [template_id], [parent_page_id]" +
+                ", [page_order], [display_in_nav], [page_name], [page_desc]" +
+                ", [page_settings], [require_ssl], [guid], [validate_request])" +
+                " VALUES ('PackageInstaller', 'PackageInstaller', @TemplateID, @ParentPageID" +
+                ", 2147483647, @DisplayInNav, @PageName, @PageDesc" +
+                ", @PageSettings, @RequireSSL, @Guid, @ValidateRequest);" +
+                " SELECT CAST(IDENT_CURRENT('port_portal_page') AS int)";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@TemplateID", template_id));
+            if (parent_page_id != -1)
+                Command.Parameters.Add(new SqlParameter("@ParentPageID", parent_page_id));
+            else
+                Command.Parameters.Add(new SqlParameter(@"ParentPageID", null));
+            Command.Parameters.Add(new SqlParameter("@DisplayInNav", newPage.DisplayInNav));
+            Command.Parameters.Add(new SqlParameter("@RequireSSL", newPage.RequireSSL));
+            Command.Parameters.Add(new SqlParameter("@PageName", newPage.PageName));
+            Command.Parameters.Add(new SqlParameter("@PageDesc", newPage.PageDescription));
+            Command.Parameters.Add(new SqlParameter("@PageSettings", newPage.PageSettings()));
+            Command.Parameters.Add(new SqlParameter("@Guid", newPage.Guid));
+            Command.Parameters.Add(new SqlParameter("@ValidateRequest", newPage.ValidateRequest));
+            Command.Parameters[Command.Parameters.Count - 1].Direction = ParameterDirection.Output;
+            PageMap.Add(newPage.PageID, Convert.ToInt32(Command.ExecuteScalar()));
+
+            //
+            // Create all the modules for this page.
+            //
+            foreach (ModuleInstance mi in newPage.Modules)
+            {
+                CreateSingleModuleInstance(mi);
+                moduleInstances[mi] = null;
+            }
+        }
+
+
+        /// <summary>
+        /// Create a single module instance in the database. It is created
+        /// on the proper page as defined in the Package.
+        /// </summary>
+        /// <param name="mi">The module instance to be created.</param>
+        private void CreateSingleModuleInstance(ModuleInstance mi)
+        {
+            Command.CommandType = CommandType.Text;
+            Command.CommandText = "INSERT INTO [port_module_instance] (" +
+                "[created_by], [modified_by], [module_id], [module_title]" +
+                ", [show_title], [template_frame_name], [template_frame_order]" +
+                ", [module_details], [page_id])" +
+                " VALUES ('PackageInstaller', 'PackageInstaller', @ModuleID, @ModuleTitle," +
+                ", @ShowTitle, @TemplateFrameName, @TemplateFrameOrder" +
+                ", @ModuleDetails, @PageID)";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@ModuleID", ModuleMap[mi.ModuleTypeID]));
+            Command.Parameters.Add(new SqlParameter("@ModuleTitle", mi.ModuleTitle));
+            Command.Parameters.Add(new SqlParameter("@ShowTitle", mi.ShowTitle));
+            Command.Parameters.Add(new SqlParameter("@TemplateFrameName", mi.TemplateFrameName));
+            Command.Parameters.Add(new SqlParameter("@TemplateFrameOrder", mi.TemplateFrameOrder));
+            Command.Parameters.Add(new SqlParameter("@ModuleDetails", mi.ModuleDetails));
+            Command.Parameters.Add(new SqlParameter("@PageID", PageMap[mi.Page.PageID]));
+            ModuleInstanceMap.Add(mi.ModuleInstanceID, Convert.ToInt32(Command.ExecuteScalar()));
         }
 
 
@@ -664,6 +735,11 @@ namespace RefreshCache.Packager.Installer
         /// Update a single page in the database to match the new package
         /// information.
         /// </summary>
+        /// <remarks>
+        /// TODO: To do this properly we need a guid of some kind on each
+        /// module instance, we can't assume each page will have only one module
+        /// type on each page.
+        /// </remarks>
         /// <param name="oldPage">The old page that is being updated, never null.</param>
         /// <param name="newPage">The new page that should be updated to.</param>
         /// <param name="moduleInstances">The list of module instances that will need their settings updated later.</param>
