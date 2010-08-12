@@ -631,7 +631,7 @@ namespace RefreshCache.Packager.Installer
             // Set or update all module instance settings now that the page
             // structure has been created.
             //
-            // TODO: do this.
+            UpdateAllModuleInstanceSettings(moduleInstances);
         }
 
 
@@ -745,23 +745,116 @@ namespace RefreshCache.Packager.Installer
         /// <param name="moduleInstances">The list of module instances that will need their settings updated later.</param>
         private void UpdateSinglePage(PageInstance oldPage, PageInstance newPage, ref Dictionary<ModuleInstance, ModuleInstance> moduleInstances)
         {
-            // TODO: do this.
-
             //
             // Remove any module instances that exist in the old but
             // do not exist in the new page.
             //
+            foreach (ModuleInstance miOld in oldPage.Modules)
+            {
+                Boolean delete = true;
+
+                foreach (ModuleInstance miNew in newPage.Modules)
+                {
+                    if (true /* miOld.Guid == miNew.Guid */)
+                    {
+                        delete = false;
+                        break;
+                    }
+                }
+
+                //
+                // Delete the module instance from the page.
+                //
+                delete = false;
+                if (delete)
+                {
+                    Int32 module_instance_id;
+
+                    //
+                    // Get the database ID of the module instance to delete.
+                    //
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [guid] = @Guid";
+                    Command.Parameters.Clear();
+//                    Command.Parameters.Add(new SqlParameter("@Guid", miOld.Guid));
+                    module_instance_id = Convert.ToInt32(Command.ExecuteScalar());
+
+                    //
+                    // Perform the delete operation.
+                    //
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.CommandText = "port_sp_del_module_instance";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", module_instance_id));
+                    Command.ExecuteNonQuery();
+                }
+            }
 
             //
             // Update any default module instance settings for module
             // instances that exist in both the old package and the
             // new package.
             //
+            foreach (ModuleInstance miOld in oldPage.Modules)
+            {
+                ModuleInstance newInstance = null;
+
+                foreach (ModuleInstance miNew in newPage.Modules)
+                {
+                    if (false /* miNew.Guid == miOld.Guid */)
+                    {
+                        newInstance = miNew;
+                        break;
+                    }
+                }
+
+                //
+                // Perform an update on the module instance. Currently
+                // all we do is update the module instance settings.
+                //
+                newInstance = null;
+                if (newInstance != null)
+                {
+                    moduleInstances[newInstance] = miOld;
+
+                    //
+                    // Retrieve the database ID of the existing module instance.
+                    //
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [guid] = @Guid";
+                    Command.Parameters.Clear();
+//                    Command.Parameters.Add(new SqlParameter("@Guid", newInstance.Guid));
+//                    ModuleInstanceMap[newInstance.ModuleInstanceID] = Convert.ToInt32(Command.ExecuteScalar());
+                }
+            }
 
             //
             // Create any new module instances that do not exist in
             // the old page but exist in the new page.
             //
+            foreach (ModuleInstance miNew in newPage.Modules)
+            {
+                Boolean create = true;
+
+                foreach (ModuleInstance miOld in oldPage.Modules)
+                {
+                    if (true /* miNew.Guid == miOld.Guid */)
+                    {
+                        create = false;
+                        break;
+                    }
+                }
+
+                //
+                // Create the module instance.
+                //
+                create = false;
+                if (create)
+                {
+                    CreateSingleModuleInstance(miNew);
+                    moduleInstances[miNew] = null;
+                }
+            }
 
             //
             // Store the database page_id in our map.
@@ -771,7 +864,114 @@ namespace RefreshCache.Packager.Installer
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Guid", oldPage.Guid));
             PageMap[oldPage.PageID] = Convert.ToInt32(Command.ExecuteScalar());
+        }
 
+
+        /// <summary>
+        /// Walk through the list of module instances that have been
+        /// configured and delete, update or create all module instance
+        /// settings.
+        /// </summary>
+        /// <param name="moduleInstances">The list of installed module instances, they key is the new module instance and the value is null or the old module instance.</param>
+        private void UpdateAllModuleInstanceSettings(Dictionary<ModuleInstance, ModuleInstance> moduleInstances)
+        {
+            foreach (KeyValuePair<ModuleInstance, ModuleInstance> kvp in moduleInstances)
+            {
+                //
+                // kvp.Key == the new module instance.
+                // kvp.Value == null || the old module instance.
+                //
+
+                //
+                // Delete module settings that exist in the old package
+                // but do not exist in the new package.
+                //
+                if (kvp.Value != null)
+                {
+                    foreach (ModuleInstanceSetting oldSetting in kvp.Value.Settings)
+                    {
+                        Boolean delete = true;
+
+                        foreach (ModuleInstanceSetting s in kvp.Key.Settings)
+                        {
+                            if (s.Name == oldSetting.Name)
+                            {
+                                delete = false;
+                                break;
+                            }
+                        }
+
+                        //
+                        // Perform the delete operation.
+                        //
+                        if (delete)
+                        {
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "DELETE FROM [port_module_instance_setting] WHERE [module_instance_id] = @ModuleInstanceID AND [name] = @SettingName";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", ModuleInstanceMap[kvp.Key.ModuleInstanceID]));
+                            Command.Parameters.Add(new SqlParameter("@SettingName", oldSetting.Name));
+                            Command.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                //
+                // Update module settings that exist in the old package
+                // and exist in the new package, and have not been updated
+                // by the user or have had their type changed.
+                //
+                if (kvp.Value != null)
+                {
+                    foreach (ModuleInstanceSetting oldSetting in kvp.Value.Settings)
+                    {
+                        ModuleInstanceSetting newSetting = null;
+
+                        foreach (ModuleInstanceSetting s in kvp.Key.Settings)
+                        {
+                            if (s.Name == oldSetting.Name)
+                            {
+                                if (oldSetting.Type != s.Type)
+                                {
+                                    newSetting = s;
+                                }
+                                else
+                                {
+                                    //
+                                    // Check if the user has customized the setting.
+                                    //
+                                    Command.CommandType = CommandType.Text;
+                                    Command.CommandText = "SELECT [value] FROM [port_module_instance_setting] WHERE [module_instance_id] = @ModuleInstanceID AND [name] = @SettingName";
+                                    Command.Parameters.Clear();
+                                    Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", ModuleInstanceMap[kvp.Key.ModuleInstanceID]));
+                                    Command.Parameters.Add(new SqlParameter("@SettingName", oldSetting.Name));
+                                    if (oldSetting.Value == Command.ExecuteScalar().ToString())
+                                    {
+                                        newSetting = s;
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+
+                        //
+                        // Perform the update operation.
+                        //
+                        if (newSetting != null)
+                        {
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "UPDATE [port_module_instance_setting] SET [value] = @Value, [type_id] = @TypeID WHERE [module_instance_id] = @ModuleInstanceID AND [name] = @SettingName";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@Value", newSetting.Value));
+                            Command.Parameters.Add(new SqlParameter("@TypeID", (Int32)newSetting.Type));
+                            Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", ModuleInstanceMap[kvp.Key.ModuleInstanceID]));
+                            Command.Parameters.Add(new SqlParameter("@SettingName", oldSetting.Name));
+                            Command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -798,6 +998,35 @@ namespace RefreshCache.Packager.Installer
             xdoc.Load(rdr);
             
             return new Package(xdoc);
+        }
+
+
+        /// <summary>
+        /// Retrieves a list of package names that recommend the indicated
+        /// package for use. This does not include packages that require
+        /// the indicated package.
+        /// </summary>
+        /// <param name="packageName">The name of the package to query against.</param>
+        /// <returns>The list of package names that recommend the named package.</returns>
+        public List<String> PackagesRecommending(String packageName)
+        {
+            List<String> packages = new List<String>();
+            SqlDataReader rdr;
+
+
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandText = "cust_rc_packager_get_packages_recommending";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            rdr = Command.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                packages.Add(rdr[0].ToString());
+            }
+            rdr.Close();
+
+            return packages;
         }
 
 
@@ -853,7 +1082,8 @@ namespace RefreshCache.Packager.Installer
                 try
                 {
                     mig = MigrationForPackage(package);
-                    mig.Upgrade(db, version);
+                    if (mig != null)
+                        mig.Upgrade(db, version);
                 }
                 catch (Exception e)
                 {
@@ -876,30 +1106,42 @@ namespace RefreshCache.Packager.Installer
                 // Configure this package first by itself and then for each
                 // dependency it has.
                 //
-                try
+                if (mig != null)
                 {
-                    mig.Configure(db, version, null);
-
-                    foreach (PackageRequirement pkg in package.Info.Requires)
+                    try
                     {
-                        mig.Configure(db, version, pkg.Name);
-                    }
+                        mig.Configure(db, version, null);
 
-                    foreach (PackageRecommendation pkg in package.Info.Recommends)
-                    {
-                        mig.Configure(db, version, pkg.Name);
+                        foreach (PackageRequirement pkg in package.Info.Requires)
+                        {
+                            mig.Configure(db, version, pkg.Name);
+                        }
+
+                        foreach (PackageRecommendation pkg in package.Info.Recommends)
+                        {
+                            mig.Configure(db, version, pkg.Name);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    throw new DatabaseMigrationException("Unable to configure the database changes.", e);
+                    catch (Exception e)
+                    {
+                        throw new DatabaseMigrationException("Unable to configure the database changes.", e);
+                    }
                 }
 
                 //
-                // Configure all packages that depend on this package.
+                // Configure all packages that recommend this package.
                 //
                 try
                 {
+                    foreach (String dependantName in PackagesRecommending(package.Info.PackageName))
+                    {
+                        Migration mi2 = MigrationForPackage(GetInstalledPackage(dependantName));
+
+                        if (mi2 != null)
+                        {
+                            mi2.Configure(db, null, package.Info.PackageName);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
