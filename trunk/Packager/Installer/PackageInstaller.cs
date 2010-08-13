@@ -52,9 +52,6 @@ namespace RefreshCache.Packager.Installer
 
             _Connection = connection;
             Command = _Connection.CreateCommand();
-
-            ModuleMap = new Dictionary<int, int>();
-            PageMap = new Dictionary<int, int>();
         }
 
 
@@ -231,7 +228,7 @@ namespace RefreshCache.Packager.Installer
         /// <param name="newPackage">The new package that is being installed or upgraded.</param>
         /// <param name="oldPackage">If this is an upgrade operation this will contain the previously installed package. Otherwise this parameter should be null.</param>
         /// <param name="changes">The list of file changes, by reference, that will be updated with all file system changes performed.</param>
-        private void InstallPackageFiles(Package newPackage, Package oldPackage, ref List<FileChanges> changes)
+        private void InstallPackageFiles(Package newPackage, Package oldPackage, ref List<FileChange> changes)
         {
             List<String> files = new List<String>();
 
@@ -243,7 +240,7 @@ namespace RefreshCache.Packager.Installer
             {
                 FileInfo target = new FileInfo(RootPath + @"\" + f.Path);
 
-                changes.Add(new FileChanges(target));
+                changes.Add(new FileChange(target));
                 using (FileStream writer = target.Create())
                 {
                     writer.Write(f.Contents, 0, f.Contents.Length);
@@ -268,7 +265,7 @@ namespace RefreshCache.Packager.Installer
                     // File has been removed.
                     //
                     FileInfo target = new FileInfo(RootPath + @"\" + f.Path);
-                    changes.Add(new FileChanges(target));
+                    changes.Add(new FileChange(target));
                     target.Delete();
                 }
             }
@@ -976,6 +973,91 @@ namespace RefreshCache.Packager.Installer
 
 
         /// <summary>
+        /// Remove all pages from the system. This needs to be a somewhat recursive
+        /// removal as we cannot remove a page that has child pages. Start from the
+        /// bottom and work our way up to minimize the chance of deleting stuff out
+        /// of order. Because the user might have moved pages around, or even deleted
+        /// a page, we need to provide for a page not existing while performing the
+        /// delete operation.
+        /// </summary>
+        /// <remarks>
+        /// Before this method is called the user should be informed of any user-defined
+        /// pages that will be deleted by this operation so they have a chance to move
+        /// them if they wish to keep them.
+        /// </remarks>
+        /// <param name="package">The package whose pages we need to remove from the database.</param>
+        private void RemovePackagePages(Package package)
+        {
+            //
+            // foreach Page
+            //  find database page_id
+            //  call RemoveSinglePage(package, page_id)
+            // TODO: do this.
+        }
+
+
+        /// <summary>
+        /// Remove a single page from the database. First remove all module instances
+        /// from the page and then remove all child pages. Finally delete the page
+        /// itself.
+        /// </summary>
+        /// <param name="pageID">The ID number of the page to remove from the database.</param>
+        private void RemoveSinglePage(Int32 pageID)
+        {
+            //
+            // foreach moduleInstance in moduleInstances
+            //  delete moduleInstance
+            // foreach page_id in childPages
+            //  call RemoveSinglePage(package, page_id)
+            // delete pageID
+            // TODO: do this.
+        }
+
+
+        /// <summary>
+        /// Remove all modules that were installed by this package from the database.
+        /// This operation must first remove any module instances that still exist
+        /// which reference the modules, as the user might have created their own
+        /// instances on their own pages. Once that is done we remove the modules
+        /// themselves from the database.
+        /// </summary>
+        /// <remarks>
+        /// Before this method is called the user should be informed of any user-defined
+        /// pages that will be left empty by this operation. We do not delete any
+        /// pages that have been emptied, but the user might want to know about it ahead
+        /// of time.
+        /// </remarks>
+        /// <param name="package">The package whose modules we need to remove from the database.</param>
+        private void RemovePackageModules(Package package)
+        {
+            //
+            // foreach module
+            //  delete all module instances
+            //  delete module
+            // TODO: do this.
+        }
+
+
+        /// <summary>
+        /// Remove all files from the file system that were installed by this
+        /// package. This is done in a safe way by saving all file changes into
+        /// the fileChanges parameter so that they can be restored later if some
+        /// error occurs later on in the removal process. No exception is raised
+        /// if a file is not found, it is simply ignored.
+        /// </summary>
+        /// <param name="package">The package whose files are to be removed from the file system.</param>
+        /// <param name="fileChanges">The list of changes we make to the file system will be stored in this parameter.</param>
+        private void RemovePackageFiles(Package package, ref List<FileChange> fileChanges)
+        {
+            //
+            // foreach file
+            //  create and store FileChange.
+            //  delete file.
+            // TODO: do this.
+        }
+
+
+        /// <summary>
         /// Retrieve the stored package information from the database for an
         /// installed package. Each package that is installed is stored in the
         /// database for later use, this retrieves that data.
@@ -994,8 +1076,16 @@ namespace RefreshCache.Packager.Installer
             Command.Parameters.Add(new SqlParameter("@Package", packageName));
 
             rdr = Command.ExecuteXmlReader();
-            xdoc = new XmlDocument();
-            xdoc.Load(rdr);
+            try
+            {
+                xdoc = new XmlDocument();
+                xdoc.Load(rdr);
+            }
+            catch
+            {
+                xdoc = null;
+            }
+            rdr.Close();
             
             return new Package(xdoc);
         }
@@ -1031,6 +1121,35 @@ namespace RefreshCache.Packager.Installer
 
 
         /// <summary>
+        /// Retrieves a list of installed package names that require the
+        /// indicated package in order to function. This does not include
+        /// packages that recommend the indicated package.
+        /// </summary>
+        /// <param name="packageName">The name of the package to query against.</param>
+        /// <returns>The list of package names that require the named package.</returns>
+        public List<String> PackagesRequiring(String packageName)
+        {
+            List<String> packages = new List<String>();
+            SqlDataReader rdr;
+
+
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandText = "cust_rc_packager_get_packages_requiring";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            rdr = Command.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                packages.Add(rdr[0].ToString());
+            }
+            rdr.Close();
+
+            return packages;
+        }
+
+
+        /// <summary>
         /// Install or upgrade a package into the system. The entire process
         /// is done inside of a transaction state so if an error occures the
         /// system should be left in the state it was before the process
@@ -1044,13 +1163,20 @@ namespace RefreshCache.Packager.Installer
         /// <exception cref="Exception">An unknown error occurred during installation.</exception>
         public void InstallPackage(Package package)
         {
-            List<FileChanges> fileChanges = new List<FileChanges>();
+            List<FileChange> fileChanges = new List<FileChange>();
             PackageVersion version;
             Package oldPackage;
             Database db;
             Migration mig;
 
             
+            //
+            // Setup database maps.
+            //
+            PageMap = new Dictionary<int, int>();
+            ModuleMap = new Dictionary<int, int>();
+            ModuleInstanceMap = new Dictionary<int, int>();
+
             //
             // Verify package dependencies.
             //
@@ -1160,7 +1286,7 @@ namespace RefreshCache.Packager.Installer
                 //
                 try
                 {
-                    foreach (FileChanges fc in fileChanges)
+                    foreach (FileChange fc in fileChanges)
                     {
                         try
                         {
@@ -1182,16 +1308,6 @@ namespace RefreshCache.Packager.Installer
                 //
                 throw;
             }
-            //
-            // Process:
-            // -Verify. (check dependencies, etc.)
-            // -Begin Transaction.
-            // -Migrate Database of this package to new version.
-            // -Install new files (while saving contents of replaced files and locations of newly installed files for undo).
-            // -Configure this package (generic run).
-            // -Configure this package for each recommendation and requirement.
-            // /Configure all packages that recommend this one.
-            // -Commit Transaction.
         }
 
 
@@ -1208,17 +1324,162 @@ namespace RefreshCache.Packager.Installer
         /// <exception cref="Exception">An unknown exception occurred during package removal.</exception>
         public void RemovePackage(String packageName)
         {
+            List<FileChange> fileChanges = new List<FileChange>();
+            Package package;
+            Migration mig;
+            Database db;
+
+
             //
-            // Process:
-            // Begin Transaction.
-            // Verify. (check dependencies, check for package, etc.)
-            // Unconfigure all package that recommend this one.
-            // Unconfigure this package for each recommendation and requirement.
-            // Unconfigure this package (generic run).
-            // Remove all files (while saving contents for restoration in case of process failure).
-            // Migrate Database of this package to nothing.
-            // Commit Transaction.
+            // Setup database maps.
             //
+            PageMap = new Dictionary<int, int>();
+            ModuleMap = new Dictionary<int, int>();
+            ModuleInstanceMap = new Dictionary<int, int>();
+
+            //
+            // Check if the package is installed.
+            //
+            package = GetInstalledPackage(packageName);
+            if (package == null)
+                throw new PackageNotInstalledException(String.Format("The package {0} is not currently installed.", packageName));
+
+            //
+            // Check if there are any packages that depend on the package
+            // we are about to remove.
+            //
+            if (PackagesRequiring(packageName).Count > 0)
+                throw new PackageDependencyException(String.Format("The package {0} as dependencies and cannot be removed.", packageName));
+
+            //
+            // Begin the database transaction.
+            //
+            db = new Database(Connection);
+            db.BeginTransaction();
+            Command.Transaction = db.dbTransaction;
+
+            //
+            // Begin the actual removal process.
+            //
+            try
+            {
+                //
+                // Unconfigure all packages that recommend this one.
+                //
+                try
+                {
+                    foreach (String name in PackagesRecommending(packageName))
+                    {
+                        mig = MigrationForPackage(GetInstalledPackage(name));
+                        if (mig != null)
+                            mig.Unconfigure(db, null, packageName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseMigrationException("Unable to re-configure dependent packages.", e);
+                }
+
+                //
+                // Unconfigure this package.
+                //
+                try
+                {
+                    //
+                    // Load the migration object from the package.
+                    //
+                    mig = MigrationForPackage(package);
+
+                    if (mig != null)
+                    {
+                        //
+                        // Unconfigure this package from its recommendations.
+                        //
+                        foreach (PackageRecommendation pkg in package.Info.Recommends)
+                        {
+                            mig.Unconfigure(db, null, pkg.Name);
+                        }
+
+                        //
+                        // Unconfigure this package from its requirements.
+                        //
+                        foreach (PackageRequirement pkg in package.Info.Requires)
+                        {
+                            mig.Unconfigure(db, null, pkg.Name);
+                        }
+
+                        //
+                        // Do a general unconfigure of this package.
+                        //
+                        mig.Unconfigure(db, null, null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseMigrationException("Unable to unconfigure package.", e);
+                }
+
+                //
+                // Remove all the new files, pages, modules, etc.
+                //
+                try
+                {
+                    RemovePackagePages(package);
+                    RemovePackageModules(package);
+                    RemovePackageFiles(package, ref fileChanges);
+                }
+                catch (IOException) { throw; }
+                catch (Exception) { throw; }
+
+                //
+                // Migrate the database to a completely non-existant state.
+                //
+                if (mig != null)
+                {
+                    try
+                    {
+                        mig.Downgrade(db, null);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DatabaseMigrationException("Error while trying to migrate database.", e);
+                    }
+                }
+
+                //
+                // Commit database changes, we are all done.
+                //
+                db.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                //
+                // Rollback file system changes.
+                //
+                try
+                {
+                    foreach (FileChange fc in fileChanges)
+                    {
+                        try
+                        {
+                            fc.Restore();
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+
+                //
+                // Rollback database changes.
+                //
+                db.RollbackTransaction();
+                Command.Transaction = null;
+
+                //
+                // Throw the exception again.
+                //
+                throw;
+            }
         }
     }
 
@@ -1228,7 +1489,7 @@ namespace RefreshCache.Packager.Installer
     /// also provides a method to restore the file back to it's original
     /// state.
     /// </summary>
-    class FileChanges
+    class FileChange
     {
         /// <summary>
         /// A reference to the information about the original file,
@@ -1249,7 +1510,7 @@ namespace RefreshCache.Packager.Installer
         /// possible restoration later.
         /// </summary>
         /// <param name="original">A FileInfo object that identifies the original file.</param>
-        public FileChanges(FileInfo original)
+        public FileChange(FileInfo original)
         {
             Info = new FileInfo(original.FullName);
             Info.Refresh();
