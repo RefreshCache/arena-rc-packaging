@@ -382,6 +382,13 @@ namespace RefreshCache.Packager.Installer
                                 continue;
 
                             //
+                            // If the page is one that is in the list of Pages (i.e. one
+                            // that was created by the package) then do not delete. We
+                            // will only delete user-created pages that are empty.
+                            //
+                            // TODO: do this.
+
+                            //
                             // Okay, nuke it. No existing modules and no child pages.
                             //
                             Command.CommandType = CommandType.StoredProcedure;
@@ -663,9 +670,9 @@ namespace RefreshCache.Packager.Installer
             }
 
             //
-            // Execute the stored procedure to create the portal page.
+            // Execute the SQL query to create the portal page.
             //
-            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandType = CommandType.Text;
             Command.CommandText = "INSERT INTO [port_portal_page] (" +
                 "[created_by], [modified_by], [template_id], [parent_page_id]" +
                 ", [page_order], [display_in_nav], [page_name], [page_desc]" +
@@ -893,6 +900,10 @@ namespace RefreshCache.Packager.Installer
                         {
                             if (s.Name == oldSetting.Name)
                             {
+                                //
+                                // Determine if the user has customized the setting value.
+                                //
+                                // TODO: do this, if user has customized, do not delete.
                                 delete = false;
                                 break;
                             }
@@ -967,6 +978,15 @@ namespace RefreshCache.Packager.Installer
                             Command.ExecuteNonQuery();
                         }
                     }
+                }
+
+                //
+                // Create any new module instance settings that don't exist in
+                // the old package but do exist in the new package.
+                //
+                if (kvp.Value == null)
+                {
+                    // TODO: do this.
                 }
             }
         }
