@@ -73,9 +73,9 @@ namespace RefreshCache.Packager
         /// Retrieves a list of all File objects for this page. This property
         /// will contain an empty list if the package loaded is not a fully
         /// built package.
-        /// TODO: Fill this property.
         /// </summary>
-        public FileCollection Files { get { return null; } }
+        public FileCollection Files { get { return _Files; } }
+        private FileCollection _Files;
 
         /// <summary>
         /// The Package object that owns this PageInstance.
@@ -87,6 +87,7 @@ namespace RefreshCache.Packager
                 _Package = value;
                 _Pages.Owner = value;
                 _Modules.Owner = value;
+                _Files.Owner = value;
             }
         }
         private Package _Package;
@@ -157,6 +158,7 @@ namespace RefreshCache.Packager
             Guid = node.Attributes["guid"].Value;
             SetupSettings(node.Attributes["page_settings"].Value.Split(new char[] { ';' }));
 
+            _Files = new FileCollection(null);
             _Pages = new PageInstanceCollection();
             _Modules = new ModuleInstanceCollection();
 
@@ -169,6 +171,10 @@ namespace RefreshCache.Packager
                 else if (child.Name == "ModuleInstance")
                 {
                     Modules.Add(new ModuleInstance(child));
+                }
+                else if (child.Name == "File")
+                {
+                    Files.Add(new File(child));
                 }
             }
         }

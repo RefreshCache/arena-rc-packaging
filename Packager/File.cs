@@ -24,7 +24,6 @@ namespace RefreshCache.Packager
         /// When loading a full package this parameter is filled with the
         /// file contents and can be used to create the file on the target
         /// machine.
-        /// TODO: This must be populated.
         /// </summary>
         public Byte[] Contents { get { return _Contents; } }
         private Byte[] _Contents;
@@ -101,6 +100,11 @@ namespace RefreshCache.Packager
                 Source = node.Attributes["_source"].Value;
             else
                 Source = "";
+
+            if (!String.IsNullOrEmpty(node.InnerText))
+            {
+                _Contents = Convert.FromBase64String(node.InnerText);
+            }
         }
 
         /// <summary>

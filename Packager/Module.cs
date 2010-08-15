@@ -85,16 +85,33 @@ namespace RefreshCache.Packager
         /// Retrieves a list of all File objects for this module. This property
         /// will contain an empty list if the package loaded is not a fully
         /// built package.
-        /// TODO: Fill this property.
         /// </summary>
-        public FileCollection Files { get { return null; } }
+        public FileCollection Files { get { return _Files; } }
+        private FileCollection _Files;
 
         /// <summary>
         /// The Package object that owns this Module. This property should
         /// not be set directly, it will automatically be set when this
         /// Module is added to a ModuleCollection object.
         /// </summary>
-        public Package Package { get; set; }
+        public Package Package
+        {
+            get
+            {
+                return _Package;
+            }
+
+            set
+            {
+                if (_Files != null)
+                {
+                    _Files.Owner = value;
+                }
+
+                _Package = value;
+            }
+        }
+        private Package _Package;
 
         #endregion
 
@@ -129,6 +146,13 @@ namespace RefreshCache.Packager
             Source = node.Attributes["_source"].Value;
             SourceImage = node.Attributes["_source_image"].Value;
             Description = node.Attributes["module_desc"].Value;
+
+            _Files = new FileCollection(Package);
+            foreach (XmlNode file in node.ChildNodes)
+            {
+                if (file.Name == "File")
+                    _Files.Add(new File(file));
+            }
         }
 
         /// <summary>

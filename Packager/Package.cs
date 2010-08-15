@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -62,10 +63,18 @@ namespace RefreshCache.Packager
         /// Migration assembly that allows the package to install database
         /// changes. This property cannot be set, it is automatically set
         /// when a package is loaded that has Migration data.
-        /// TODO: This must be populated.
         /// </summary>
         public Byte[] Migration { get { return _Migration; } }
         private Byte[] _Migration;
+
+        /// <summary>
+        /// The source of the migration DLL relative to the build path.
+        /// When building a package the contents of this file will be loaded
+        /// and stored along with the XML document for use when installing
+        /// a package. This should point to a DLL with a single class which
+        /// is a subclass of Migration.
+        /// </summary>
+        public String MigrationSource { get; set; }
 
         /// <summary>
         /// This list is reset each time the Export method is called and
@@ -141,6 +150,23 @@ namespace RefreshCache.Packager
             {
                 Pages.Add(new PageInstance(node));
             }
+
+            //
+            // Load the migration information.
+            //
+            XmlNode mig = doc.SelectSingleNode("//ArenaPackage/Migration");
+            if (mig != null)
+            {
+                if (mig.Attributes["_source"] != null)
+                {
+                    MigrationSource = mig.Attributes["_source"].ToString();
+                }
+
+                if (!String.IsNullOrEmpty(mig.InnerText))
+                {
+                    _Migration = Convert.FromBase64String(mig.InnerText);
+                }
+            }
         }
 
         /// <summary>
@@ -158,6 +184,7 @@ namespace RefreshCache.Packager
             XmlDeclaration decl;
             XmlNode nodeRoot, node;
             XmlAttribute attrib;
+            FileInfo fi;
 
 
             //
@@ -215,6 +242,46 @@ namespace RefreshCache.Packager
             {
                 node.AppendChild(file.Save(doc, isExport));
             }
+
+            //
+            // Store the migration data.
+            //
+            node = doc.CreateElement("Migration");
+            if (isExport)
+            {
+                fi = null;
+                try
+                {
+                    fi = new FileInfo((MigrationSource[1] == ':' ? "" : BasePath) + MigrationSource);
+                }
+                catch { }
+
+                if (fi == null || fi.Exists == false)
+                {
+                    BuildMessages.Add(new BuildMessage(BuildMessageType.Error,
+                        String.Format("The local migration file {0} does not exist.", MigrationSource)));
+                }
+                else
+                {
+                    byte[] buffer = null;
+
+                    using (FileStream stream = fi.OpenRead())
+                    {
+                        buffer = new byte[stream.Length];
+                        stream.Read(buffer, 0, Convert.ToInt32(stream.Length));
+                        stream.Close();
+                    }
+
+                    node.InnerText = Convert.ToBase64String(buffer);
+                }
+            }
+            else
+            {
+                attrib = doc.CreateAttribute("_source");
+                attrib.Value = (!String.IsNullOrEmpty(MigrationSource) ? MigrationSource : "");
+                node.Attributes.Append(attrib);
+            }
+            nodeRoot.AppendChild(node);
 
             return doc;
         }
