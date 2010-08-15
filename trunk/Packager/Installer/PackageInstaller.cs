@@ -386,7 +386,22 @@ namespace RefreshCache.Packager.Installer
                             // that was created by the package) then do not delete. We
                             // will only delete user-created pages that are empty.
                             //
-                            // TODO: do this.
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "SELECT [guid] FROM [port_portal_page] WHERE [page_id] = @PageID";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@PageID", kvp.Value));
+                            String pageGuid = Command.ExecuteScalar().ToString();
+                            Count = 0;
+                            foreach (PageInstance pg in oldPackage.OrderedPages())
+                            {
+                                if (pg.Guid == pageGuid)
+                                {
+                                    Count = 1;
+                                    break;
+                                }
+                            }
+                            if (Count > 0)
+                                continue;
 
                             //
                             // Okay, nuke it. No existing modules and no child pages.
@@ -900,12 +915,29 @@ namespace RefreshCache.Packager.Installer
                         {
                             if (s.Name == oldSetting.Name)
                             {
-                                //
-                                // Determine if the user has customized the setting value.
-                                //
-                                // TODO: do this, if user has customized, do not delete.
                                 delete = false;
                                 break;
+                            }
+                        }
+
+                        //
+                        // Determine if the user has customized the old setting value.
+                        //
+                        if (delete)
+                        {
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "SELECT [value] FROM [port_module_instance_setting] WHERE [module_instance_id] = @ModuleInstanceID AND [name] = @SettingName";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", ModuleInstanceMap[kvp.Key.ModuleInstanceID]));
+                            Command.Parameters.Add(new SqlParameter("@SettingName", oldSetting.Name));
+                            Object value = Command.ExecuteScalar();
+                            if (value == null && !String.IsNullOrEmpty(oldSetting.Value))
+                            {
+                                delete = false;
+                            }
+                            else if (value.ToString() != oldSetting.Value)
+                            {
+                                delete = false;
                             }
                         }
 
@@ -986,7 +1018,36 @@ namespace RefreshCache.Packager.Installer
                 //
                 if (kvp.Value == null)
                 {
-                    // TODO: do this.
+                    foreach (ModuleInstanceSetting newSetting in kvp.Key.Settings)
+                    {
+                        Boolean create = true;
+
+                        foreach (ModuleInstanceSetting oldSetting in kvp.Value.Settings)
+                        {
+                            if (oldSetting.Name == newSetting.Name)
+                            {
+                                create = false;
+                                break;
+                            }
+                        }
+
+                        //
+                        // Create the module instance setting.
+                        //
+                        if (create)
+                        {
+                            Command.CommandType = CommandType.Text;
+                            Command.CommandText = "INSERT INTO [port_module_instance_setting] " +
+                                "([module_instance_id], [name], [value], [type_id]) " +
+                                "VALUES (@ModuleInstanceID, @SettingName, @Value, @TypeID)";
+                            Command.Parameters.Clear();
+                            Command.Parameters.Add(new SqlParameter("@Value", newSetting.Value));
+                            Command.Parameters.Add(new SqlParameter("@TypeID", (Int32)newSetting.Type));
+                            Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", ModuleInstanceMap[kvp.Key.ModuleInstanceID]));
+                            Command.Parameters.Add(new SqlParameter("@SettingName", newSetting.Name));
+                            Command.ExecuteNonQuery();
+                        }
+                    }
                 }
             }
         }
