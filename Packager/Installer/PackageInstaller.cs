@@ -1069,11 +1069,29 @@ namespace RefreshCache.Packager.Installer
         /// <param name="package">The package whose pages we need to remove from the database.</param>
         private void RemovePackagePages(Package package)
         {
-            //
-            // foreach Page
-            //  find database page_id
-            //  call RemoveSinglePage(package, page_id)
-            // TODO: do this.
+            List<PageInstance> pages;
+            Object value;
+
+
+            pages = package.OrderedPages();
+            pages.Reverse();
+            foreach (PageInstance page in pages)
+            {
+                //
+                // Try to find the database ID of the page, if it is not found then
+                // just ignore it as the user might have deleted it or it might
+                // have been deleted by a previous operation.
+                //
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "SELECT [page_id] FROM [port_portal_page] WHERE [guid] = @Guid";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@Guid", page.Guid));
+                value = Command.ExecuteScalar();
+                if (value == null)
+                    continue;
+
+                RemoveSinglePage(Convert.ToInt32(value));
+            }
         }
 
 
@@ -1085,13 +1103,74 @@ namespace RefreshCache.Packager.Installer
         /// <param name="pageID">The ID number of the page to remove from the database.</param>
         private void RemoveSinglePage(Int32 pageID)
         {
+            SqlDataReader rdr;
+            List<Int32> ids;
+
+
             //
-            // foreach moduleInstance in moduleInstances
-            //  delete moduleInstance
-            // foreach page_id in childPages
-            //  call RemoveSinglePage(package, page_id)
-            // delete pageID
-            // TODO: do this.
+            // Find all the module instances on this page.
+            //
+            Command.CommandType = CommandType.Text;
+            Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [page_id] = @PageID";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@PageID", pageID));
+            rdr = Command.ExecuteReader();
+            ids = new List<int>();
+            while (rdr.Read())
+            {
+                ids.Add(Convert.ToInt32(rdr[0].ToString()));
+            }
+            rdr.Close();
+
+            //
+            // Loop through and delete each module instance.
+            //
+            foreach (Int32 module_instance_id in ids)
+            {
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "DELETE FROM [port_module_instance_setting] WHERE [module_instance_id] = @ModuleInstanceID";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", module_instance_id));
+                Command.ExecuteNonQuery();
+
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.CommandText = "port_sp_del_module_instance";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", module_instance_id));
+                Command.ExecuteNonQuery();
+            }
+
+            //
+            // Find all the child pages of this page.
+            //
+            Command.CommandType = CommandType.Text;
+            Command.CommandText = "SELECT [page_id] FROM [port_portal_page] WHERE [parent_page_id] = @PageID";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@PageID", pageID));
+            rdr = Command.ExecuteReader();
+            ids = new List<int>();
+            while (rdr.Read())
+            {
+                ids.Add(Convert.ToInt32(rdr[0].ToString()));
+            }
+            rdr.Close();
+
+            //
+            // Loop through and delete each child page.
+            //
+            foreach (Int32 child_page_id in ids)
+            {
+                RemoveSinglePage(child_page_id);
+            }
+
+            //
+            // Delete the portal page passed to us by the caller.
+            //
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandText = "port_sp_del_portal_page";
+            Command.Parameters.Clear();
+            Command.Parameters.Add(new SqlParameter("@PageID", pageID));
+            Command.ExecuteNonQuery();
         }
 
 
@@ -1111,11 +1190,64 @@ namespace RefreshCache.Packager.Installer
         /// <param name="package">The package whose modules we need to remove from the database.</param>
         private void RemovePackageModules(Package package)
         {
-            //
-            // foreach module
-            //  delete all module instances
-            //  delete module
-            // TODO: do this.
+            foreach (Module m in package.Modules)
+            {
+                SqlDataReader rdr;
+                List<Int32> ids;
+                Int32 module_id;
+
+
+                //
+                // Find the module_id of this module.
+                //
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "SELECT [module_id] FROM [port_module] WHERE [module_url] = @URL";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@URL", m.URL));
+                module_id = Convert.ToInt32(Command.ExecuteScalar());
+
+                //
+                // Find each module instance of this module.
+                //
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [module_id] = @ModuleID";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
+                rdr = Command.ExecuteReader();
+                ids = new List<int>();
+                while (rdr.Read())
+                {
+                    ids.Add(Convert.ToInt32(rdr[0]));
+                }
+                rdr.Close();
+
+                //
+                // Delete each module instance we found.
+                //
+                foreach (Int32 module_instance_id in ids)
+                {
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "DELETE FROM [port_module_instance_setting] WHERE [module_instance_id] = @ModuleInstanceID";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", module_instance_id));
+                    Command.ExecuteNonQuery();
+
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.CommandText = "port_sp_del_module_instance";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@ModuleInstanceID", module_instance_id));
+                    Command.ExecuteNonQuery();
+                }
+
+                //
+                // Delete this module from the database.
+                //
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.CommandText = "port_sp_del_module";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
+                Command.ExecuteNonQuery();
+            }
         }
 
 
@@ -1127,14 +1259,17 @@ namespace RefreshCache.Packager.Installer
         /// if a file is not found, it is simply ignored.
         /// </summary>
         /// <param name="package">The package whose files are to be removed from the file system.</param>
-        /// <param name="fileChanges">The list of changes we make to the file system will be stored in this parameter.</param>
-        private void RemovePackageFiles(Package package, ref List<FileChange> fileChanges)
+        /// <param name="changes">The list of changes we make to the file system will be stored in this parameter.</param>
+        private void RemovePackageFiles(Package package, ref List<FileChange> changes)
         {
-            //
-            // foreach file
-            //  create and store FileChange.
-            //  delete file.
-            // TODO: do this.
+            foreach (File f in package.AllFiles())
+            {
+                FileInfo fi;
+
+                fi = new FileInfo(RootPath + @"\" + f.Path);
+                changes.Add(new FileChange(fi));
+                fi.Delete();
+            }
         }
 
 
