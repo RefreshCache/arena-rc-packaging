@@ -63,7 +63,7 @@ namespace RefreshCache.Packager.Installer
         private Boolean IsSystemInstalled()
         {
             Command.CommandType = CommandType.Text;
-            Command.CommandText = "SELECT name FROM sys.objects WHERE name = N'cust_rc_installed_packages'";
+            Command.CommandText = "SELECT name FROM sys.objects WHERE name = N'cust_rc_packager_sp_get_installed_packages'";
 
             return (Command.ExecuteScalar() != null);
         }
@@ -92,7 +92,7 @@ namespace RefreshCache.Packager.Installer
 
 
             Command.CommandType = CommandType.StoredProcedure;
-            Command.CommandText = "cust_rc_packager_get_package_version";
+            Command.CommandText = "cust_rc_packager_sp_get_package_version";
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Package", packageName));
 
@@ -1286,7 +1286,7 @@ namespace RefreshCache.Packager.Installer
             XmlReader rdr;
 
 
-            Command.CommandText = "cust_rc_packager_get_installed_package";
+            Command.CommandText = "cust_rc_packager_sp_get_package";
             Command.CommandType = CommandType.StoredProcedure;
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Package", packageName));
@@ -1321,7 +1321,7 @@ namespace RefreshCache.Packager.Installer
 
 
             Command.CommandType = CommandType.StoredProcedure;
-            Command.CommandText = "cust_rc_packager_get_packages_recommending";
+            Command.CommandText = "cust_rc_packager_sp_get_packages_recommending";
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Package", packageName));
             rdr = Command.ExecuteReader();
@@ -1350,7 +1350,7 @@ namespace RefreshCache.Packager.Installer
 
 
             Command.CommandType = CommandType.StoredProcedure;
-            Command.CommandText = "cust_rc_packager_get_packages_requiring";
+            Command.CommandText = "cust_rc_packager_get_sp_packages_requiring";
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Package", packageName));
             rdr = Command.ExecuteReader();
