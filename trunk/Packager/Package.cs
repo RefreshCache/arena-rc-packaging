@@ -104,6 +104,7 @@ namespace RefreshCache.Packager
         /// </summary>
         public Package()
         {
+            _Info = new PackageInfo();
             _Files = new FileCollection(this);
             _Modules = new ModuleCollection(this);
             _Pages = new PageInstanceCollection(this);
@@ -119,6 +120,9 @@ namespace RefreshCache.Packager
         public Package(XmlDocument doc)
             : this()
         {
+            XmlNode node;
+
+
             //
             // Load the readme.
             //
@@ -130,41 +134,54 @@ namespace RefreshCache.Packager
             //
             // Load the modules from the document.
             //
-            foreach (XmlNode node in doc.SelectSingleNode("//ArenaPackage/Files").ChildNodes)
+            foreach (XmlNode f in doc.SelectSingleNode("//ArenaPackage/Files").ChildNodes)
             {
-                Files.Add(new File(node));
+                Files.Add(new File(f));
             }
 
             //
             // Load the modules from the document.
             //
-            foreach (XmlNode node in doc.SelectSingleNode("//ArenaPackage/Modules").ChildNodes)
+            foreach (XmlNode m in doc.SelectSingleNode("//ArenaPackage/Modules").ChildNodes)
             {
-                Modules.Add(new Module(node));
+                Modules.Add(new Module(m));
             }
 
             //
             // Load the pages from the document.
             //
-            foreach (XmlNode node in doc.SelectSingleNode("//ArenaPackage/Pages").ChildNodes)
+            foreach (XmlNode p in doc.SelectSingleNode("//ArenaPackage/Pages").ChildNodes)
             {
-                Pages.Add(new PageInstance(node));
+                Pages.Add(new PageInstance(p));
+            }
+
+            //
+            // Load the Package Information.
+            //
+            node = doc.SelectSingleNode("//ArenaPackage/Info");
+            if (node != null)
+            {
+                _Info = new PackageInfo(node);
+            }
+            else
+            {
+                _Info = new PackageInfo();
             }
 
             //
             // Load the migration information.
             //
-            XmlNode mig = doc.SelectSingleNode("//ArenaPackage/Migration");
-            if (mig != null)
+            node = doc.SelectSingleNode("//ArenaPackage/Migration");
+            if (node != null)
             {
-                if (mig.Attributes["_source"] != null)
+                if (node.Attributes["_source"] != null)
                 {
-                    MigrationSource = mig.Attributes["_source"].ToString();
+                    MigrationSource = node.Attributes["_source"].ToString();
                 }
 
-                if (!String.IsNullOrEmpty(mig.InnerText))
+                if (!String.IsNullOrEmpty(node.InnerText))
                 {
-                    _Migration = Convert.FromBase64String(mig.InnerText);
+                    _Migration = Convert.FromBase64String(node.InnerText);
                 }
             }
         }
@@ -241,6 +258,14 @@ namespace RefreshCache.Packager
             foreach (File file in Files)
             {
                 node.AppendChild(file.Save(doc, isExport));
+            }
+
+            //
+            // Store the package information.
+            //
+            if (Info != null)
+            {
+                nodeRoot.AppendChild(Info.Save(doc, isExport));
             }
 
             //

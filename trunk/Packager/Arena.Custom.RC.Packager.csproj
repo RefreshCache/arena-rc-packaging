@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PackageDependencies.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="File.cs" />
     <Compile Include="Installer\Exceptions.cs" />
     <Compile Include="Installer\PackageInstaller.cs" />
