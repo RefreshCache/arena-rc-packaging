@@ -79,9 +79,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Packager\Arena.Custom.RC.Packager.csproj">
+    <ProjectReference Include="..\Packager\RefreshCache.Packager.csproj">
       <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
-      <Name>Arena.Custom.RC.Packager</Name>
+      <Name>RefreshCache.Packager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
