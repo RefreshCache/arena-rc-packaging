@@ -191,89 +191,92 @@ namespace RefreshCache.Packager.Migrator
 		/// </returns>
 		public static String DbName(ColumnType t)
 		{
-			switch (t)
-			{
-			case ColumnType.Bit:
-				return "bit";
-				
-			case ColumnType.TinyInt:
-				return "tinyint";
-				
-			case ColumnType.SmallInt:
-				return "smallint";
-				
-			case ColumnType.Int:
-				return "int";
-				
-			case ColumnType.BigInt:
-				return "bigint";
-				
-			case ColumnType.Numeric:
-				return "numeric";
-				
-			case ColumnType.Decimal:
-				return "decimal";
-				
-			case ColumnType.SmallMoney:
-				return "smallmoney";
-				
-			case ColumnType.Money:
-				return "money";
-				
-			case ColumnType.Float:
-				return "float";
-				
-			case ColumnType.Real:
-				return "real";
-				
-			case ColumnType.Time:
-				return "time";
-				
-			case ColumnType.Date:
-				return "date";
-				
-			case ColumnType.SmallDateTime:
-				return "smalldatetime";
-				
-			case ColumnType.DateTime:
-				return "datetime";
-				
-			case ColumnType.DateTimeOffset:
-				return "datetimeoffset";
-				
-			case ColumnType.Char:
-				return "char";
-				
-			case ColumnType.VarChar:
-				return "varchar";
-				
-			case ColumnType.Text:
-				return "text";
-				
-			case ColumnType.NChar:
-				return "nchar";
-				
-			case ColumnType.NVarChar:
-				return "nvarchar";
-				
-			case ColumnType.NText:
-				return "ntext";
-				
-			case ColumnType.Binary:
-				return "binary";
-				
-			case ColumnType.VarBinary:
-				return "varbinary";
-				
-			case ColumnType.Image:
-				return "image";
-				
-			case ColumnType.UniqueIdentifier:
-				return "uniqueidentifier";
-				
-			default:
-                throw new InvalidOperationException("Invalid column type specified");
-			}
+            switch (t)
+            {
+                case ColumnType.Bit:
+                    return "bit";
+
+                case ColumnType.TinyInt:
+                    return "tinyint";
+
+                case ColumnType.SmallInt:
+                    return "smallint";
+
+                case ColumnType.Int:
+                    return "int";
+
+                case ColumnType.BigInt:
+                    return "bigint";
+
+                case ColumnType.Numeric:
+                    return "numeric";
+
+                case ColumnType.Decimal:
+                    return "decimal";
+
+                case ColumnType.SmallMoney:
+                    return "smallmoney";
+
+                case ColumnType.Money:
+                    return "money";
+
+                case ColumnType.Float:
+                    return "float";
+
+                case ColumnType.Real:
+                    return "real";
+
+                case ColumnType.Time:
+                    return "time";
+
+                case ColumnType.Date:
+                    return "date";
+
+                case ColumnType.SmallDateTime:
+                    return "smalldatetime";
+
+                case ColumnType.DateTime:
+                    return "datetime";
+
+                case ColumnType.DateTimeOffset:
+                    return "datetimeoffset";
+
+                case ColumnType.Char:
+                    return "char";
+
+                case ColumnType.VarChar:
+                    return "varchar";
+
+                case ColumnType.Text:
+                    return "text";
+
+                case ColumnType.NChar:
+                    return "nchar";
+
+                case ColumnType.NVarChar:
+                    return "nvarchar";
+
+                case ColumnType.NText:
+                    return "ntext";
+
+                case ColumnType.Binary:
+                    return "binary";
+
+                case ColumnType.VarBinary:
+                    return "varbinary";
+
+                case ColumnType.Image:
+                    return "image";
+
+                case ColumnType.UniqueIdentifier:
+                    return "uniqueidentifier";
+
+                case ColumnType.XML:
+                    return "xml";
+
+                default:
+                    throw new InvalidOperationException("Invalid column type specified");
+            }
 		}
 		
 		
@@ -515,7 +518,12 @@ namespace RefreshCache.Packager.Migrator
         /// <summary>
         /// A 16-byte GUID.
         /// </summary>
-		UniqueIdentifier = 26
+		UniqueIdentifier = 26,
+
+        /// <summary>
+        /// A data type to store XML data.
+        /// </summary>
+        XML = 27
 	}
 }
 
