@@ -873,7 +873,12 @@ namespace RefreshCache.Packager
         /// </summary>
         CustomList = 13,
 
+        /// <summary>
+        /// A textual string that identifies a file on the server. Usually prefixed by
+        /// "~/" to indicate the web application root path.
+        /// </summary>
         File = 14,
+
         GatewayAccount = 15,
         PagesAsTabs = 16,
 

@@ -24,15 +24,17 @@ namespace RefreshCache.Migrator.Tests
 
 
             con = new SqlConnection("Data Source=" + DataSource + ";Initial Catalog=tempdb;Integrated Security=SSPI");
-            db = new Database(con);
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.Transaction = con.BeginTransaction();
+            db = new Database(cmd);
             db.Verbose = true;
-            db.BeginTransaction();
         }
 
         [TearDown]
         public void TearDown()
         {
-            db.RollbackTransaction();
+            db.Command.Transaction.Rollback();
             db = null;
         }
 
@@ -394,9 +396,6 @@ namespace RefreshCache.Migrator.Tests
 
             d = new Database(null);
             Assert.True(d.Dryrun);
-            d.BeginTransaction();
-            d.RollbackTransaction();
-            d.CommitTransaction();
         }
 
         [Test]

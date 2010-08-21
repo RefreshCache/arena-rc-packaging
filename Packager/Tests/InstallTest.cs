@@ -14,12 +14,13 @@ namespace Migrator_Tests
     class InstallTest
     {
         [Test]
+        [Ignore]
         public void Test()
         {
             SqlConnection con;
             String DataSource = "CONSTANTINE\\HDCArena";
             RefreshCache.Packager.File file;
-            PackageInstaller installer;
+//            PackageInstaller installer;
             Package package;
 
 
@@ -43,8 +44,8 @@ namespace Migrator_Tests
 
                 BuildMessageCollection msg = package.Build(Environment.CurrentDirectory);
                 package = new Package(package.XmlPackage);
-                installer = new PackageInstaller(di.FullName, con);
-                installer.InstallSystemFromPackage(package);
+//                installer = new PackageInstaller(di.FullName, con);
+//                installer.InstallSystemFromPackage(package);
             }
             catch
             {
