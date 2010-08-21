@@ -171,19 +171,19 @@ namespace RefreshCache.Packager
             // Save all the required properties.
             //
             n = doc.CreateElement("Distributor");
-            n.Value = (Distributor != null ? Distributor : "");
+            n.InnerText = (Distributor != null ? Distributor : "");
             node.AppendChild(n);
             n = doc.CreateElement("PackageName");
-            n.Value = (PackageName != null ? PackageName : "");
+            n.InnerText = (PackageName != null ? PackageName : "");
             node.AppendChild(n);
             n = doc.CreateElement("Version");
-            n.Value = (Version != null ? Version.ToString() : "1.0.0");
+            n.InnerText = (Version != null ? Version.ToString() : "1.0.0");
             node.AppendChild(n);
             n = doc.CreateElement("Synopsis");
-            n.Value = (Synopsis != null ? Synopsis : "");
+            n.InnerText = (Synopsis != null ? Synopsis : "");
             node.AppendChild(n);
             n = doc.CreateElement("Description");
-            n.Value = (Description != null ? Description : "");
+            n.InnerText = (Description != null ? Description : "");
             node.AppendChild(n);
 
             //

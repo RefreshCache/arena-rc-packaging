@@ -339,7 +339,7 @@ namespace RefreshCache.Packager
             if (node.Attributes["Version"] != null)
                 Version = new PackageVersion(node.Attributes["Version"].ToString());
 
-            Description = node.Value;
+            Description = node.InnerText;
         }
 
         #endregion
@@ -365,7 +365,7 @@ namespace RefreshCache.Packager
                 node.Attributes.Append(attrib);
             }
 
-            node.Value = (Description != null ? Description : "");
+            node.InnerText = (Description != null ? Description : "");
 
             return node;
         }

@@ -82,6 +82,9 @@ namespace RefreshCache.Packager.Migrator
 		/// </param>
 		public void Upgrade(Database db, PackageVersion fromVersion)
 		{
+            if (fromVersion == null)
+                fromVersion = new PackageVersion("0.0.0");
+
 			foreach (DatabaseMigrator migrator in Migrators)
 			{
 				//
@@ -109,9 +112,12 @@ namespace RefreshCache.Packager.Migrator
 		public void Downgrade(Database db, PackageVersion toVersion)
 		{
 			int i;
-			
-			
-			for (i = Migrators.Count - 1; i >= 0; i--)
+
+
+            if (toVersion == null)
+                toVersion = new PackageVersion("0.0.0");
+
+            for (i = Migrators.Count - 1; i >= 0; i--)
 			{
 				DatabaseMigrator migrator = Migrators[i];
 
@@ -144,7 +150,10 @@ namespace RefreshCache.Packager.Migrator
 		/// </param>
 		public void Configure(Database db, PackageVersion fromVersion, String dependency)
 		{
-			foreach (DatabaseMigrator migrator in Migrators)
+            if (fromVersion == null)
+                fromVersion = new PackageVersion("0.0.0");
+
+            foreach (DatabaseMigrator migrator in Migrators)
 			{
 				//
 				// Skip versions that are less than or equal to the version we are configuring from.
@@ -176,9 +185,12 @@ namespace RefreshCache.Packager.Migrator
 		public void Unconfigure(Database db, PackageVersion toVersion, String dependency)
 		{
 			int i;
-			
-			
-			for (i = Migrators.Count - 1; i >= 0; i--)
+
+
+            if (toVersion == null)
+                toVersion = new PackageVersion("0.0.0");
+
+            for (i = Migrators.Count - 1; i >= 0; i--)
 			{
 				DatabaseMigrator migrator = Migrators[i];
 

@@ -44,7 +44,7 @@ namespace RefreshCache.Packager.Setup
             {
                 db.ExecuteNonQuery("CREATE PROCEDURE [cust_rc_packager_sp_get_installed_packages]" +
                     "AS" +
-                    "    SELECT [name],[package].query('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
+                    "    SELECT [name],[package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
                     "    FROM [cust_rc_packager_packages]"
                     );
             }
@@ -63,7 +63,7 @@ namespace RefreshCache.Packager.Setup
                 db.ExecuteNonQuery("CREATE PROCEDURE [cust_rc_packager_sp_get_package_version]" +
                     "    @Name AS varchar(80)" +
                     "AS" +
-                    "    SELECT [package].query('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
+                    "    SELECT [package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
                     "    FROM [cust_rc_packager_packages]" +
                     "    WHERE [name] = @Name"
                     );
@@ -105,7 +105,7 @@ AS
     SELECT [name]
 	    FROM [cust_rc_packager_packages]
     	CROSS APPLY [package].nodes('//ArenaPackage/Info/Require') AS P(Req)
-	    WHERE @v IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
+	    WHERE @Name IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
             }
 
             public override void Downgrade(Database db)
@@ -126,7 +126,7 @@ AS
     SELECT [name]
 	    FROM [cust_rc_packager_packages]
     	CROSS APPLY [package].nodes('//ArenaPackage/Info/Recommend') AS P(Req)
-	    WHERE @v IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
+	    WHERE @Name IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
             }
 
             public override void Downgrade(Database db)
