@@ -14,27 +14,11 @@ namespace RefreshCache.Packager.Migrator
 		#region Parameters
 		
 		/// <summary>
-		/// The database connection we are working with.
+		/// The current SqlCommand that we have running.
 		/// </summary>
-		private SqlConnection dbConnection;
-		
-		/// <summary>
-		/// The current SqlCommand (and transaction) that we have running.
-		/// </summary>
-		private SqlCommand dbCommand;
+        public SqlCommand Command { get { return _Command; } }
+		private SqlCommand _Command;
 
-        /// <summary>
-        /// Retrieve the SqlTransaction that is currently in effect. Value is
-        /// null is no transaction is currently active.
-        /// </summary>
-        public SqlTransaction dbTransaction
-        {
-            get
-            {
-                return (dbCommand != null ? dbCommand.Transaction : null);
-            }
-        }
-		
 		/// <summary>
 		/// If this parameter is set to True then all SQL commands will be output
 		/// to the console as well as run against the server.
@@ -54,99 +38,38 @@ namespace RefreshCache.Packager.Migrator
 		/// <summary>
 		/// Create a new database object with the specifies SQL connection.
 		/// </summary>
-		/// <param name="connection">
-		/// A <see cref="SqlConnection"/> that identifies the SQL data source we are working with.
+		/// <param name="cmd">
+		/// A <see cref="SqlCommand"/> that identifies the SQL command, transaction
+        /// and connection to work with.
 		/// </param>
-		public Database(SqlConnection connection)
+		public Database(SqlCommand cmd)
 		{
-            if (connection != null)
+            if (cmd != null)
             {
-                if (connection.State != System.Data.ConnectionState.Open)
-                    connection.Open();
-                dbConnection = connection;
+                _Command = cmd;
             }
             else
             {
                 Dryrun = true;
             }
 		}
-		
 
-		/// <summary>
-		/// This method simply performs a few tests to see if this object is
-		/// in a sane state to perform a database operation.
-		/// </summary>
-		private void TestOperationState()
-		{
-			if (Dryrun)
-				return;
 
-			if (dbConnection == null)
-				throw new InvalidOperationException("Cannot perform database operation unless connected to a database.");
-			
-			if (dbCommand == null)
-				throw new InvalidOperationException("Cannot perform database operation unless there is a valid command object.");
-		}
-		
-		
-		/// <summary>
-		/// Begin a transaction. All operations must be performed inside a transaction.
-		/// </summary>
-		public void BeginTransaction()
-		{
-			if (Dryrun)
-				return;
-			
-			if (dbConnection == null)
-				throw new InvalidOperationException("Cannot begin transaction unless connected to a database.");
-			
-			if (dbCommand != null)
-				throw new InvalidOperationException("Cannot begin transaction while an outstanding transaction exists.");
-			
-			dbCommand = dbConnection.CreateCommand();
-			dbCommand.Transaction = dbConnection.BeginTransaction();
-		}
-		
-		
-		/// <summary>
-		/// Commit the transaction and write all changes we have made to the database.
-		/// </summary>
-		public void CommitTransaction()
-		{
-			if (Dryrun)
-				return;
-			
-			if (dbCommand == null)
-				throw new InvalidOperationException("Cannot commit transaction without an outstanding transaction.");
-			
-			if (dbConnection == null)
-				throw new InvalidOperationException("Cannot commit transaction unless connected to a database.");
-			
-			dbCommand.Transaction.Commit();
-			dbCommand = null;
-		}
-		
-		
-		/// <summary>
-		/// Rollback the current transaction an erase everything we did.
-		/// </summary>
-		public void RollbackTransaction()
-		{
-			if (Dryrun)
-				return;
-			
-			if (dbCommand == null)
-				throw new InvalidOperationException("Cannot commit transaction without an outstanding transaction.");
-			
-			if (dbConnection == null)
-				throw new InvalidOperationException("Cannot commit transaction unless connected to a database.");
-			
-			dbCommand.Transaction.Rollback();
-			dbCommand = null;
-		}
-		
-		
-		/// <summary>
+        /// <summary>
+        /// This method simply performs a few tests to see if this object is
+        /// in a sane state to perform a database operation.
+        /// </summary>
+        private void TestOperationState()
+        {
+            if (Dryrun)
+                return;
+
+            if (Command.Transaction == null)
+                throw new InvalidOperationException("Cannot perform database operation unless there is a valid transaction.");
+        }
+
+
+        /// <summary>
 		/// Determine if an object exists in the database.
 		/// </summary>
 		/// <param name="objectName">
@@ -159,13 +82,13 @@ namespace RefreshCache.Packager.Migrator
 		{
 			Boolean result = false;
 			SqlDataReader reader;
-			
-			
-			TestOperationState();
 
-            dbCommand.CommandType = System.Data.CommandType.Text;
-			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
-			reader = dbCommand.ExecuteReader();
+
+            TestOperationState();
+
+            _Command.CommandType = System.Data.CommandType.Text;
+			_Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
+			reader = _Command.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
 
@@ -191,10 +114,8 @@ namespace RefreshCache.Packager.Migrator
 			SqlDataReader reader;
 			
 			
-			TestOperationState();
-
-			dbCommand.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "'";
-			reader = dbCommand.ExecuteReader();
+			_Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "'";
+			reader = _Command.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
 
@@ -210,10 +131,9 @@ namespace RefreshCache.Packager.Migrator
 		/// </param>
 		public void ExecuteNonQuery(String query)
 		{
-			TestOperationState();
+            TestOperationState();
 
-			
-			//
+            //
 			// If we are running in verbose mode, then output the SQL query to the console
 			// as well.
 			//
@@ -227,8 +147,8 @@ namespace RefreshCache.Packager.Migrator
 			//
 			if (!Dryrun)
 			{
-				dbCommand.CommandText = query;
-				dbCommand.ExecuteNonQuery();
+				_Command.CommandText = query;
+				_Command.ExecuteNonQuery();
 			}
 		}
 		

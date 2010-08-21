@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\Exceptions.cs" />
+    <Compile Include="Manager\FileChange.cs" />
+    <Compile Include="Manager\PackageDatabase.cs" />
     <Compile Include="Manager\PackageInstaller.cs" />
     <Compile Include="PackageDependencies.cs" />
     <Compile Include="Extensions.cs" />
