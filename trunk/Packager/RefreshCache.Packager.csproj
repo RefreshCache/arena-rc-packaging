@@ -49,8 +49,8 @@
     <Compile Include="PackageDependencies.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Installer\Exceptions.cs" />
-    <Compile Include="Installer\PackageInstaller.cs" />
+    <Compile Include="Manager\Exceptions.cs" />
+    <Compile Include="Manager\PackageInstaller.cs" />
     <Compile Include="Migrator\Column.cs" />
     <Compile Include="Migrator\Constraints.cs" />
     <Compile Include="Migrator\Database.cs" />

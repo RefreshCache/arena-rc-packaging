@@ -1,4 +1,4 @@
-﻿using RefreshCache.Packager.Installer;
+﻿using RefreshCache.Packager.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
