@@ -6,7 +6,7 @@ using System.Text;
 using System.Data.SqlClient;
 using NUnit.Framework;
 using RefreshCache.Packager;
-using RefreshCache.Packager.Installer;
+using RefreshCache.Packager.Manager;
 
 namespace Migrator_Tests
 {
@@ -26,7 +26,7 @@ namespace Migrator_Tests
             con = new SqlConnection("Data Source=" + DataSource + ";Initial Catalog=ArenaTestDB;Integrated Security=SSPI");
             con.Open();
 
-            DirectoryInfo di = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/ArenaInstallTest");
+            DirectoryInfo di = new DirectoryInfo("C:/Arena/Test");
             di.Create();
 
             try
