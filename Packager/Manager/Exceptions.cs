@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace RefreshCache.Packager.Installer
+namespace RefreshCache.Packager.Manager
 {
     /// <summary>
     /// Identifies some kind of version mismatch error during an operation.
