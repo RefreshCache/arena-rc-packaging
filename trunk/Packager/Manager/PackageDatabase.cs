@@ -166,7 +166,7 @@ namespace RefreshCache.Packager.Manager
             Command.CommandType = CommandType.StoredProcedure;
             Command.CommandText = "cust_rc_packager_sp_get_packages_recommending";
             Command.Parameters.Clear();
-            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            Command.Parameters.Add(new SqlParameter("@Name", packageName));
             rdr = Command.ExecuteReader();
 
             while (rdr.Read())
@@ -195,7 +195,7 @@ namespace RefreshCache.Packager.Manager
             Command.CommandType = CommandType.StoredProcedure;
             Command.CommandText = "cust_rc_packager_get_sp_packages_requiring";
             Command.Parameters.Clear();
-            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            Command.Parameters.Add(new SqlParameter("@Name", packageName));
             rdr = Command.ExecuteReader();
 
             while (rdr.Read())
@@ -212,6 +212,27 @@ namespace RefreshCache.Packager.Manager
 
 
         /// <summary>
+        /// Install the Package Management system into the file system and the database.
+        /// </summary>
+        /// <param name="package">The package to be used for the install, this must be a system install package.</param>
+        public void InstallSystem(Package package)
+        {
+            //
+            // Make sure the system is not already installed.
+            //
+            if (IsSystemInstalled())
+                throw new InvalidOperationException("The Package Management system is already installed.");
+
+            //
+            // Verify it is a system package.
+            //
+            if (package.Info.PackageName != "RC.PackageManager")
+                throw new InvalidOperationException("The package is not a system install package.");
+
+            InstallPackage(package, true);
+        }
+
+        /// <summary>
         /// Install or upgrade a package into the system. The entire process
         /// is done inside of a transaction state so if an error occures the
         /// system should be left in the state it was before the process
@@ -225,9 +246,20 @@ namespace RefreshCache.Packager.Manager
         /// <exception cref="Exception">An unknown error occurred during installation.</exception>
         public void InstallPackage(Package package)
         {
+            InstallPackage(package, false);
+        }
+
+
+        /// <summary>
+        /// Do the actual leg-work of installing a package.
+        /// </summary>
+        /// <param name="package">The package to be installed or upgraded.</param>
+        /// <param name="systemInstall">Specifies if this is a system install. If true certain safety checks are bypassed.</param>
+        private void InstallPackage(Package package, Boolean systemInstall)
+        {
             PackageInstaller installer = new PackageInstaller(this);
-            PackageVersion version;
-            Package oldPackage;
+            PackageVersion version = null;
+            Package oldPackage = null;
             Database db;
             Migration mig;
             Boolean LocalTransaction = false;
@@ -238,7 +270,8 @@ namespace RefreshCache.Packager.Manager
             //
             try
             {
-                installer.VerifyDependenciesForInstall(package);
+                if (systemInstall == false)
+                    installer.VerifyDependenciesForInstall(package);
             }
             catch (PackageVersionException) { throw; }
             catch (PackageDependencyException) { throw; }
@@ -258,8 +291,14 @@ namespace RefreshCache.Packager.Manager
             //
             try
             {
-                oldPackage = GetInstalledPackage(package.Info.PackageName);
-                version = (oldPackage != null ? oldPackage.Info.Version : null);
+                if (systemInstall == false)
+                {
+                    //
+                    // Get the previous package and the previous package version.
+                    //
+                    oldPackage = GetInstalledPackage(package.Info.PackageName);
+                    version = (oldPackage != null ? oldPackage.Info.Version : null);
+                }
 
                 //
                 // Migrate the database to the new version.
@@ -564,6 +603,5 @@ namespace RefreshCache.Packager.Manager
 
 
         #endregion
-
     }
 }

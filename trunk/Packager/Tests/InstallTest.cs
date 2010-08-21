@@ -20,7 +20,7 @@ namespace Migrator_Tests
             SqlConnection con;
             String DataSource = "CONSTANTINE\\HDCArena";
             RefreshCache.Packager.File file;
-//            PackageInstaller installer;
+            PackageDatabase pdb;
             Package package;
 
 
@@ -28,10 +28,12 @@ namespace Migrator_Tests
             con.Open();
 
             DirectoryInfo di = new DirectoryInfo("C:/Arena/Test");
-            di.Create();
 
             try
             {
+                if (di.Exists == false)
+                    throw new Exception("Arena Test Path does not exist");
+
                 package = new Package();
                 package.Info.PackageName = "RC.PackageManager";
                 package.Info.Distributor = "RefreshCache";
@@ -44,12 +46,11 @@ namespace Migrator_Tests
 
                 BuildMessageCollection msg = package.Build(Environment.CurrentDirectory);
                 package = new Package(package.XmlPackage);
-//                installer = new PackageInstaller(di.FullName, con);
-//                installer.InstallSystemFromPackage(package);
+                pdb = new PackageDatabase(di.FullName, con);
+                pdb.InstallSystem(package);
             }
             catch
             {
-                di.Delete(true);
                 throw;
             }
         }
