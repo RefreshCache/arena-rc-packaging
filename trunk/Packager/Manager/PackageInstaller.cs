@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-namespace RefreshCache.Packager.Installer
+namespace RefreshCache.Packager.Manager
 {
     /// <summary>
     /// This class provides all the interface methods for performing installation

@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\Exceptions.cs" />
+    <Compile Include="Manager\PackageInstaller.cs" />
     <Compile Include="PackageDependencies.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="File.cs" />
-    <Compile Include="Manager\Exceptions.cs" />
-    <Compile Include="Manager\PackageInstaller.cs" />
     <Compile Include="Migrator\Column.cs" />
     <Compile Include="Migrator\Constraints.cs" />
     <Compile Include="Migrator\Database.cs" />
