@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -150,6 +151,16 @@ namespace RefreshCache.Packager.Installer
                 {
                     throw new DatabaseMigrationException("Unable to configure the database changes.", e);
                 }
+
+                //
+                // Store the Package information in the database.
+                //
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "INSERT INTO cust_rc_packager_packages ([created_by], [modified_by], [name], [package]) VALUES ('Package Manager', 'Package Manager', @Name, @Package)";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
+                Command.Parameters.Add(new SqlParameter("@Package", new SqlXml(new XmlNodeReader(package.XmlPackage))));
+                Command.ExecuteNonQuery();
 
                 //
                 // Commit database changes, we are all done.
@@ -360,6 +371,10 @@ namespace RefreshCache.Packager.Installer
                 FileInfo target = new FileInfo(RootPath + @"\" + f.Path);
 
                 changes.Add(new FileChange(target));
+                if (!target.Directory.Exists)
+                {
+                    target.Directory.Create();
+                }
                 using (FileStream writer = target.Create())
                 {
                     writer.Write(f.Contents, 0, f.Contents.Length);
@@ -651,8 +666,11 @@ namespace RefreshCache.Packager.Installer
             //
             // Retrieve the list of old pages and reverse the order.
             //
-            oldPageList = oldPackage.OrderedPages();
-            oldPageList.Reverse();
+            if (oldPackage != null)
+            {
+                oldPageList = oldPackage.OrderedPages();
+                oldPageList.Reverse();
+            }
 
             //
             // Delete any pages that have been completely removed since the
@@ -1535,7 +1553,7 @@ namespace RefreshCache.Packager.Installer
             try
             {
                 oldPackage = GetInstalledPackage(package.Info.PackageName);
-                version = (oldPackage != null ? oldPackage.Info.Version : null);
+                version = (oldPackage != null ? oldPackage.Info.Version : new PackageVersion("0.0.0"));
 
                 //
                 // Migrate the database to the new version.
@@ -1608,6 +1626,16 @@ namespace RefreshCache.Packager.Installer
                 {
                     throw new DatabaseMigrationException("Unable to re-configure dependent packages.", e);
                 }
+
+                //
+                // Store the Package information in the database.
+                //
+                Command.CommandType = CommandType.Text;
+                Command.CommandText = "INSERT INTO cust_rc_packager_packages ([created_by], [modified_by], [name], [package]) VALUES ('Package Manager', 'Package Manager', @Name, @Package)";
+                Command.Parameters.Clear();
+                Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
+                Command.Parameters.Add(new SqlParameter("@Package", new SqlXml(new XmlNodeReader(package.XmlPackage))));
+                Command.ExecuteNonQuery();
 
                 //
                 // Commit database changes, we are all done.

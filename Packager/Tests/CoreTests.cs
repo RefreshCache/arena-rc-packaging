@@ -344,10 +344,11 @@ namespace RefreshCache.Migrator.Tests
                 new Column("column23", ColumnType.TinyInt),
                 new Column("column24", ColumnType.UniqueIdentifier),
                 new Column("column25", ColumnType.VarBinary, 2000),
-                new Column("column26", ColumnType.VarChar, 40)
+                new Column("column26", ColumnType.VarChar, 40),
+                new Column("column27", ColumnType.XML)
                 );
             db.CreateTable(tb);
-            Assert.AreEqual(Enum.GetValues(typeof(ColumnType)).Length, 26);
+            Assert.AreEqual(Enum.GetValues(typeof(ColumnType)).Length, 27);
         }
 
         [Test]

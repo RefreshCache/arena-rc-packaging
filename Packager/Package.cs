@@ -184,6 +184,8 @@ namespace RefreshCache.Packager
                     _Migration = Convert.FromBase64String(node.InnerText);
                 }
             }
+
+            _XmlPackage = doc;
         }
 
         /// <summary>
@@ -272,7 +274,7 @@ namespace RefreshCache.Packager
             // Store the migration data.
             //
             node = doc.CreateElement("Migration");
-            if (isExport)
+            if (isExport && !String.IsNullOrEmpty(MigrationSource))
             {
                 fi = null;
                 try

@@ -47,12 +47,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreTests.cs" />
+    <Compile Include="InstallTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RefreshCache.Packager.csproj">
       <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
       <Name>RefreshCache.Packager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Setup\RefreshCache.Packager.Setup.csproj">
+      <Project>{2E401713-C40F-4107-A99B-00E515D51E94}</Project>
+      <Name>RefreshCache.Packager.Setup</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
