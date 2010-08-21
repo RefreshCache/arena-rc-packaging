@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -66,6 +67,124 @@ namespace RefreshCache.Packager.Installer
             Command.CommandText = "SELECT name FROM sys.objects WHERE name = N'cust_rc_packager_sp_get_installed_packages'";
 
             return (Command.ExecuteScalar() != null);
+        }
+
+
+        /// <summary>
+        /// Install the package management system into the database.
+        /// </summary>
+        /// <param name="package">A Package object that contains the RC.PackageManager.</param>
+        public void InstallSystemFromPackage(Package package)
+        {
+            List<FileChange> fileChanges = new List<FileChange>();
+            Database db;
+            Migration mig;
+
+
+            //
+            // Ensure the package management system is not already
+            // installed.
+            //
+            if (IsSystemInstalled())
+                throw new InvalidOperationException("Package Management system is already installed.");
+
+            //
+            // Verify that they are trying to install the package
+            // manager.
+            //
+            if (package.Info.PackageName != "RC.PackageManager")
+                throw new InvalidOperationException("You must install the PackageManager package to install the system.");
+
+            //
+            // Setup database maps.
+            //
+            PageMap = new Dictionary<int, int>();
+            ModuleMap = new Dictionary<int, int>();
+            ModuleInstanceMap = new Dictionary<int, int>();
+
+            //
+            // Begin the SQL Transaction.
+            //
+            db = new Database(Connection);
+            db.BeginTransaction();
+            Command.Transaction = db.dbTransaction;
+
+            //
+            // Begin the install process.
+            //
+            try
+            {
+                //
+                // Migrate the database to the new version.
+                //
+                try
+                {
+                    mig = MigrationForPackage(package);
+                    mig.Upgrade(db, null);
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseMigrationException("Unable to install the database changes.", e);
+                }
+
+                //
+                // Install all the new files, pages, modules, etc.
+                //
+                try
+                {
+                    InstallPackageFiles(package, null, ref fileChanges);
+                    InstallPackageModules(package, null);
+                    InstallPackagePages(package, null);
+                }
+                catch (IOException) { throw; }
+                catch (Exception) { throw; }
+
+                //
+                // Configure the system.
+                //
+                try
+                {
+                    mig.Configure(db, null, null);
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseMigrationException("Unable to configure the database changes.", e);
+                }
+
+                //
+                // Commit database changes, we are all done.
+                //
+                db.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                //
+                // Rollback file system changes.
+                //
+                try
+                {
+                    foreach (FileChange fc in fileChanges)
+                    {
+                        try
+                        {
+                            fc.Restore();
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+
+                //
+                // Rollback database changes.
+                //
+                db.RollbackTransaction();
+                Command.Transaction = null;
+
+                //
+                // Throw the exception again.
+                //
+                throw;
+            }
         }
 
 

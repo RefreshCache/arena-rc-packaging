@@ -92,5 +92,47 @@ namespace RefreshCache.Packager.Setup
                 db.DropProcedure("cust_rc_packager_sp_get_package");
             }
         }
+
+        [MigratorVersion(1, 0, 0, 5)]
+        public class AddSP__cust_rc_packager_sp_get_packages_requiring : DatabaseMigrator
+        {
+            public override void Upgrade(Database db)
+            {
+                db.ExecuteNonQuery(
+@"CREATE PROCEDURE [cust_rc_packager_sp_get_packages_requiring]
+    @Name AS varchar(80)
+AS
+    SELECT [name]
+	    FROM [cust_rc_packager_packages]
+    	CROSS APPLY [package].nodes('//ArenaPackage/Info/Require') AS P(Req)
+	    WHERE @v IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
+            }
+
+            public override void Downgrade(Database db)
+            {
+                db.DropProcedure("cust_rc_packager_sp_get_packages_requiring");
+            }
+        }
+
+        [MigratorVersion(1, 0, 0, 6)]
+        public class AddSP__cust_rc_packager_sp_get_packages_recommending : DatabaseMigrator
+        {
+            public override void Upgrade(Database db)
+            {
+                db.ExecuteNonQuery(
+@"CREATE PROCEDURE [cust_rc_packager_sp_get_packages_recommending]
+    @Name AS varchar(80)
+AS
+    SELECT [name]
+	    FROM [cust_rc_packager_packages]
+    	CROSS APPLY [package].nodes('//ArenaPackage/Info/Recommend') AS P(Req)
+	    WHERE @v IN (SELECT P.Req.value('@Name', 'varchar(80)'))");
+            }
+
+            public override void Downgrade(Database db)
+            {
+                db.DropProcedure("cust_rc_packager_sp_get_packages_recommending");
+            }
+        }
     }
 }
