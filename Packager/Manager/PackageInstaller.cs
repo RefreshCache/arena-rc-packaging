@@ -1212,6 +1212,10 @@ namespace RefreshCache.Packager.Manager
         }
 
 
+        /// <summary>
+        /// Revert all the file system changes that happened back to the state
+        /// they were in before we started.
+        /// </summary>
         public void RevertFileChanges()
         {
             foreach (FileChange fc in _FileChanges)
