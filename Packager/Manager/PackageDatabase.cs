@@ -26,7 +26,16 @@ namespace RefreshCache.Packager.Manager
         public SqlConnection Connection { get { return _Connection; } }
         private SqlConnection _Connection;
 
+        /// <summary>
+        /// The SqlCommand that is being used by this instance to talk to the
+        /// SQL database.
+        /// </summary>
         internal SqlCommand Command;
+
+        /// <summary>
+        /// The path to the Arena installation. This is the folder that contains
+        /// the web.config file.
+        /// </summary>
         internal String RootPath;
 
         #endregion
@@ -83,7 +92,7 @@ namespace RefreshCache.Packager.Manager
         /// the version number of it.
         /// </summary>
         /// <param name="packageName">The name of the package to retrieve version number for.</param>
-        /// <returns>The version number as a String representation.</returns>
+        /// <returns>The version number of the package or null if the package was not found.</returns>
         public PackageVersion VersionOfPackage(String packageName)
         {
             Object result;
@@ -92,7 +101,7 @@ namespace RefreshCache.Packager.Manager
             Command.CommandType = CommandType.StoredProcedure;
             Command.CommandText = "cust_rc_packager_sp_get_package_version";
             Command.Parameters.Clear();
-            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            Command.Parameters.Add(new SqlParameter("@Name", packageName));
 
             result = Command.ExecuteScalar();
             if (result == null)
