@@ -59,32 +59,17 @@ namespace RefreshCache.Packager
             String[] pts = version.Split('.');
 
 
-            try
-            {
+            if (pts.Length >= 1 && version.Length > 0)
                 Major = Convert.ToInt32(pts[0]);
-            }
-            catch
-            {
-                Major = 0;
-            }
 
-            try
-            {
+            if (pts.Length >= 2)
                 Minor = Convert.ToInt32(pts[1]);
-            }
-            catch
-            {
-                Minor = 0;
-            }
 
-            try
-            {
+            if (pts.Length >= 3)
                 Revision = Convert.ToInt32(pts[2]);
-            }
-            catch
-            {
-                Revision = 0;
-            }
+
+            if (pts.Length >= 4)
+                throw new Exception("Incorrect number of periods in version number.");
         }
 
 
