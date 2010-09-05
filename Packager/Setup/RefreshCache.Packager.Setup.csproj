@@ -8,7 +8,7 @@
     <ProjectGuid>{2E401713-C40F-4107-A99B-00E515D51E94}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RefreshCAche.Packager.Setup</RootNamespace>
+    <RootNamespace>RefreshCache.Packager.Setup</RootNamespace>
     <AssemblyName>RefreshCache.Packager.Setup</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
