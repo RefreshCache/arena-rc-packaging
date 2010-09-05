@@ -223,9 +223,12 @@ namespace RefreshCache.Packager.Manager
         /// <summary>
         /// Install the Package Management system into the file system and the database.
         /// </summary>
-        /// <param name="package">The package to be used for the install, this must be a system install package.</param>
-        public void InstallSystem(Package package)
+        /// <param name="packages">The package to be used for the install, this must be a system install package.</param>
+        public void InstallSystem(Package[] packages)
         {
+            int i;
+
+
             //
             // Make sure the system is not already installed.
             //
@@ -233,13 +236,42 @@ namespace RefreshCache.Packager.Manager
                 throw new InvalidOperationException("The Package Management system is already installed.");
 
             //
-            // Verify it is a system package.
+            // Verify that the first package is a system package.
             //
-            if (package.Info.PackageName != "RC.PackageManager")
-                throw new InvalidOperationException("The package is not a system install package.");
+            if (packages[0].Info.PackageName != "RC.PackageManager")
+                throw new InvalidOperationException("System package is not the first package to install.");
 
-            InstallPackage(package, true);
+            //
+            // Install each package in turn.
+            //
+            for (i = 0; i < packages.Length; i++)
+            {
+                try
+                {
+                    //
+                    // Try to install the package.
+                    //
+                    InstallPackage(packages[i], true);
+                }
+                catch
+                {
+                    //
+                    // If any package install fails, walk backwards through
+                    // the list of packages that did install and un-install
+                    // them.
+                    //
+                    for (--i; i >= 0; i--)
+                    {
+                        try
+                        {
+                            RemovePackage(packages[i].Info.PackageName, true);
+                        }
+                        catch { }
+                    }
+                }
+            }
         }
+
 
         /// <summary>
         /// Install or upgrade a package into the system. The entire process
@@ -443,6 +475,21 @@ namespace RefreshCache.Packager.Manager
         /// <exception cref="Exception">An unknown exception occurred during package removal.</exception>
         public void RemovePackage(String packageName)
         {
+            RemovePackage(packageName, false);
+        }
+
+
+        /// <summary>
+        /// Do the actual leg-work of removing a package. Optionally make it
+        /// a forceful removal (used during a failed system install, or possibly
+        /// a future system un-install). A forceful removal means that dependency
+        /// checks are ignored and an error while deleting the database record
+        /// is ignored (since the table may no longer exist).
+        /// </summary>
+        /// <param name="packageName">The name of the package to remove.</param>
+        /// <param name="forceRemove">Wether or not to force the removal.</param>
+        private void RemovePackage(String packageName, Boolean forceRemove)
+        {
             PackageInstaller installer = new PackageInstaller(this);
             Database db;
             Package package;
@@ -461,8 +508,11 @@ namespace RefreshCache.Packager.Manager
             // Check if there are any packages that depend on the package
             // we are about to remove.
             //
-            if (PackagesRequiring(packageName).Count > 0)
-                throw new PackageDependencyException(String.Format("The package {0} as dependencies and cannot be removed.", packageName));
+            if (forceRemove == false)
+            {
+                if (PackagesRequiring(packageName).Count > 0)
+                    throw new PackageDependencyException(String.Format("The package {0} as dependencies and cannot be removed.", packageName));
+            }
 
             //
             // Begin the SQL Transaction.
@@ -566,11 +616,19 @@ namespace RefreshCache.Packager.Manager
                 //
                 // Remove the package from the database.
                 //
-                Command.CommandType = CommandType.Text;
-                Command.CommandText = "DELETE FROM [cust_rc_packager_packages] WHERE [name] = @Name";
-                Command.Parameters.Clear();
-                Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
-                Command.ExecuteNonQuery();
+                try
+                {
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "DELETE FROM [cust_rc_packager_packages] WHERE [name] = @Name";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
+                    Command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    if (forceRemove == false)
+                        throw;
+                }
 
                 //
                 // Commit database changes, we are all done.

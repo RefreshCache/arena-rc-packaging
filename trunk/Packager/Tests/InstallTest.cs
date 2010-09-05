@@ -47,7 +47,7 @@ namespace Migrator_Tests
                 BuildMessageCollection msg = package.Build(Environment.CurrentDirectory);
                 package = new Package(package.XmlPackage);
                 pdb = new PackageDatabase(di.FullName, con);
-                pdb.InstallSystem(package);
+                pdb.InstallSystem(new Package[] { package });
             }
             catch
             {
