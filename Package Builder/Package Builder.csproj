@@ -72,7 +72,16 @@
     </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="mainFormFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="mainFormInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainFormModules.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainFormPackage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="mainFormRequirements.cs">
