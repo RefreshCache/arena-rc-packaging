@@ -31,38 +31,8 @@ namespace RefreshCache.Packager.Builder
             //
             tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
 
-            //
-            // Setup the Package tab actions and events.
-            //
-            tbPackageReadme.TextChanged += new EventHandler(tbPackageReadme_TextChanged);
-
             InitTabs();
-
             UpdateTabs();
-
-            //
-            // Setup all the file tab actions and events.
-            //
-            dgFiles.VirtualMode = true;
-            dgFiles.CellValueNeeded += new DataGridViewCellValueEventHandler(dgFiles_CellValueNeeded);
-            dgFiles.CellValuePushed += new DataGridViewCellValueEventHandler(dgFiles_CellValuePushed);
-
-            //
-            // Setup all the module tab actions and events.
-            //
-            tbModuleName.TextChanged += new EventHandler(tbModuleName_TextChanged);
-            cbModuleSystem.CheckedChanged += new EventHandler(cbModuleSystem_CheckedChanged);
-            tbModuleURL.TextChanged += new EventHandler(tbModuleURL_TextChanged);
-            tbModuleImagePath.TextChanged += new EventHandler(tbModuleImagePath_TextChanged);
-            cbModuleAllowsChildModules.CheckedChanged += new EventHandler(cbModuleAllowsChildModules_CheckedChanged);
-            tbModuleSourcePath.TextChanged += new EventHandler(tbModuleSourcePath_TextChanged);
-            tbModuleSourceImagePath.TextChanged += new EventHandler(tbModuleSourceImagePath_TextChanged);
-            tbModuleDescription.TextChanged += new EventHandler(tbModuleDescription_TextChanged);
-            dgModules.SelectionChanged += new EventHandler(dgModules_SelectionChanged);
-            dgModules.VirtualMode = true;
-            dgModules.CellValueNeeded += new DataGridViewCellValueEventHandler(dgModules_CellValueNeeded);
-            dgModules.RowCount = 0;
-            dgModules_SelectionChanged(null, null);
 
             //
             // Setup all the page tab actions and events.
@@ -102,6 +72,7 @@ namespace RefreshCache.Packager.Builder
             InitInfoTab();
             InitRequirementsTab();
             InitVersionsTab();
+            InitFilesTab();
         }
 
 
@@ -110,6 +81,7 @@ namespace RefreshCache.Packager.Builder
             UpdateInfoTab();
             UpdateRequirementsTab();
             UpdateVersionsTab();
+            UpdateFilesTab();
         }
 
         private PageInstance SelectedPageInstance()
@@ -190,208 +162,6 @@ namespace RefreshCache.Packager.Builder
 
         #endregion
 
-        #region Package Tab User Interface
-
-        void tbPackageReadme_TextChanged(object sender, EventArgs e)
-        {
-            package.Readme = tbPackageReadme.Text;
-        }
-
-        #endregion
-
-        #region Files Tab User Interface
-
-        void dgFiles_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-            File file = package.Files[e.RowIndex];
-
-
-            if (e.ColumnIndex == 0)
-                e.Value = file.Path;
-            else if (e.ColumnIndex == 1)
-                e.Value = file.Source;
-        }
-
-        void dgFiles_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
-        {
-            File file = package.Files[e.RowIndex];
-
-
-            if (e.ColumnIndex == 0)
-                file.Path = e.Value.ToString();
-            else if (e.ColumnIndex == 1)
-                file.Source = e.Value.ToString();
-        }
-
-        private void btnAddFile_Click(object sender, EventArgs e)
-        {
-            package.Files.Add(new File());
-            dgFiles.Rows.Add();
-        }
-
-        private void btnRemoveFile_Click(object sender, EventArgs e)
-        {
-            if (dgFiles.CurrentCell != null)
-            {
-                package.Files.RemoveAt(dgFiles.CurrentCell.RowIndex);
-                dgFiles.Rows.RemoveAt(dgFiles.CurrentCell.RowIndex);
-            }
-        }
-
-
-        #endregion
-
-        #region Modules Tab User Interface
-
-        void tbModuleDescription_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.Description = tbModuleDescription.Text;
-        }
-
-        void tbModuleSourceImagePath_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.SourceImage = tbModuleSourceImagePath.Text;
-        }
-
-        void tbModuleSourcePath_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.Source = tbModuleSourcePath.Text;
-        }
-
-        void cbModuleAllowsChildModules_CheckedChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.AllowsChildModules = cbModuleAllowsChildModules.Checked;
-        }
-
-        void tbModuleImagePath_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.ImagePath = tbModuleImagePath.Text;
-        }
-
-        void tbModuleURL_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.URL = tbModuleURL.Text;
-        }
-
-        void tbModuleName_TextChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-            {
-                module.Name = tbModuleName.Text;
-                dgModules.InvalidateCell(dgModules.CurrentCell.ColumnIndex, dgModules.CurrentCell.RowIndex);
-            }
-        }
-
-        void cbModuleSystem_CheckedChanged(object sender, EventArgs e)
-        {
-            Module module = SelectedModule();
-
-
-            if (module != null && selectionChanging == false)
-                module.IsSystem = cbModuleSystem.Checked;
-        }
-
-        void dgModules_SelectionChanged(object sender, EventArgs e)
-        {
-            Boolean enabled = false;
-
-
-            selectionChanging = true;
-
-            if (dgModules.SelectedCells.Count > 0)
-            {
-                Module module = package.Modules[dgModules.SelectedCells[0].RowIndex];
-
-                tbModuleName.Text = module.Name;
-                cbModuleSystem.Checked = module.IsSystem;
-                tbModuleURL.Text = module.URL;
-                tbModuleImagePath.Text = module.ImagePath;
-                cbModuleAllowsChildModules.Checked = module.AllowsChildModules;
-                tbModuleSourcePath.Text = module.Source;
-                tbModuleSourceImagePath.Text = module.SourceImage;
-                tbModuleDescription.Text = module.Description;
-
-                enabled = true;
-            }
-            else
-            {
-                tbModuleName.Text = "";
-                cbModuleSystem.Checked = false;
-                tbModuleURL.Text = "";
-                tbModuleImagePath.Text = "";
-                cbModuleAllowsChildModules.Checked = false;
-                tbModuleSourcePath.Text = "";
-                tbModuleSourceImagePath.Text = "";
-                tbModuleDescription.Text = "";
-            }
-
-            //
-            // Enable or disable everything.
-            //
-            tbModuleName.Enabled = enabled;
-            cbModuleSystem.Enabled = enabled;
-            tbModuleURL.Enabled = enabled;
-            tbModuleImagePath.Enabled = enabled;
-            cbModuleAllowsChildModules.Enabled = enabled;
-            tbModuleSourcePath.Enabled = enabled;
-            tbModuleSourceImagePath.Enabled = enabled;
-            tbModuleDescription.Enabled = enabled;
-
-            selectionChanging = false;
-        }
-
-        void dgModules_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-            e.Value = package.Modules[e.RowIndex].Name;
-        }
-
-        private void btnAddModule_Click(object sender, EventArgs e)
-        {
-            Module module = new Module();
-
-
-            package.Modules.Add(module);
-            dgModules.Rows.Add();
-            dgModules.CurrentCell = dgModules.Rows[dgModules.RowCount - 1].Cells[0];
-        }
-
-        private void btnRemoveModule_Click(object sender, EventArgs e)
-        {
-            if (dgModules.SelectedCells.Count > 0)
-            {
-                package.Modules.RemoveAt(dgModules.SelectedCells[0].RowIndex);
-                dgModules.Rows.RemoveAt(dgModules.SelectedCells[0].RowIndex);
-            }
-        }
-
-        #endregion
 
         #region Pages Tab User Interface
 
@@ -702,9 +472,6 @@ namespace RefreshCache.Packager.Builder
         {
             currentFileName = null;
 
-            tbPackageReadme.Text = "";
-            dgFiles.RowCount = 0;
-            dgModules.RowCount = 0;
             tvPages.Nodes.Clear();
 
             package = new Package();
@@ -867,18 +634,12 @@ namespace RefreshCache.Packager.Builder
             doc.Load(reader);
             reader.Close();
 
-            dgFiles.RowCount = 0;
-            dgModules.RowCount = 0;
             tvPages.Nodes.Clear();
 
             package = new Package(doc);
 
-            tbPackageReadme.Text = package.Readme;
-
             UpdateTabs();
 
-            dgFiles.RowCount = package.Files.Count;
-            dgModules.RowCount = package.Modules.Count;
             foreach (PageInstance page in package.Pages)
             {
                 tvPages.Nodes.Add(TreeNodeFromPageInstance(page));

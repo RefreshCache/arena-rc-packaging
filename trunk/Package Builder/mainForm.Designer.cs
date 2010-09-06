@@ -83,8 +83,6 @@
             this.tbVersions_Changelog = new System.Windows.Forms.TextBox();
             this.cbVersions_Version = new System.Windows.Forms.ComboBox();
             this.tabFiles = new System.Windows.Forms.TabPage();
-            this.btnRemoveFile = new System.Windows.Forms.Button();
-            this.btnAddFile = new System.Windows.Forms.Button();
             this.dgFiles = new System.Windows.Forms.DataGridView();
             this.path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.source = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -561,8 +559,6 @@
             // 
             // tabFiles
             // 
-            this.tabFiles.Controls.Add(this.btnRemoveFile);
-            this.tabFiles.Controls.Add(this.btnAddFile);
             this.tabFiles.Controls.Add(this.dgFiles);
             this.tabFiles.Location = new System.Drawing.Point(4, 22);
             this.tabFiles.Name = "tabFiles";
@@ -572,30 +568,8 @@
             this.tabFiles.Text = "Files";
             this.tabFiles.UseVisualStyleBackColor = true;
             // 
-            // btnRemoveFile
-            // 
-            this.btnRemoveFile.Location = new System.Drawing.Point(598, 479);
-            this.btnRemoveFile.Name = "btnRemoveFile";
-            this.btnRemoveFile.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveFile.TabIndex = 3;
-            this.btnRemoveFile.Text = "Remove File";
-            this.btnRemoveFile.UseVisualStyleBackColor = true;
-            this.btnRemoveFile.Click += new System.EventHandler(this.btnRemoveFile_Click);
-            // 
-            // btnAddFile
-            // 
-            this.btnAddFile.Location = new System.Drawing.Point(679, 479);
-            this.btnAddFile.Name = "btnAddFile";
-            this.btnAddFile.Size = new System.Drawing.Size(75, 23);
-            this.btnAddFile.TabIndex = 2;
-            this.btnAddFile.Text = "Add File";
-            this.btnAddFile.UseVisualStyleBackColor = true;
-            this.btnAddFile.Click += new System.EventHandler(this.btnAddFile_Click);
-            // 
             // dgFiles
             // 
-            this.dgFiles.AllowUserToAddRows = false;
-            this.dgFiles.AllowUserToDeleteRows = false;
             this.dgFiles.AllowUserToResizeRows = false;
             this.dgFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -619,6 +593,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgFiles.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgFiles.Location = new System.Drawing.Point(6, 6);
+            this.dgFiles.MultiSelect = false;
             this.dgFiles.Name = "dgFiles";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -628,8 +603,8 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgFiles.RowHeadersVisible = false;
-            this.dgFiles.Size = new System.Drawing.Size(748, 467);
+            this.dgFiles.RowHeadersWidth = 24;
+            this.dgFiles.Size = new System.Drawing.Size(748, 496);
             this.dgFiles.TabIndex = 1;
             // 
             // path
@@ -1474,8 +1449,6 @@
         private System.Windows.Forms.DataGridView dgFiles;
         private System.Windows.Forms.DataGridViewTextBoxColumn path;
         private System.Windows.Forms.DataGridViewTextBoxColumn source;
-        private System.Windows.Forms.Button btnRemoveFile;
-        private System.Windows.Forms.Button btnAddFile;
         private System.Windows.Forms.Button btnRemoveModule;
         private System.Windows.Forms.Button btnAddModule;
         private System.Windows.Forms.DataGridView dgModules;
