@@ -36,14 +36,7 @@ namespace RefreshCache.Packager.Builder
             //
             tbPackageReadme.TextChanged += new EventHandler(tbPackageReadme_TextChanged);
 
-            //
-            // Setup the Info tab actions and events.
-            //
-            tbInfo_Distributor.TextChanged += new EventHandler(tbInfo_Distributor_TextChanged);
-            tbInfo_PackageName.TextChanged += new EventHandler(tbInfo_PackageName_TextChanged);
-            tbInfo_Synopsis.TextChanged += new EventHandler(tbInfo_Synopsis_TextChanged);
-            tbInfo_Description.TextChanged += new EventHandler(tbInfo_Description_TextChanged);
-
+            InitInfoTab();
             InitRequirementsTab();
 
             //
@@ -186,30 +179,6 @@ namespace RefreshCache.Packager.Builder
         void tbPackageReadme_TextChanged(object sender, EventArgs e)
         {
             package.Readme = tbPackageReadme.Text;
-        }
-
-        #endregion
-
-        #region Info Tab User Interface
-
-        void tbInfo_Distributor_TextChanged(object sender, EventArgs e)
-        {
-            package.Info.Distributor = tbInfo_Distributor.Text;
-        }
-
-        void tbInfo_PackageName_TextChanged(object sender, EventArgs e)
-        {
-            package.Info.PackageName = tbInfo_PackageName.Text;
-        }
-
-        void tbInfo_Synopsis_TextChanged(object sender, EventArgs e)
-        {
-            package.Info.Synopsis = tbInfo_Synopsis.Text;
-        }
-
-        void tbInfo_Description_TextChanged(object sender, EventArgs e)
-        {
-            package.Info.Description = tbInfo_Description.Text;
         }
 
         #endregion
@@ -723,6 +692,9 @@ namespace RefreshCache.Packager.Builder
             tvPages.Nodes.Clear();
 
             package = new Package();
+
+            UpdateInfoTab();
+            UpdateRequirementsTab();
         }
 
         private void openMenu_Click(object sender, EventArgs e)
@@ -740,6 +712,9 @@ namespace RefreshCache.Packager.Builder
 
         private void saveMenu_Click(object sender, EventArgs e)
         {
+            if (tcMain.Focus() == false)
+                return;
+
             if (currentFileName == null)
                 saveAsMenu_Click(null, null);
             else
@@ -750,6 +725,9 @@ namespace RefreshCache.Packager.Builder
         {
             SaveFileDialog dialog = new SaveFileDialog();
 
+
+            if (tcMain.Focus() == false)
+                return;
 
             dialog.Filter = "XML Files|*.xml";
             dialog.FilterIndex = 0;
@@ -765,6 +743,9 @@ namespace RefreshCache.Packager.Builder
             FolderBrowserDialog folder = new FolderBrowserDialog();
             SaveFileDialog save = new SaveFileDialog();
 
+
+            if (tcMain.Focus() == false)
+                return;
 
             //
             // Get the file to save the built package as.
@@ -828,6 +809,9 @@ namespace RefreshCache.Packager.Builder
             FolderBrowserDialog folder = new FolderBrowserDialog();
 
 
+            if (tcMain.Focus() == false)
+                return;
+
             //
             // Get the base path to build from.
             //
@@ -876,10 +860,8 @@ namespace RefreshCache.Packager.Builder
 
             tbPackageReadme.Text = package.Readme;
 
-            tbInfo_Distributor.Text = package.Info.Distributor;
-            tbInfo_PackageName.Text = package.Info.PackageName;
-            tbInfo_Synopsis.Text = package.Info.Synopsis;
-            tbInfo_Description.Text = package.Info.Description;
+            UpdateInfoTab();
+            UpdateRequirementsTab();
 
             dgFiles.RowCount = package.Files.Count;
             dgModules.RowCount = package.Modules.Count;
