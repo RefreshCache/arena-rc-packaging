@@ -1,11 +1,5 @@
-﻿using RefreshCache.Packager;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Text;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RefreshCache.Packager.Builder
@@ -49,7 +43,12 @@ namespace RefreshCache.Packager.Builder
             // Update the selection.
             //
             if (cbVersions_Version.Items.Count > 0)
+            {
                 cbVersions_Version.SelectedIndex = 0;
+                package.Info.Version = package.Info.Changelog.Last().Version;
+            }
+            else
+                package.Info.Version = new PackageVersion("1.0.0");
         }
 
 

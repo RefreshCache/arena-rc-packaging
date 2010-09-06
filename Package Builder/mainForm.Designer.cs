@@ -332,7 +332,7 @@
             this.label28.Location = new System.Drawing.Point(9, 162);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(130, 13);
-            this.label28.TabIndex = 21;
+            this.label28.TabIndex = 9;
             this.label28.Text = "Recommended Packages";
             // 
             // dgRequirements_Recommended
@@ -349,7 +349,7 @@
             this.dgRequirements_Recommended.Name = "dgRequirements_Recommended";
             this.dgRequirements_Recommended.RowHeadersWidth = 24;
             this.dgRequirements_Recommended.Size = new System.Drawing.Size(742, 91);
-            this.dgRequirements_Recommended.TabIndex = 20;
+            this.dgRequirements_Recommended.TabIndex = 10;
             // 
             // dgRequirements_RecPkg_Package
             // 
@@ -387,7 +387,7 @@
             this.label27.Location = new System.Drawing.Point(410, 9);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(34, 13);
-            this.label27.TabIndex = 19;
+            this.label27.TabIndex = 5;
             this.label27.Text = "Exact";
             // 
             // tbRequirements_ArenaExactVer
@@ -395,7 +395,7 @@
             this.tbRequirements_ArenaExactVer.Location = new System.Drawing.Point(450, 6);
             this.tbRequirements_ArenaExactVer.Name = "tbRequirements_ArenaExactVer";
             this.tbRequirements_ArenaExactVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaExactVer.TabIndex = 18;
+            this.tbRequirements_ArenaExactVer.TabIndex = 6;
             // 
             // label26
             // 
@@ -403,7 +403,7 @@
             this.label26.Location = new System.Drawing.Point(275, 9);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(27, 13);
-            this.label26.TabIndex = 17;
+            this.label26.TabIndex = 3;
             this.label26.Text = "Max";
             // 
             // tbRequirements_ArenaMaxVer
@@ -411,7 +411,7 @@
             this.tbRequirements_ArenaMaxVer.Location = new System.Drawing.Point(308, 6);
             this.tbRequirements_ArenaMaxVer.Name = "tbRequirements_ArenaMaxVer";
             this.tbRequirements_ArenaMaxVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaMaxVer.TabIndex = 16;
+            this.tbRequirements_ArenaMaxVer.TabIndex = 4;
             // 
             // label25
             // 
@@ -419,7 +419,7 @@
             this.label25.Location = new System.Drawing.Point(143, 9);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(24, 13);
-            this.label25.TabIndex = 15;
+            this.label25.TabIndex = 1;
             this.label25.Text = "Min";
             // 
             // label24
@@ -428,7 +428,7 @@
             this.label24.Location = new System.Drawing.Point(9, 40);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(101, 13);
-            this.label24.TabIndex = 14;
+            this.label24.TabIndex = 7;
             this.label24.Text = "Required Packages";
             // 
             // dgRequirements_Required
@@ -444,7 +444,7 @@
             this.dgRequirements_Required.Name = "dgRequirements_Required";
             this.dgRequirements_Required.RowHeadersWidth = 24;
             this.dgRequirements_Required.Size = new System.Drawing.Size(441, 91);
-            this.dgRequirements_Required.TabIndex = 13;
+            this.dgRequirements_Required.TabIndex = 8;
             // 
             // dgRequirements_ReqPkg_Package
             // 
@@ -475,7 +475,7 @@
             this.tbRequirements_ArenaMinVer.Location = new System.Drawing.Point(173, 6);
             this.tbRequirements_ArenaMinVer.Name = "tbRequirements_ArenaMinVer";
             this.tbRequirements_ArenaMinVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaMinVer.TabIndex = 12;
+            this.tbRequirements_ArenaMinVer.TabIndex = 2;
             // 
             // label22
             // 
@@ -483,7 +483,7 @@
             this.label22.Location = new System.Drawing.Point(64, 9);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(73, 13);
-            this.label22.TabIndex = 11;
+            this.label22.TabIndex = 0;
             this.label22.Text = "Arena Version";
             // 
             // tabVersions
@@ -528,7 +528,7 @@
             this.label29.Location = new System.Drawing.Point(34, 36);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(58, 13);
-            this.label29.TabIndex = 3;
+            this.label29.TabIndex = 2;
             this.label29.Text = "Changelog";
             // 
             // label23
@@ -537,7 +537,7 @@
             this.label23.Location = new System.Drawing.Point(50, 9);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(42, 13);
-            this.label23.TabIndex = 2;
+            this.label23.TabIndex = 0;
             this.label23.Text = "Version";
             // 
             // tbVersions_Changelog
@@ -546,7 +546,7 @@
             this.tbVersions_Changelog.Multiline = true;
             this.tbVersions_Changelog.Name = "tbVersions_Changelog";
             this.tbVersions_Changelog.Size = new System.Drawing.Size(656, 162);
-            this.tbVersions_Changelog.TabIndex = 1;
+            this.tbVersions_Changelog.TabIndex = 3;
             // 
             // cbVersions_Version
             // 
@@ -555,7 +555,7 @@
             this.cbVersions_Version.Location = new System.Drawing.Point(98, 6);
             this.cbVersions_Version.Name = "cbVersions_Version";
             this.cbVersions_Version.Size = new System.Drawing.Size(121, 21);
-            this.cbVersions_Version.TabIndex = 0;
+            this.cbVersions_Version.TabIndex = 1;
             // 
             // tabFiles
             // 
@@ -652,7 +652,7 @@
             this.cbModuleSystem.Location = new System.Drawing.Point(656, 8);
             this.cbModuleSystem.Name = "cbModuleSystem";
             this.cbModuleSystem.Size = new System.Drawing.Size(98, 17);
-            this.cbModuleSystem.TabIndex = 19;
+            this.cbModuleSystem.TabIndex = 3;
             this.cbModuleSystem.Text = "System Module";
             this.cbModuleSystem.UseVisualStyleBackColor = true;
             // 
@@ -662,7 +662,7 @@
             this.tbModuleDescription.Multiline = true;
             this.tbModuleDescription.Name = "tbModuleDescription";
             this.tbModuleDescription.Size = new System.Drawing.Size(371, 113);
-            this.tbModuleDescription.TabIndex = 18;
+            this.tbModuleDescription.TabIndex = 14;
             // 
             // label4
             // 
@@ -670,7 +670,7 @@
             this.label4.Location = new System.Drawing.Point(271, 165);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(98, 13);
-            this.label4.TabIndex = 17;
+            this.label4.TabIndex = 13;
             this.label4.Text = "Module Description";
             // 
             // cbModuleAllowsChildModules
@@ -680,7 +680,7 @@
             this.cbModuleAllowsChildModules.Location = new System.Drawing.Point(269, 86);
             this.cbModuleAllowsChildModules.Name = "cbModuleAllowsChildModules";
             this.cbModuleAllowsChildModules.Size = new System.Drawing.Size(128, 17);
-            this.cbModuleAllowsChildModules.TabIndex = 16;
+            this.cbModuleAllowsChildModules.TabIndex = 8;
             this.cbModuleAllowsChildModules.Text = "Allows Child Modules ";
             this.cbModuleAllowsChildModules.UseVisualStyleBackColor = true;
             // 
@@ -689,7 +689,7 @@
             this.tbModuleSourceImagePath.Location = new System.Drawing.Point(383, 136);
             this.tbModuleSourceImagePath.Name = "tbModuleSourceImagePath";
             this.tbModuleSourceImagePath.Size = new System.Drawing.Size(371, 20);
-            this.tbModuleSourceImagePath.TabIndex = 15;
+            this.tbModuleSourceImagePath.TabIndex = 12;
             // 
             // label6
             // 
@@ -697,7 +697,7 @@
             this.label6.Location = new System.Drawing.Point(271, 139);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 13);
-            this.label6.TabIndex = 14;
+            this.label6.TabIndex = 11;
             this.label6.Text = "Source Image Path";
             // 
             // tbModuleSourcePath
@@ -705,7 +705,7 @@
             this.tbModuleSourcePath.Location = new System.Drawing.Point(383, 110);
             this.tbModuleSourcePath.Name = "tbModuleSourcePath";
             this.tbModuleSourcePath.Size = new System.Drawing.Size(371, 20);
-            this.tbModuleSourcePath.TabIndex = 13;
+            this.tbModuleSourcePath.TabIndex = 10;
             // 
             // label5
             // 
@@ -713,7 +713,7 @@
             this.label5.Location = new System.Drawing.Point(271, 113);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(66, 13);
-            this.label5.TabIndex = 12;
+            this.label5.TabIndex = 9;
             this.label5.Text = "Source Path";
             // 
             // tbModuleImagePath
@@ -721,7 +721,7 @@
             this.tbModuleImagePath.Location = new System.Drawing.Point(383, 58);
             this.tbModuleImagePath.Name = "tbModuleImagePath";
             this.tbModuleImagePath.Size = new System.Drawing.Size(371, 20);
-            this.tbModuleImagePath.TabIndex = 9;
+            this.tbModuleImagePath.TabIndex = 7;
             // 
             // label3
             // 
@@ -729,7 +729,7 @@
             this.label3.Location = new System.Drawing.Point(271, 61);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 13);
-            this.label3.TabIndex = 8;
+            this.label3.TabIndex = 6;
             this.label3.Text = "Image Path";
             // 
             // tbModuleURL
@@ -737,7 +737,7 @@
             this.tbModuleURL.Location = new System.Drawing.Point(383, 32);
             this.tbModuleURL.Name = "tbModuleURL";
             this.tbModuleURL.Size = new System.Drawing.Size(371, 20);
-            this.tbModuleURL.TabIndex = 7;
+            this.tbModuleURL.TabIndex = 5;
             // 
             // label2
             // 
@@ -745,7 +745,7 @@
             this.label2.Location = new System.Drawing.Point(271, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 6;
+            this.label2.TabIndex = 4;
             this.label2.Text = "Module URL";
             // 
             // label1
@@ -754,7 +754,7 @@
             this.label1.Location = new System.Drawing.Point(271, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 13);
-            this.label1.TabIndex = 5;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Module Name";
             // 
             // tbModuleName
@@ -762,7 +762,7 @@
             this.tbModuleName.Location = new System.Drawing.Point(383, 6);
             this.tbModuleName.Name = "tbModuleName";
             this.tbModuleName.Size = new System.Drawing.Size(158, 20);
-            this.tbModuleName.TabIndex = 4;
+            this.tbModuleName.TabIndex = 2;
             // 
             // dgModules
             // 
@@ -804,7 +804,7 @@
             this.dgModules.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgModules.RowHeadersVisible = false;
             this.dgModules.Size = new System.Drawing.Size(259, 467);
-            this.dgModules.TabIndex = 3;
+            this.dgModules.TabIndex = 0;
             // 
             // module_name
             // 
@@ -855,7 +855,7 @@
             this.tcPages.Name = "tcPages";
             this.tcPages.SelectedIndex = 0;
             this.tcPages.Size = new System.Drawing.Size(483, 496);
-            this.tcPages.TabIndex = 5;
+            this.tcPages.TabIndex = 4;
             // 
             // tabPage1
             // 
@@ -885,7 +885,7 @@
             this.label16.Location = new System.Drawing.Point(65, 216);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(62, 13);
-            this.label16.TabIndex = 11;
+            this.label16.TabIndex = 8;
             this.label16.Text = "Page GUID";
             this.label16.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -894,14 +894,14 @@
             this.tbPageGuid.Location = new System.Drawing.Point(134, 213);
             this.tbPageGuid.Name = "tbPageGuid";
             this.tbPageGuid.Size = new System.Drawing.Size(219, 20);
-            this.tbPageGuid.TabIndex = 10;
+            this.tbPageGuid.TabIndex = 9;
             // 
             // lbPageID
             // 
             this.lbPageID.Location = new System.Drawing.Point(399, 9);
             this.lbPageID.Name = "lbPageID";
             this.lbPageID.Size = new System.Drawing.Size(70, 13);
-            this.lbPageID.TabIndex = 9;
+            this.lbPageID.TabIndex = 2;
             this.lbPageID.Text = " ";
             this.lbPageID.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -911,7 +911,7 @@
             this.label10.Location = new System.Drawing.Point(6, 240);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(45, 13);
-            this.label10.TabIndex = 8;
+            this.label10.TabIndex = 10;
             this.label10.Text = "Settings";
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -951,7 +951,7 @@
             this.dgPageSettings.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgPageSettings.RowHeadersVisible = false;
             this.dgPageSettings.Size = new System.Drawing.Size(463, 162);
-            this.dgPageSettings.TabIndex = 7;
+            this.dgPageSettings.TabIndex = 11;
             // 
             // page_setting_name
             // 
@@ -983,7 +983,7 @@
             this.tbPageDescription.Multiline = true;
             this.tbPageDescription.Name = "tbPageDescription";
             this.tbPageDescription.Size = new System.Drawing.Size(335, 106);
-            this.tbPageDescription.TabIndex = 5;
+            this.tbPageDescription.TabIndex = 7;
             // 
             // cbPageRequireSSL
             // 
@@ -1003,7 +1003,7 @@
             this.cbPageValidateRequest.Location = new System.Drawing.Point(38, 78);
             this.cbPageValidateRequest.Name = "cbPageValidateRequest";
             this.cbPageValidateRequest.Size = new System.Drawing.Size(110, 17);
-            this.cbPageValidateRequest.TabIndex = 3;
+            this.cbPageValidateRequest.TabIndex = 5;
             this.cbPageValidateRequest.Text = "Validate Request ";
             this.cbPageValidateRequest.UseVisualStyleBackColor = true;
             // 
@@ -1014,7 +1014,7 @@
             this.cbPageDisplayInNav.Location = new System.Drawing.Point(50, 32);
             this.cbPageDisplayInNav.Name = "cbPageDisplayInNav";
             this.cbPageDisplayInNav.Size = new System.Drawing.Size(98, 17);
-            this.cbPageDisplayInNav.TabIndex = 2;
+            this.cbPageDisplayInNav.TabIndex = 3;
             this.cbPageDisplayInNav.Text = "Display In Nav ";
             this.cbPageDisplayInNav.UseVisualStyleBackColor = true;
             // 
@@ -1024,7 +1024,7 @@
             this.label7.Location = new System.Drawing.Point(65, 9);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(63, 13);
-            this.label7.TabIndex = 1;
+            this.label7.TabIndex = 0;
             this.label7.Text = "Page Name";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1033,7 +1033,7 @@
             this.tbPageName.Location = new System.Drawing.Point(134, 6);
             this.tbPageName.Name = "tbPageName";
             this.tbPageName.Size = new System.Drawing.Size(155, 20);
-            this.tbPageName.TabIndex = 0;
+            this.tbPageName.TabIndex = 1;
             // 
             // tabPage2
             // 
@@ -1062,7 +1062,7 @@
             this.label15.Location = new System.Drawing.Point(6, 224);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(45, 13);
-            this.label15.TabIndex = 12;
+            this.label15.TabIndex = 9;
             this.label15.Text = "Settings";
             this.label15.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1103,7 +1103,7 @@
             this.dgModuleInstanceSettings.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgModuleInstanceSettings.RowHeadersWidth = 24;
             this.dgModuleInstanceSettings.Size = new System.Drawing.Size(463, 162);
-            this.dgModuleInstanceSettings.TabIndex = 11;
+            this.dgModuleInstanceSettings.TabIndex = 10;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -1138,7 +1138,7 @@
             this.label14.Location = new System.Drawing.Point(89, 111);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(39, 13);
-            this.label14.TabIndex = 10;
+            this.label14.TabIndex = 7;
             this.label14.Text = "Details";
             this.label14.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1148,7 +1148,7 @@
             this.tbModuleInstanceDetails.Multiline = true;
             this.tbModuleInstanceDetails.Name = "tbModuleInstanceDetails";
             this.tbModuleInstanceDetails.Size = new System.Drawing.Size(335, 106);
-            this.tbModuleInstanceDetails.TabIndex = 9;
+            this.tbModuleInstanceDetails.TabIndex = 8;
             // 
             // label13
             // 
@@ -1156,7 +1156,7 @@
             this.label13.Location = new System.Drawing.Point(59, 84);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(69, 13);
-            this.label13.TabIndex = 8;
+            this.label13.TabIndex = 5;
             this.label13.Text = "Module Type";
             this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1168,7 +1168,7 @@
             this.cbModuleInstanceType.Location = new System.Drawing.Point(134, 81);
             this.cbModuleInstanceType.Name = "cbModuleInstanceType";
             this.cbModuleInstanceType.Size = new System.Drawing.Size(202, 21);
-            this.cbModuleInstanceType.TabIndex = 7;
+            this.cbModuleInstanceType.TabIndex = 6;
             this.cbModuleInstanceType.ValueMember = "ModuleID";
             // 
             // cbModuleInstanceShowTitle
@@ -1178,7 +1178,7 @@
             this.cbModuleInstanceShowTitle.Location = new System.Drawing.Point(69, 32);
             this.cbModuleInstanceShowTitle.Name = "cbModuleInstanceShowTitle";
             this.cbModuleInstanceShowTitle.Size = new System.Drawing.Size(79, 17);
-            this.cbModuleInstanceShowTitle.TabIndex = 6;
+            this.cbModuleInstanceShowTitle.TabIndex = 2;
             this.cbModuleInstanceShowTitle.Text = "Show Title ";
             this.cbModuleInstanceShowTitle.UseVisualStyleBackColor = true;
             // 
@@ -1188,7 +1188,7 @@
             this.label12.Location = new System.Drawing.Point(14, 58);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(114, 13);
-            this.label12.TabIndex = 5;
+            this.label12.TabIndex = 3;
             this.label12.Text = "Template Frame Name";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1205,7 +1205,7 @@
             this.label11.Location = new System.Drawing.Point(63, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 13);
-            this.label11.TabIndex = 3;
+            this.label11.TabIndex = 0;
             this.label11.Text = "Module Title";
             this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -1214,14 +1214,14 @@
             this.tbModuleInstanceTitle.Location = new System.Drawing.Point(134, 6);
             this.tbModuleInstanceTitle.Name = "tbModuleInstanceTitle";
             this.tbModuleInstanceTitle.Size = new System.Drawing.Size(202, 20);
-            this.tbModuleInstanceTitle.TabIndex = 2;
+            this.tbModuleInstanceTitle.TabIndex = 1;
             // 
             // btnPagesDelete
             // 
             this.btnPagesDelete.Location = new System.Drawing.Point(6, 318);
             this.btnPagesDelete.Name = "btnPagesDelete";
             this.btnPagesDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnPagesDelete.TabIndex = 4;
+            this.btnPagesDelete.TabIndex = 1;
             this.btnPagesDelete.Text = "Delete";
             this.btnPagesDelete.UseVisualStyleBackColor = true;
             // 
@@ -1230,7 +1230,7 @@
             this.btnPagesAddModule.Location = new System.Drawing.Point(109, 318);
             this.btnPagesAddModule.Name = "btnPagesAddModule";
             this.btnPagesAddModule.Size = new System.Drawing.Size(75, 23);
-            this.btnPagesAddModule.TabIndex = 3;
+            this.btnPagesAddModule.TabIndex = 2;
             this.btnPagesAddModule.Text = "Add Module";
             this.btnPagesAddModule.UseVisualStyleBackColor = true;
             this.btnPagesAddModule.Click += new System.EventHandler(this.btnPagesAddModule_Click);
@@ -1240,7 +1240,7 @@
             this.btnPagesAddPage.Location = new System.Drawing.Point(190, 318);
             this.btnPagesAddPage.Name = "btnPagesAddPage";
             this.btnPagesAddPage.Size = new System.Drawing.Size(75, 23);
-            this.btnPagesAddPage.TabIndex = 2;
+            this.btnPagesAddPage.TabIndex = 3;
             this.btnPagesAddPage.Text = "Add Page";
             this.btnPagesAddPage.UseVisualStyleBackColor = true;
             this.btnPagesAddPage.Click += new System.EventHandler(this.btnPagesAddPage_Click);
@@ -1261,7 +1261,7 @@
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.mainMenu.Size = new System.Drawing.Size(792, 24);
-            this.mainMenu.TabIndex = 1;
+            this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
