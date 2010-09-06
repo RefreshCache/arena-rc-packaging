@@ -36,8 +36,9 @@ namespace RefreshCache.Packager.Builder
             //
             tbPackageReadme.TextChanged += new EventHandler(tbPackageReadme_TextChanged);
 
-            InitInfoTab();
-            InitRequirementsTab();
+            InitTabs();
+
+            UpdateTabs();
 
             //
             // Setup all the file tab actions and events.
@@ -95,6 +96,21 @@ namespace RefreshCache.Packager.Builder
 
 
         #region Helper methods
+
+        private void InitTabs()
+        {
+            InitInfoTab();
+            InitRequirementsTab();
+            InitVersionsTab();
+        }
+
+
+        private void UpdateTabs()
+        {
+            UpdateInfoTab();
+            UpdateRequirementsTab();
+            UpdateVersionsTab();
+        }
 
         private PageInstance SelectedPageInstance()
         {
@@ -693,8 +709,7 @@ namespace RefreshCache.Packager.Builder
 
             package = new Package();
 
-            UpdateInfoTab();
-            UpdateRequirementsTab();
+            UpdateTabs();
         }
 
         private void openMenu_Click(object sender, EventArgs e)
@@ -860,8 +875,7 @@ namespace RefreshCache.Packager.Builder
 
             tbPackageReadme.Text = package.Readme;
 
-            UpdateInfoTab();
-            UpdateRequirementsTab();
+            UpdateTabs();
 
             dgFiles.RowCount = package.Files.Count;
             dgModules.RowCount = package.Modules.Count;

@@ -45,6 +45,43 @@
             this.tabPackage = new System.Windows.Forms.TabPage();
             this.tbPackageReadme = new System.Windows.Forms.TextBox();
             this.lbPackageReadme = new System.Windows.Forms.Label();
+            this.tabInfo = new System.Windows.Forms.TabPage();
+            this.tbInfo_Description = new System.Windows.Forms.TextBox();
+            this.tbInfo_Synopsis = new System.Windows.Forms.TextBox();
+            this.tbInfo_PackageName = new System.Windows.Forms.TextBox();
+            this.tbInfo_Distributor = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tabRequirements = new System.Windows.Forms.TabPage();
+            this.label28 = new System.Windows.Forms.Label();
+            this.dgRequirements_Recommended = new System.Windows.Forms.DataGridView();
+            this.dgRequirements_RecPkg_Package = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_RecPkg_MinVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_RecPkg_MaxVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_RecPkg_ExactVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_RecPkg_Reason = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label27 = new System.Windows.Forms.Label();
+            this.tbRequirements_ArenaExactVer = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.tbRequirements_ArenaMaxVer = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.dgRequirements_Required = new System.Windows.Forms.DataGridView();
+            this.dgRequirements_ReqPkg_Package = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_ReqPkg_MinVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_ReqPkg_MaxVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgRequirements_ReqPkg_ExactVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbRequirements_ArenaMinVer = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tabVersions = new System.Windows.Forms.TabPage();
+            this.btnVersions_Remove = new System.Windows.Forms.Button();
+            this.btnVersions_Add = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.tbVersions_Changelog = new System.Windows.Forms.TextBox();
+            this.cbVersions_Version = new System.Windows.Forms.ComboBox();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.btnRemoveFile = new System.Windows.Forms.Button();
             this.btnAddFile = new System.Windows.Forms.Button();
@@ -122,46 +159,14 @@
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.tabInfo = new System.Windows.Forms.TabPage();
-            this.tabRequirements = new System.Windows.Forms.TabPage();
-            this.tbInfo_Description = new System.Windows.Forms.TextBox();
-            this.tbInfo_Synopsis = new System.Windows.Forms.TextBox();
-            this.tbInfo_PackageName = new System.Windows.Forms.TextBox();
-            this.tbInfo_Distributor = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.dgRequirements_Required = new System.Windows.Forms.DataGridView();
-            this.tbRequirements_ArenaMinVer = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.tbRequirements_ArenaMaxVer = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.tbRequirements_ArenaExactVer = new System.Windows.Forms.TextBox();
-            this.dgRequirements_ReqPkg_Package = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_ReqPkg_MinVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_ReqPkg_MaxVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_ReqPkg_ExactVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label28 = new System.Windows.Forms.Label();
-            this.dgRequirements_Recommended = new System.Windows.Forms.DataGridView();
-            this.tabVersions = new System.Windows.Forms.TabPage();
-            this.cbVersions_Version = new System.Windows.Forms.ComboBox();
-            this.tbVersions_Changelog = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.dgRequirements_RecPkg_Package = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_RecPkg_MinVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_RecPkg_MaxVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_RecPkg_ExactVer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgRequirements_RecPkg_Reason = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tcMain.SuspendLayout();
             this.tabPackage.SuspendLayout();
+            this.tabInfo.SuspendLayout();
+            this.tabRequirements.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Recommended)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Required)).BeginInit();
+            this.tabVersions.SuspendLayout();
             this.tabFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).BeginInit();
             this.tabModules.SuspendLayout();
@@ -173,11 +178,6 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgModuleInstanceSettings)).BeginInit();
             this.mainMenu.SuspendLayout();
-            this.tabInfo.SuspendLayout();
-            this.tabRequirements.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Required)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Recommended)).BeginInit();
-            this.tabVersions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -223,6 +223,341 @@
             this.lbPackageReadme.Size = new System.Drawing.Size(47, 13);
             this.lbPackageReadme.TabIndex = 0;
             this.lbPackageReadme.Text = "Readme";
+            // 
+            // tabInfo
+            // 
+            this.tabInfo.Controls.Add(this.tbInfo_Description);
+            this.tabInfo.Controls.Add(this.tbInfo_Synopsis);
+            this.tabInfo.Controls.Add(this.tbInfo_PackageName);
+            this.tabInfo.Controls.Add(this.tbInfo_Distributor);
+            this.tabInfo.Controls.Add(this.label21);
+            this.tabInfo.Controls.Add(this.label19);
+            this.tabInfo.Controls.Add(this.label18);
+            this.tabInfo.Controls.Add(this.label17);
+            this.tabInfo.Location = new System.Drawing.Point(4, 22);
+            this.tabInfo.Name = "tabInfo";
+            this.tabInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabInfo.Size = new System.Drawing.Size(760, 508);
+            this.tabInfo.TabIndex = 4;
+            this.tabInfo.Text = "Info";
+            this.tabInfo.UseVisualStyleBackColor = true;
+            // 
+            // tbInfo_Description
+            // 
+            this.tbInfo_Description.Location = new System.Drawing.Point(97, 84);
+            this.tbInfo_Description.Multiline = true;
+            this.tbInfo_Description.Name = "tbInfo_Description";
+            this.tbInfo_Description.Size = new System.Drawing.Size(657, 93);
+            this.tbInfo_Description.TabIndex = 22;
+            // 
+            // tbInfo_Synopsis
+            // 
+            this.tbInfo_Synopsis.Location = new System.Drawing.Point(97, 58);
+            this.tbInfo_Synopsis.Name = "tbInfo_Synopsis";
+            this.tbInfo_Synopsis.Size = new System.Drawing.Size(540, 20);
+            this.tbInfo_Synopsis.TabIndex = 21;
+            // 
+            // tbInfo_PackageName
+            // 
+            this.tbInfo_PackageName.Location = new System.Drawing.Point(97, 32);
+            this.tbInfo_PackageName.Name = "tbInfo_PackageName";
+            this.tbInfo_PackageName.Size = new System.Drawing.Size(195, 20);
+            this.tbInfo_PackageName.TabIndex = 19;
+            // 
+            // tbInfo_Distributor
+            // 
+            this.tbInfo_Distributor.Location = new System.Drawing.Point(97, 6);
+            this.tbInfo_Distributor.Name = "tbInfo_Distributor";
+            this.tbInfo_Distributor.Size = new System.Drawing.Size(195, 20);
+            this.tbInfo_Distributor.TabIndex = 18;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(31, 87);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(60, 13);
+            this.label21.TabIndex = 17;
+            this.label21.Text = "Description";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(42, 61);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(49, 13);
+            this.label19.TabIndex = 15;
+            this.label19.Text = "Synopsis";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(10, 35);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(81, 13);
+            this.label18.TabIndex = 14;
+            this.label18.Text = "Package Name";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(37, 9);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(54, 13);
+            this.label17.TabIndex = 13;
+            this.label17.Text = "Distributor";
+            // 
+            // tabRequirements
+            // 
+            this.tabRequirements.Controls.Add(this.label28);
+            this.tabRequirements.Controls.Add(this.dgRequirements_Recommended);
+            this.tabRequirements.Controls.Add(this.label27);
+            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaExactVer);
+            this.tabRequirements.Controls.Add(this.label26);
+            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaMaxVer);
+            this.tabRequirements.Controls.Add(this.label25);
+            this.tabRequirements.Controls.Add(this.label24);
+            this.tabRequirements.Controls.Add(this.dgRequirements_Required);
+            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaMinVer);
+            this.tabRequirements.Controls.Add(this.label22);
+            this.tabRequirements.Location = new System.Drawing.Point(4, 22);
+            this.tabRequirements.Name = "tabRequirements";
+            this.tabRequirements.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRequirements.Size = new System.Drawing.Size(760, 508);
+            this.tabRequirements.TabIndex = 5;
+            this.tabRequirements.Text = "Requirements";
+            this.tabRequirements.UseVisualStyleBackColor = true;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(9, 162);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(130, 13);
+            this.label28.TabIndex = 21;
+            this.label28.Text = "Recommended Packages";
+            // 
+            // dgRequirements_Recommended
+            // 
+            this.dgRequirements_Recommended.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRequirements_Recommended.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgRequirements_RecPkg_Package,
+            this.dgRequirements_RecPkg_MinVer,
+            this.dgRequirements_RecPkg_MaxVer,
+            this.dgRequirements_RecPkg_ExactVer,
+            this.dgRequirements_RecPkg_Reason});
+            this.dgRequirements_Recommended.Location = new System.Drawing.Point(12, 178);
+            this.dgRequirements_Recommended.MultiSelect = false;
+            this.dgRequirements_Recommended.Name = "dgRequirements_Recommended";
+            this.dgRequirements_Recommended.RowHeadersWidth = 24;
+            this.dgRequirements_Recommended.Size = new System.Drawing.Size(742, 91);
+            this.dgRequirements_Recommended.TabIndex = 20;
+            // 
+            // dgRequirements_RecPkg_Package
+            // 
+            this.dgRequirements_RecPkg_Package.HeaderText = "Package";
+            this.dgRequirements_RecPkg_Package.Name = "dgRequirements_RecPkg_Package";
+            this.dgRequirements_RecPkg_Package.Width = 175;
+            // 
+            // dgRequirements_RecPkg_MinVer
+            // 
+            this.dgRequirements_RecPkg_MinVer.HeaderText = "Min Ver";
+            this.dgRequirements_RecPkg_MinVer.Name = "dgRequirements_RecPkg_MinVer";
+            this.dgRequirements_RecPkg_MinVer.Width = 80;
+            // 
+            // dgRequirements_RecPkg_MaxVer
+            // 
+            this.dgRequirements_RecPkg_MaxVer.HeaderText = "Max Ver";
+            this.dgRequirements_RecPkg_MaxVer.Name = "dgRequirements_RecPkg_MaxVer";
+            this.dgRequirements_RecPkg_MaxVer.Width = 80;
+            // 
+            // dgRequirements_RecPkg_ExactVer
+            // 
+            this.dgRequirements_RecPkg_ExactVer.HeaderText = "Exact Ver";
+            this.dgRequirements_RecPkg_ExactVer.Name = "dgRequirements_RecPkg_ExactVer";
+            this.dgRequirements_RecPkg_ExactVer.Width = 80;
+            // 
+            // dgRequirements_RecPkg_Reason
+            // 
+            this.dgRequirements_RecPkg_Reason.HeaderText = "Reason";
+            this.dgRequirements_RecPkg_Reason.Name = "dgRequirements_RecPkg_Reason";
+            this.dgRequirements_RecPkg_Reason.Width = 301;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(410, 9);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(34, 13);
+            this.label27.TabIndex = 19;
+            this.label27.Text = "Exact";
+            // 
+            // tbRequirements_ArenaExactVer
+            // 
+            this.tbRequirements_ArenaExactVer.Location = new System.Drawing.Point(450, 6);
+            this.tbRequirements_ArenaExactVer.Name = "tbRequirements_ArenaExactVer";
+            this.tbRequirements_ArenaExactVer.Size = new System.Drawing.Size(81, 20);
+            this.tbRequirements_ArenaExactVer.TabIndex = 18;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(275, 9);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(27, 13);
+            this.label26.TabIndex = 17;
+            this.label26.Text = "Max";
+            // 
+            // tbRequirements_ArenaMaxVer
+            // 
+            this.tbRequirements_ArenaMaxVer.Location = new System.Drawing.Point(308, 6);
+            this.tbRequirements_ArenaMaxVer.Name = "tbRequirements_ArenaMaxVer";
+            this.tbRequirements_ArenaMaxVer.Size = new System.Drawing.Size(81, 20);
+            this.tbRequirements_ArenaMaxVer.TabIndex = 16;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(143, 9);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(24, 13);
+            this.label25.TabIndex = 15;
+            this.label25.Text = "Min";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(9, 40);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(101, 13);
+            this.label24.TabIndex = 14;
+            this.label24.Text = "Required Packages";
+            // 
+            // dgRequirements_Required
+            // 
+            this.dgRequirements_Required.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRequirements_Required.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgRequirements_ReqPkg_Package,
+            this.dgRequirements_ReqPkg_MinVer,
+            this.dgRequirements_ReqPkg_MaxVer,
+            this.dgRequirements_ReqPkg_ExactVer});
+            this.dgRequirements_Required.Location = new System.Drawing.Point(12, 56);
+            this.dgRequirements_Required.MultiSelect = false;
+            this.dgRequirements_Required.Name = "dgRequirements_Required";
+            this.dgRequirements_Required.RowHeadersWidth = 24;
+            this.dgRequirements_Required.Size = new System.Drawing.Size(441, 91);
+            this.dgRequirements_Required.TabIndex = 13;
+            // 
+            // dgRequirements_ReqPkg_Package
+            // 
+            this.dgRequirements_ReqPkg_Package.HeaderText = "Package";
+            this.dgRequirements_ReqPkg_Package.Name = "dgRequirements_ReqPkg_Package";
+            this.dgRequirements_ReqPkg_Package.Width = 175;
+            // 
+            // dgRequirements_ReqPkg_MinVer
+            // 
+            this.dgRequirements_ReqPkg_MinVer.HeaderText = "Min Ver";
+            this.dgRequirements_ReqPkg_MinVer.Name = "dgRequirements_ReqPkg_MinVer";
+            this.dgRequirements_ReqPkg_MinVer.Width = 80;
+            // 
+            // dgRequirements_ReqPkg_MaxVer
+            // 
+            this.dgRequirements_ReqPkg_MaxVer.HeaderText = "Max Ver";
+            this.dgRequirements_ReqPkg_MaxVer.Name = "dgRequirements_ReqPkg_MaxVer";
+            this.dgRequirements_ReqPkg_MaxVer.Width = 80;
+            // 
+            // dgRequirements_ReqPkg_ExactVer
+            // 
+            this.dgRequirements_ReqPkg_ExactVer.HeaderText = "Exact Ver";
+            this.dgRequirements_ReqPkg_ExactVer.Name = "dgRequirements_ReqPkg_ExactVer";
+            this.dgRequirements_ReqPkg_ExactVer.Width = 80;
+            // 
+            // tbRequirements_ArenaMinVer
+            // 
+            this.tbRequirements_ArenaMinVer.Location = new System.Drawing.Point(173, 6);
+            this.tbRequirements_ArenaMinVer.Name = "tbRequirements_ArenaMinVer";
+            this.tbRequirements_ArenaMinVer.Size = new System.Drawing.Size(81, 20);
+            this.tbRequirements_ArenaMinVer.TabIndex = 12;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(64, 9);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(73, 13);
+            this.label22.TabIndex = 11;
+            this.label22.Text = "Arena Version";
+            // 
+            // tabVersions
+            // 
+            this.tabVersions.Controls.Add(this.btnVersions_Remove);
+            this.tabVersions.Controls.Add(this.btnVersions_Add);
+            this.tabVersions.Controls.Add(this.label29);
+            this.tabVersions.Controls.Add(this.label23);
+            this.tabVersions.Controls.Add(this.tbVersions_Changelog);
+            this.tabVersions.Controls.Add(this.cbVersions_Version);
+            this.tabVersions.Location = new System.Drawing.Point(4, 22);
+            this.tabVersions.Name = "tabVersions";
+            this.tabVersions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabVersions.Size = new System.Drawing.Size(760, 508);
+            this.tabVersions.TabIndex = 6;
+            this.tabVersions.Text = "Versions";
+            this.tabVersions.UseVisualStyleBackColor = true;
+            // 
+            // btnVersions_Remove
+            // 
+            this.btnVersions_Remove.Location = new System.Drawing.Point(252, 6);
+            this.btnVersions_Remove.Name = "btnVersions_Remove";
+            this.btnVersions_Remove.Size = new System.Drawing.Size(21, 21);
+            this.btnVersions_Remove.TabIndex = 5;
+            this.btnVersions_Remove.Text = "-";
+            this.btnVersions_Remove.UseVisualStyleBackColor = true;
+            this.btnVersions_Remove.Click += new System.EventHandler(this.btnVersions_Remove_Click);
+            // 
+            // btnVersions_Add
+            // 
+            this.btnVersions_Add.Location = new System.Drawing.Point(225, 6);
+            this.btnVersions_Add.Name = "btnVersions_Add";
+            this.btnVersions_Add.Size = new System.Drawing.Size(21, 21);
+            this.btnVersions_Add.TabIndex = 4;
+            this.btnVersions_Add.Text = "+";
+            this.btnVersions_Add.UseVisualStyleBackColor = true;
+            this.btnVersions_Add.Click += new System.EventHandler(this.btnVersions_Add_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(34, 36);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(58, 13);
+            this.label29.TabIndex = 3;
+            this.label29.Text = "Changelog";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(50, 9);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(42, 13);
+            this.label23.TabIndex = 2;
+            this.label23.Text = "Version";
+            // 
+            // tbVersions_Changelog
+            // 
+            this.tbVersions_Changelog.Location = new System.Drawing.Point(98, 33);
+            this.tbVersions_Changelog.Multiline = true;
+            this.tbVersions_Changelog.Name = "tbVersions_Changelog";
+            this.tbVersions_Changelog.Size = new System.Drawing.Size(656, 162);
+            this.tbVersions_Changelog.TabIndex = 1;
+            // 
+            // cbVersions_Version
+            // 
+            this.cbVersions_Version.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbVersions_Version.FormattingEnabled = true;
+            this.cbVersions_Version.Location = new System.Drawing.Point(98, 6);
+            this.cbVersions_Version.Name = "cbVersions_Version";
+            this.cbVersions_Version.Size = new System.Drawing.Size(121, 21);
+            this.cbVersions_Version.TabIndex = 0;
             // 
             // tabFiles
             // 
@@ -1077,339 +1412,6 @@
             this.textBox2.Size = new System.Drawing.Size(155, 20);
             this.textBox2.TabIndex = 0;
             // 
-            // tabInfo
-            // 
-            this.tabInfo.Controls.Add(this.tbInfo_Description);
-            this.tabInfo.Controls.Add(this.tbInfo_Synopsis);
-            this.tabInfo.Controls.Add(this.tbInfo_PackageName);
-            this.tabInfo.Controls.Add(this.tbInfo_Distributor);
-            this.tabInfo.Controls.Add(this.label21);
-            this.tabInfo.Controls.Add(this.label19);
-            this.tabInfo.Controls.Add(this.label18);
-            this.tabInfo.Controls.Add(this.label17);
-            this.tabInfo.Location = new System.Drawing.Point(4, 22);
-            this.tabInfo.Name = "tabInfo";
-            this.tabInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInfo.Size = new System.Drawing.Size(760, 508);
-            this.tabInfo.TabIndex = 4;
-            this.tabInfo.Text = "Info";
-            this.tabInfo.UseVisualStyleBackColor = true;
-            // 
-            // tabRequirements
-            // 
-            this.tabRequirements.Controls.Add(this.label28);
-            this.tabRequirements.Controls.Add(this.dgRequirements_Recommended);
-            this.tabRequirements.Controls.Add(this.label27);
-            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaExactVer);
-            this.tabRequirements.Controls.Add(this.label26);
-            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaMaxVer);
-            this.tabRequirements.Controls.Add(this.label25);
-            this.tabRequirements.Controls.Add(this.label24);
-            this.tabRequirements.Controls.Add(this.dgRequirements_Required);
-            this.tabRequirements.Controls.Add(this.tbRequirements_ArenaMinVer);
-            this.tabRequirements.Controls.Add(this.label22);
-            this.tabRequirements.Location = new System.Drawing.Point(4, 22);
-            this.tabRequirements.Name = "tabRequirements";
-            this.tabRequirements.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRequirements.Size = new System.Drawing.Size(760, 508);
-            this.tabRequirements.TabIndex = 5;
-            this.tabRequirements.Text = "Requirements";
-            this.tabRequirements.UseVisualStyleBackColor = true;
-            // 
-            // tbInfo_Description
-            // 
-            this.tbInfo_Description.Location = new System.Drawing.Point(97, 84);
-            this.tbInfo_Description.Multiline = true;
-            this.tbInfo_Description.Name = "tbInfo_Description";
-            this.tbInfo_Description.Size = new System.Drawing.Size(657, 93);
-            this.tbInfo_Description.TabIndex = 22;
-            // 
-            // tbInfo_Synopsis
-            // 
-            this.tbInfo_Synopsis.Location = new System.Drawing.Point(97, 58);
-            this.tbInfo_Synopsis.Name = "tbInfo_Synopsis";
-            this.tbInfo_Synopsis.Size = new System.Drawing.Size(540, 20);
-            this.tbInfo_Synopsis.TabIndex = 21;
-            // 
-            // tbInfo_PackageName
-            // 
-            this.tbInfo_PackageName.Location = new System.Drawing.Point(97, 32);
-            this.tbInfo_PackageName.Name = "tbInfo_PackageName";
-            this.tbInfo_PackageName.Size = new System.Drawing.Size(195, 20);
-            this.tbInfo_PackageName.TabIndex = 19;
-            // 
-            // tbInfo_Distributor
-            // 
-            this.tbInfo_Distributor.Location = new System.Drawing.Point(97, 6);
-            this.tbInfo_Distributor.Name = "tbInfo_Distributor";
-            this.tbInfo_Distributor.Size = new System.Drawing.Size(195, 20);
-            this.tbInfo_Distributor.TabIndex = 18;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(31, 87);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(60, 13);
-            this.label21.TabIndex = 17;
-            this.label21.Text = "Description";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(42, 61);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(49, 13);
-            this.label19.TabIndex = 15;
-            this.label19.Text = "Synopsis";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(10, 35);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(81, 13);
-            this.label18.TabIndex = 14;
-            this.label18.Text = "Package Name";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(37, 9);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(54, 13);
-            this.label17.TabIndex = 13;
-            this.label17.Text = "Distributor";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(9, 40);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(101, 13);
-            this.label24.TabIndex = 14;
-            this.label24.Text = "Required Packages";
-            // 
-            // dgRequirements_Required
-            // 
-            this.dgRequirements_Required.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgRequirements_Required.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgRequirements_ReqPkg_Package,
-            this.dgRequirements_ReqPkg_MinVer,
-            this.dgRequirements_ReqPkg_MaxVer,
-            this.dgRequirements_ReqPkg_ExactVer});
-            this.dgRequirements_Required.Location = new System.Drawing.Point(12, 56);
-            this.dgRequirements_Required.MultiSelect = false;
-            this.dgRequirements_Required.Name = "dgRequirements_Required";
-            this.dgRequirements_Required.RowHeadersWidth = 24;
-            this.dgRequirements_Required.Size = new System.Drawing.Size(441, 91);
-            this.dgRequirements_Required.TabIndex = 13;
-            // 
-            // tbRequirements_ArenaMinVer
-            // 
-            this.tbRequirements_ArenaMinVer.Location = new System.Drawing.Point(173, 6);
-            this.tbRequirements_ArenaMinVer.Name = "tbRequirements_ArenaMinVer";
-            this.tbRequirements_ArenaMinVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaMinVer.TabIndex = 12;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(64, 9);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(73, 13);
-            this.label22.TabIndex = 11;
-            this.label22.Text = "Arena Version";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(143, 9);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(24, 13);
-            this.label25.TabIndex = 15;
-            this.label25.Text = "Min";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(275, 9);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(27, 13);
-            this.label26.TabIndex = 17;
-            this.label26.Text = "Max";
-            // 
-            // tbRequirements_ArenaMaxVer
-            // 
-            this.tbRequirements_ArenaMaxVer.Location = new System.Drawing.Point(308, 6);
-            this.tbRequirements_ArenaMaxVer.Name = "tbRequirements_ArenaMaxVer";
-            this.tbRequirements_ArenaMaxVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaMaxVer.TabIndex = 16;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(410, 9);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(34, 13);
-            this.label27.TabIndex = 19;
-            this.label27.Text = "Exact";
-            // 
-            // tbRequirements_ArenaExactVer
-            // 
-            this.tbRequirements_ArenaExactVer.Location = new System.Drawing.Point(450, 6);
-            this.tbRequirements_ArenaExactVer.Name = "tbRequirements_ArenaExactVer";
-            this.tbRequirements_ArenaExactVer.Size = new System.Drawing.Size(81, 20);
-            this.tbRequirements_ArenaExactVer.TabIndex = 18;
-            // 
-            // dgRequirements_ReqPkg_Package
-            // 
-            this.dgRequirements_ReqPkg_Package.HeaderText = "Package";
-            this.dgRequirements_ReqPkg_Package.Name = "dgRequirements_ReqPkg_Package";
-            this.dgRequirements_ReqPkg_Package.Width = 175;
-            // 
-            // dgRequirements_ReqPkg_MinVer
-            // 
-            this.dgRequirements_ReqPkg_MinVer.HeaderText = "Min Ver";
-            this.dgRequirements_ReqPkg_MinVer.Name = "dgRequirements_ReqPkg_MinVer";
-            this.dgRequirements_ReqPkg_MinVer.Width = 80;
-            // 
-            // dgRequirements_ReqPkg_MaxVer
-            // 
-            this.dgRequirements_ReqPkg_MaxVer.HeaderText = "Max Ver";
-            this.dgRequirements_ReqPkg_MaxVer.Name = "dgRequirements_ReqPkg_MaxVer";
-            this.dgRequirements_ReqPkg_MaxVer.Width = 80;
-            // 
-            // dgRequirements_ReqPkg_ExactVer
-            // 
-            this.dgRequirements_ReqPkg_ExactVer.HeaderText = "Exact Ver";
-            this.dgRequirements_ReqPkg_ExactVer.Name = "dgRequirements_ReqPkg_ExactVer";
-            this.dgRequirements_ReqPkg_ExactVer.Width = 80;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(9, 162);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(130, 13);
-            this.label28.TabIndex = 21;
-            this.label28.Text = "Recommended Packages";
-            // 
-            // dgRequirements_Recommended
-            // 
-            this.dgRequirements_Recommended.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgRequirements_Recommended.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgRequirements_RecPkg_Package,
-            this.dgRequirements_RecPkg_MinVer,
-            this.dgRequirements_RecPkg_MaxVer,
-            this.dgRequirements_RecPkg_ExactVer,
-            this.dgRequirements_RecPkg_Reason});
-            this.dgRequirements_Recommended.Location = new System.Drawing.Point(12, 178);
-            this.dgRequirements_Recommended.MultiSelect = false;
-            this.dgRequirements_Recommended.Name = "dgRequirements_Recommended";
-            this.dgRequirements_Recommended.RowHeadersWidth = 24;
-            this.dgRequirements_Recommended.Size = new System.Drawing.Size(742, 91);
-            this.dgRequirements_Recommended.TabIndex = 20;
-            // 
-            // tabVersions
-            // 
-            this.tabVersions.Controls.Add(this.button2);
-            this.tabVersions.Controls.Add(this.button1);
-            this.tabVersions.Controls.Add(this.label29);
-            this.tabVersions.Controls.Add(this.label23);
-            this.tabVersions.Controls.Add(this.tbVersions_Changelog);
-            this.tabVersions.Controls.Add(this.cbVersions_Version);
-            this.tabVersions.Location = new System.Drawing.Point(4, 22);
-            this.tabVersions.Name = "tabVersions";
-            this.tabVersions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabVersions.Size = new System.Drawing.Size(760, 508);
-            this.tabVersions.TabIndex = 6;
-            this.tabVersions.Text = "Versions";
-            this.tabVersions.UseVisualStyleBackColor = true;
-            // 
-            // cbVersions_Version
-            // 
-            this.cbVersions_Version.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbVersions_Version.FormattingEnabled = true;
-            this.cbVersions_Version.Location = new System.Drawing.Point(98, 6);
-            this.cbVersions_Version.Name = "cbVersions_Version";
-            this.cbVersions_Version.Size = new System.Drawing.Size(121, 21);
-            this.cbVersions_Version.TabIndex = 0;
-            // 
-            // tbVersions_Changelog
-            // 
-            this.tbVersions_Changelog.Location = new System.Drawing.Point(98, 33);
-            this.tbVersions_Changelog.Multiline = true;
-            this.tbVersions_Changelog.Name = "tbVersions_Changelog";
-            this.tbVersions_Changelog.Size = new System.Drawing.Size(656, 162);
-            this.tbVersions_Changelog.TabIndex = 1;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(50, 9);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(42, 13);
-            this.label23.TabIndex = 2;
-            this.label23.Text = "Version";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(34, 36);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(58, 13);
-            this.label29.TabIndex = 3;
-            this.label29.Text = "Changelog";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(225, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(21, 21);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(252, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(21, 21);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "-";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // dgRequirements_RecPkg_Package
-            // 
-            this.dgRequirements_RecPkg_Package.HeaderText = "Package";
-            this.dgRequirements_RecPkg_Package.Name = "dgRequirements_RecPkg_Package";
-            this.dgRequirements_RecPkg_Package.Width = 175;
-            // 
-            // dgRequirements_RecPkg_MinVer
-            // 
-            this.dgRequirements_RecPkg_MinVer.HeaderText = "Min Ver";
-            this.dgRequirements_RecPkg_MinVer.Name = "dgRequirements_RecPkg_MinVer";
-            this.dgRequirements_RecPkg_MinVer.Width = 80;
-            // 
-            // dgRequirements_RecPkg_MaxVer
-            // 
-            this.dgRequirements_RecPkg_MaxVer.HeaderText = "Max Ver";
-            this.dgRequirements_RecPkg_MaxVer.Name = "dgRequirements_RecPkg_MaxVer";
-            this.dgRequirements_RecPkg_MaxVer.Width = 80;
-            // 
-            // dgRequirements_RecPkg_ExactVer
-            // 
-            this.dgRequirements_RecPkg_ExactVer.HeaderText = "Exact Ver";
-            this.dgRequirements_RecPkg_ExactVer.Name = "dgRequirements_RecPkg_ExactVer";
-            this.dgRequirements_RecPkg_ExactVer.Width = 80;
-            // 
-            // dgRequirements_RecPkg_Reason
-            // 
-            this.dgRequirements_RecPkg_Reason.HeaderText = "Reason";
-            this.dgRequirements_RecPkg_Reason.Name = "dgRequirements_RecPkg_Reason";
-            this.dgRequirements_RecPkg_Reason.Width = 301;
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -1428,6 +1430,14 @@
             this.tcMain.ResumeLayout(false);
             this.tabPackage.ResumeLayout(false);
             this.tabPackage.PerformLayout();
+            this.tabInfo.ResumeLayout(false);
+            this.tabInfo.PerformLayout();
+            this.tabRequirements.ResumeLayout(false);
+            this.tabRequirements.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Recommended)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Required)).EndInit();
+            this.tabVersions.ResumeLayout(false);
+            this.tabVersions.PerformLayout();
             this.tabFiles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).EndInit();
             this.tabModules.ResumeLayout(false);
@@ -1443,14 +1453,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgModuleInstanceSettings)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
-            this.tabInfo.ResumeLayout(false);
-            this.tabInfo.PerformLayout();
-            this.tabRequirements.ResumeLayout(false);
-            this.tabRequirements.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Required)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRequirements_Recommended)).EndInit();
-            this.tabVersions.ResumeLayout(false);
-            this.tabVersions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1566,7 +1568,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_ReqPkg_MaxVer;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_ReqPkg_ExactVer;
         private System.Windows.Forms.TabPage tabVersions;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnVersions_Add;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox tbVersions_Changelog;
@@ -1576,7 +1578,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_RecPkg_MaxVer;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_RecPkg_ExactVer;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_RecPkg_Reason;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnVersions_Remove;
         private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

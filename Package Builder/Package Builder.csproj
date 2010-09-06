@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DC093C4A-895A-44B7-9EBA-35CF78D21962}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Arena.Custom.RC.Packager</RootNamespace>
+    <RootNamespace>RefreshCache.Packager.Builder</RootNamespace>
     <AssemblyName>Package Builder</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -78,10 +78,22 @@
     <Compile Include="mainFormRequirements.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="mainFormVersions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VersionInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VersionInputForm.Designer.cs">
+      <DependentUpon>VersionInputForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VersionInputForm.resx">
+      <DependentUpon>VersionInputForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
