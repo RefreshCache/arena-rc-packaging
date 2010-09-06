@@ -53,26 +53,26 @@ namespace RefreshCache.Packager.Builder
         /// </summary>
         private void UpdateRequirementsTab()
         {
-            if (package.Info.Arena.MinVersion != null)
+            if (package.Info.Arena != null && package.Info.Arena.MinVersion != null)
                 tbRequirements_ArenaMinVer.Text = package.Info.Arena.MinVersion.ToString();
             else
                 tbRequirements_ArenaMinVer.Text = "";
 
-            if (package.Info.Arena.MaxVersion != null)
+            if (package.Info.Arena != null && package.Info.Arena.MaxVersion != null)
                 tbRequirements_ArenaMaxVer.Text = package.Info.Arena.MaxVersion.ToString();
             else
                 tbRequirements_ArenaMaxVer.Text = "";
 
-            if (package.Info.Arena.Version != null)
+            if (package.Info.Arena != null && package.Info.Arena.Version != null)
                 tbRequirements_ArenaExactVer.Text = package.Info.Arena.Version.ToString();
             else
                 tbRequirements_ArenaExactVer.Text = "";
 
-            dgRequirements_Required.RowCount = 0;
-            dgRequirements_Required.RowCount = package.Info.Requires.Count;
+            dgRequirements_Required.RowCount = 1;
+            dgRequirements_Required.RowCount = (package.Info.Requires.Count + 1);
 
-            dgRequirements_Recommended.RowCount = 0;
-            dgRequirements_Recommended.RowCount = package.Info.Recommends.Count;
+            dgRequirements_Recommended.RowCount = 1;
+            dgRequirements_Recommended.RowCount = (package.Info.Recommends.Count + 1);
         }
 
 
@@ -404,7 +404,7 @@ namespace RefreshCache.Packager.Builder
         /// <param name="e"></param>
         void dgRequirements_Recommended_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
         {
-            if (e.RowIndex == package.Info.Requires.Count)
+            if (e.RowIndex == package.Info.Recommends.Count)
             {
                 package.Info.Recommends.Add(new PackageRecommendation());
             }
