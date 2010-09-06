@@ -84,6 +84,9 @@
     <Compile Include="mainFormPackage.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="mainFormPages.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="mainFormRequirements.cs">
       <SubType>Form</SubType>
     </Compile>
