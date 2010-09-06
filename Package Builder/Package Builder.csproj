@@ -72,6 +72,9 @@
     </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="mainFormInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="mainFormRequirements.cs">
       <SubType>Form</SubType>
     </Compile>
