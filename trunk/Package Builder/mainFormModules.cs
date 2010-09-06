@@ -48,6 +48,24 @@ namespace RefreshCache.Packager.Builder
         }
 
 
+        #region Helper Methods
+
+        /// <summary>
+        /// Determine the currently selected module in the datagrid. If
+        /// there is nothing selected then return null.
+        /// </summary>
+        /// <returns>A Module reference or null if no module is selected.</returns>
+        private Module SelectedModule()
+        {
+            if (dgModules.SelectedCells.Count == 0)
+                return null;
+
+            return package.Modules[dgModules.SelectedCells[0].RowIndex];
+        }
+
+        #endregion
+
+
         #region Actions and Events for Module Details
 
         /// <summary>
