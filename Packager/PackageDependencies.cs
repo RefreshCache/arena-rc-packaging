@@ -60,11 +60,11 @@ namespace RefreshCache.Packager
             : this()
         {
             if (node.Attributes["MinVersion"] != null)
-                MinVersion = new PackageVersion(node.Attributes["MinVersion"].ToString());
+                MinVersion = new PackageVersion(node.Attributes["MinVersion"].Value);
             if (node.Attributes["MaxVersion"] != null)
-                MaxVersion = new PackageVersion(node.Attributes["MaxVersion"].ToString());
+                MaxVersion = new PackageVersion(node.Attributes["MaxVersion"].Value);
             if (node.Attributes["Version"] != null)
-                Version = new PackageVersion(node.Attributes["Version"].ToString());
+                Version = new PackageVersion(node.Attributes["Version"].Value);
         }
 
         #endregion
@@ -128,14 +128,14 @@ namespace RefreshCache.Packager
             {
                 attrib = doc.CreateAttribute("MaxVersion");
                 attrib.Value = MaxVersion.ToString();
-                node.AppendChild(attrib);
+                node.Attributes.Append(attrib);
             }
 
             if (Version != null)
             {
                 attrib = doc.CreateAttribute("Version");
                 attrib.Value = Version.ToString();
-                node.AppendChild(attrib);
+                node.Attributes.Append(attrib);
             }
 
             return node;
@@ -185,7 +185,7 @@ namespace RefreshCache.Packager
             NodeName = "Require";
 
             if (node.Attributes["Name"] != null)
-                Name = node.Attributes["Name"].ToString();
+                Name = node.Attributes["Name"].Value;
             else
                 Name = "";
         }
@@ -258,7 +258,7 @@ namespace RefreshCache.Packager
             NodeName = "Recommend";
 
             if (node.Attributes["Description"] != null)
-                Description = node.Attributes["Description"].ToString();
+                Description = node.Attributes["Description"].Value;
             else
                 Description = "";
         }
@@ -337,7 +337,7 @@ namespace RefreshCache.Packager
         public PackageChangelog(XmlNode node)
         {
             if (node.Attributes["Version"] != null)
-                Version = new PackageVersion(node.Attributes["Version"].ToString());
+                Version = new PackageVersion(node.Attributes["Version"].Value);
 
             Description = node.InnerText;
         }
