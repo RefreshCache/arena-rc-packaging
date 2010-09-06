@@ -176,7 +176,7 @@ namespace RefreshCache.Packager
             {
                 if (node.Attributes["_source"] != null)
                 {
-                    MigrationSource = node.Attributes["_source"].ToString();
+                    MigrationSource = node.Attributes["_source"].Value;
                 }
 
                 if (!String.IsNullOrEmpty(node.InnerText))
@@ -302,7 +302,7 @@ namespace RefreshCache.Packager
                     node.InnerText = Convert.ToBase64String(buffer);
                 }
             }
-            else
+            else if (!isExport)
             {
                 attrib = doc.CreateAttribute("_source");
                 attrib.Value = (!String.IsNullOrEmpty(MigrationSource) ? MigrationSource : "");
