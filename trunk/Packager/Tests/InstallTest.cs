@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using System.Xml;
 using NUnit.Framework;
 using RefreshCache.Packager;
 using RefreshCache.Packager.Manager;
@@ -14,14 +15,14 @@ namespace Migrator_Tests
     class InstallTest
     {
         [Test]
-        [Ignore]
+//        [Ignore]
         public void Test()
         {
             SqlConnection con;
             String DataSource = "CONSTANTINE\\HDCArena";
-            RefreshCache.Packager.File file;
             PackageDatabase pdb;
-            Package package;
+            XmlDocument xdoc;
+            Package package1, package2;
 
 
             con = new SqlConnection("Data Source=" + DataSource + ";Initial Catalog=ArenaTestDB;Integrated Security=SSPI");
@@ -29,30 +30,18 @@ namespace Migrator_Tests
 
             DirectoryInfo di = new DirectoryInfo("C:/Arena/Test");
 
-            try
-            {
                 if (di.Exists == false)
                     throw new Exception("Arena Test Path does not exist");
 
-                package = new Package();
-                package.Info.PackageName = "RC.PackageManager";
-                package.Info.Distributor = "RefreshCache";
-                package.Info.Version = new PackageVersion("1.0.0");
-                file = new RefreshCache.Packager.File();
-                file.Path = "bin/RefreshCache.Packager.dll";
-                file.Source = "RefreshCache.Packager.dll";
-                package.Files.Add(file);
-                package.MigrationSource = "RefreshCache.Packager.Setup.dll";
+            xdoc = new XmlDocument();
+            xdoc.Load("../../../../Packager/RefreshCache.Packager.xml");
+            package1 = new Package(xdoc);
+            xdoc = new XmlDocument();
+            xdoc.Load("../../../../Arena.Custom.RC.Utilities/Arena.Custom.RC.Utilities.xml");
+            package2 = new Package(xdoc);
 
-                BuildMessageCollection msg = package.Build(Environment.CurrentDirectory);
-                package = new Package(package.XmlPackage);
-                pdb = new PackageDatabase(di.FullName, con);
-                pdb.InstallSystem(new Package[] { package });
-            }
-            catch
-            {
-                throw;
-            }
+            pdb = new PackageDatabase(di.FullName, con);
+            pdb.InstallSystem(new Package[] { package1, package2 });
         }
     }
 }
