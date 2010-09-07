@@ -421,7 +421,7 @@ namespace RefreshCache.Packager.Manager
                     pdb.Command.Parameters.Add(new SqlParameter("@ModuleDesc", m.Description));
                     pdb.Command.Parameters.Add(new SqlParameter("@AllowsChildModules", m.AllowsChildModules));
                     pdb.Command.Parameters.Add(new SqlParameter("@ImagePath", m.ImagePath));
-                    pdb.Command.Parameters.Add(new SqlParameter(@"ID", null));
+                    pdb.Command.Parameters.Add(new SqlParameter(@"ID", SqlDbType.Int));
                     pdb.Command.Parameters[pdb.Command.Parameters.Count - 1].Direction = ParameterDirection.Output;
                     pdb.Command.ExecuteNonQuery();
 
@@ -641,7 +641,7 @@ namespace RefreshCache.Packager.Manager
             if (parent_page_id != -1)
                 pdb.Command.Parameters.Add(new SqlParameter("@ParentPageID", parent_page_id));
             else
-                pdb.Command.Parameters.Add(new SqlParameter(@"ParentPageID", null));
+                pdb.Command.Parameters.Add(new SqlParameter(@"ParentPageID", DBNull.Value));
             pdb.Command.Parameters.Add(new SqlParameter("@DisplayInNav", newPage.DisplayInNav));
             pdb.Command.Parameters.Add(new SqlParameter("@RequireSSL", newPage.RequireSSL));
             pdb.Command.Parameters.Add(new SqlParameter("@PageName", newPage.PageName));
@@ -674,7 +674,7 @@ namespace RefreshCache.Packager.Manager
                 "[created_by], [modified_by], [module_id], [module_title]" +
                 ", [show_title], [template_frame_name], [template_frame_order]" +
                 ", [module_details], [page_id])" +
-                " VALUES ('PackageInstaller', 'PackageInstaller', @ModuleID, @ModuleTitle," +
+                " VALUES ('PackageInstaller', 'PackageInstaller', @ModuleID, @ModuleTitle" +
                 ", @ShowTitle, @TemplateFrameName, @TemplateFrameOrder" +
                 ", @ModuleDetails, @PageID);" +
                 " SELECT CAST(IDENT_CURRENT('port_module_instance') AS int)";
