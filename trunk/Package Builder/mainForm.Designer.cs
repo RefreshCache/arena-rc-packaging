@@ -158,6 +158,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.tbFiles_MigrationSource = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tabPackage.SuspendLayout();
             this.tabInfo.SuspendLayout();
@@ -559,6 +561,8 @@
             // 
             // tabFiles
             // 
+            this.tabFiles.Controls.Add(this.tbFiles_MigrationSource);
+            this.tabFiles.Controls.Add(this.label20);
             this.tabFiles.Controls.Add(this.dgFiles);
             this.tabFiles.Location = new System.Drawing.Point(4, 22);
             this.tabFiles.Name = "tabFiles";
@@ -604,7 +608,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgFiles.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgFiles.RowHeadersWidth = 24;
-            this.dgFiles.Size = new System.Drawing.Size(748, 496);
+            this.dgFiles.Size = new System.Drawing.Size(748, 470);
             this.dgFiles.TabIndex = 1;
             // 
             // path
@@ -1391,6 +1395,22 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // tbFiles_MigrationSource
+            // 
+            this.tbFiles_MigrationSource.Location = new System.Drawing.Point(99, 482);
+            this.tbFiles_MigrationSource.Name = "tbFiles_MigrationSource";
+            this.tbFiles_MigrationSource.Size = new System.Drawing.Size(405, 20);
+            this.tbFiles_MigrationSource.TabIndex = 23;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 485);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(87, 13);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Migration Source";
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1414,6 +1434,7 @@
             this.tabVersions.ResumeLayout(false);
             this.tabVersions.PerformLayout();
             this.tabFiles.ResumeLayout(false);
+            this.tabFiles.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgFiles)).EndInit();
             this.tabModules.ResumeLayout(false);
             this.tabModules.PerformLayout();
@@ -1553,5 +1574,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgRequirements_RecPkg_Reason;
         private System.Windows.Forms.Button btnVersions_Remove;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.TextBox tbFiles_MigrationSource;
+        private System.Windows.Forms.Label label20;
     }
 }
