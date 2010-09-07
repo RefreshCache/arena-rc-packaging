@@ -268,6 +268,8 @@ namespace RefreshCache.Packager.Manager
                         }
                         catch { }
                     }
+
+                    throw;
                 }
             }
         }

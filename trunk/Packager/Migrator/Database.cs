@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace RefreshCache.Packager.Migrator
@@ -63,9 +64,6 @@ namespace RefreshCache.Packager.Migrator
         {
             if (Dryrun)
                 return;
-
-            if (Command.Transaction == null)
-                throw new InvalidOperationException("Cannot perform database operation unless there is a valid transaction.");
         }
 
 
@@ -86,8 +84,9 @@ namespace RefreshCache.Packager.Migrator
 
             TestOperationState();
 
-            _Command.CommandType = System.Data.CommandType.Text;
-			_Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
+            _Command.CommandType = CommandType.Text;
+            _Command.Parameters.Clear();
+            _Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "'";
 			reader = _Command.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
@@ -112,9 +111,11 @@ namespace RefreshCache.Packager.Migrator
 		{
 			Boolean result = false;
 			SqlDataReader reader;
-			
-			
-			_Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "'";
+
+
+            _Command.CommandType = CommandType.Text;
+            _Command.Parameters.Clear();
+            _Command.CommandText = "SELECT * FROM sys.objects WHERE name = N'" + objectName + "' AND type = N'" + objectType + "'";
 			reader = _Command.ExecuteReader();
 			result = reader.HasRows;
 			reader.Close();
@@ -147,6 +148,8 @@ namespace RefreshCache.Packager.Migrator
 			//
 			if (!Dryrun)
 			{
+                _Command.CommandType = CommandType.Text;
+                _Command.Parameters.Clear();
 				_Command.CommandText = query;
 				_Command.ExecuteNonQuery();
 			}
