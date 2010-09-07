@@ -24,6 +24,7 @@ namespace RefreshCache.Packager.Builder
             dgFiles.CellValueNeeded += new DataGridViewCellValueEventHandler(dgFiles_CellValueNeeded);
             dgFiles.CellValuePushed += new DataGridViewCellValueEventHandler(dgFiles_CellValuePushed);
             dgFiles.UserDeletingRow += new DataGridViewRowCancelEventHandler(dgFiles_UserDeletingRow);
+            tbFiles_MigrationSource.Validated += new EventHandler(tbFiles_MigrationSource_Validated);
         }
 
 
@@ -33,7 +34,10 @@ namespace RefreshCache.Packager.Builder
         /// </summary>
         private void UpdateFilesTab()
         {
+            dgFiles.RowCount = 1;
             dgFiles.RowCount = package.Files.Count + 1;
+
+            tbFiles_MigrationSource.Text = package.MigrationSource;
         }
 
 
@@ -95,6 +99,18 @@ namespace RefreshCache.Packager.Builder
         void dgFiles_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             package.Files.RemoveAt(e.Row.Index);
+        }
+
+
+        /// <summary>
+        /// The user has changed the Migration Source value on the Files
+        /// tab, it has been validated and can be stored.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void tbFiles_MigrationSource_Validated(object sender, EventArgs e)
+        {
+            package.MigrationSource = tbFiles_MigrationSource.Text;
         }
 
         #endregion
