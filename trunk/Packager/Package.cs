@@ -134,9 +134,13 @@ namespace RefreshCache.Packager
             //
             // Load the modules from the document.
             //
-            foreach (XmlNode f in doc.SelectSingleNode("//ArenaPackage/Files").ChildNodes)
+            node = doc.SelectSingleNode("//ArenaPackage/Files");
+            if (node != null)
             {
-                Files.Add(new File(f));
+                foreach (XmlNode f in node.ChildNodes)
+                {
+                    Files.Add(new File(f));
+                }
             }
 
             //

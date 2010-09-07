@@ -68,7 +68,11 @@ namespace RefreshCache.Packager
             if (pts.Length >= 3)
                 Revision = Convert.ToInt32(pts[2]);
 
-            if (pts.Length >= 4)
+            //
+            // We allow 4 segments (build #), but no more. And we
+            // ignore the build number.
+            //
+            if (pts.Length > 4)
                 throw new Exception("Incorrect number of periods in version number.");
         }
 

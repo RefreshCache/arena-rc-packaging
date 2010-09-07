@@ -139,6 +139,7 @@ namespace RefreshCache.Packager
 
             _Pages = new PageInstanceCollection();
             _Modules = new ModuleInstanceCollection();
+            _Files = new FileCollection(null);
         }
 
         /// <summary>

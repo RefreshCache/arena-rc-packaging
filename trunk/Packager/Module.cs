@@ -143,8 +143,10 @@ namespace RefreshCache.Packager
             URL = node.Attributes["module_url"].Value;
             ImagePath = node.Attributes["image_path"].Value;
             AllowsChildModules = (node.Attributes["allows_child_modules"].Value == "1" ? true : false);
-            Source = node.Attributes["_source"].Value;
-            SourceImage = node.Attributes["_source_image"].Value;
+            if (node.Attributes["_source"] != null)
+                Source = node.Attributes["_source"].Value;
+            if (node.Attributes["_source_image"] != null)
+                SourceImage = node.Attributes["_source_image"].Value;
             Description = node.Attributes["module_desc"].Value;
 
             _Files = new FileCollection(Package);
