@@ -1,0 +1,18 @@
+<ArenaPackage version="2009.2.100.1401">
+  <Readme></Readme>
+  <Modules />
+  <Pages />
+  <Files>
+    <File path="~/bin/RefreshCache.Packager.dll" _source="bin/Debug/RefreshCache.Packager.dll" />
+  </Files>
+  <Info>
+    <Distributor>RefreshCache</Distributor>
+    <PackageName>RC.PackageManager</PackageName>
+    <Version>1.0.0</Version>
+    <Synopsis>Simplifies installing and removing packages on your Arena system.</Synopsis>
+    <Description>Automates all the tasks necessary to install a new package on your Arena system. Automatically installs files, modules, pages and other elements into the filesystem and the database.</Description>
+    <Require Name="RC.Utilities" />
+    <Changelog Version="1.0.0">Initial release of the RefreshCache Package Manager system.</Changelog>
+  </Info>
+  <Migration _source="" />
+</ArenaPackage>
