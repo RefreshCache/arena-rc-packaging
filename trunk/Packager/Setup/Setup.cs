@@ -42,10 +42,11 @@ namespace RefreshCache.Packager.Setup
         {
             public override void Upgrade(Database db)
             {
-                db.ExecuteNonQuery("CREATE PROCEDURE [cust_rc_packager_sp_get_installed_packages]" +
-                    "AS" +
-                    "    SELECT [name],[package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
-                    "    FROM [cust_rc_packager_packages]"
+                db.ExecuteNonQuery(
+@"CREATE PROCEDURE [cust_rc_packager_sp_get_installed_packages]
+AS
+    SELECT [name],[package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(80)')
+    FROM [cust_rc_packager_packages]"
                     );
             }
 
@@ -60,12 +61,13 @@ namespace RefreshCache.Packager.Setup
         {
             public override void Upgrade(Database db)
             {
-                db.ExecuteNonQuery("CREATE PROCEDURE [cust_rc_packager_sp_get_package_version]" +
-                    "    @Name AS varchar(80)" +
-                    "AS" +
-                    "    SELECT [package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(20)')" +
-                    "    FROM [cust_rc_packager_packages]" +
-                    "    WHERE [name] = @Name"
+                db.ExecuteNonQuery(
+@"CREATE PROCEDURE [cust_rc_packager_sp_get_package_version]
+    @Name AS varchar(80)
+AS
+    SELECT [package].value('(//ArenaPackage/Info/Version)[1]', 'varchar(80)')
+    FROM [cust_rc_packager_packages]
+    WHERE [name] = @Name"
                     );
             }
 
@@ -80,10 +82,11 @@ namespace RefreshCache.Packager.Setup
         {
             public override void Upgrade(Database db)
             {
-                db.ExecuteNonQuery("CREATE PROCEDURE [cust_rc_packager_sp_get_package]" +
-                    "    @Name AS varchar(80)" +
-                    "AS" +
-                    "    SELECT [package] FROM [cust_rc_packager_packages] WHERE [name] = @Name"
+                db.ExecuteNonQuery(
+@"CREATE PROCEDURE [cust_rc_packager_sp_get_package]
+    @Name AS varchar(80)
+AS
+    SELECT [package] FROM [cust_rc_packager_packages] WHERE [name] = @Name"
                     );
             }
 

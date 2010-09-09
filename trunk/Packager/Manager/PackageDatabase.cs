@@ -126,6 +126,32 @@ namespace RefreshCache.Packager.Manager
 
 
         /// <summary>
+        /// Retrieves a list of package names that are installed in
+        /// the Arena system.
+        /// </summary>
+        /// <returns>The list of package names that are installed.</returns>
+        public List<String> InstalledPackages()
+        {
+            List<String> packages = new List<String>();
+            SqlDataReader rdr;
+
+
+            Command.CommandType = CommandType.StoredProcedure;
+            Command.CommandText = "cust_rc_packager_sp_get_installed_packages";
+            Command.Parameters.Clear();
+            rdr = Command.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                packages.Add(rdr[0].ToString());
+            }
+            rdr.Close();
+
+            return packages;
+        }
+
+
+        /// <summary>
         /// Retrieve the stored package information from the database for an
         /// installed package. Each package that is installed is stored in the
         /// database for later use, this retrieves that data.
@@ -141,7 +167,7 @@ namespace RefreshCache.Packager.Manager
             Command.CommandText = "cust_rc_packager_sp_get_package";
             Command.CommandType = CommandType.StoredProcedure;
             Command.Parameters.Clear();
-            Command.Parameters.Add(new SqlParameter("@Package", packageName));
+            Command.Parameters.Add(new SqlParameter("@Name", packageName));
 
             rdr = Command.ExecuteXmlReader();
             try
