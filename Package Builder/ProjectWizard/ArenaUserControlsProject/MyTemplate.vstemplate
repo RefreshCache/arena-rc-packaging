@@ -1,0 +1,26 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Arena UserControl Project</Name>
+    <Description>Creates a new project for developing a set of Arena User Controls. Name the project by the &lt;ChurchCode&gt;.&lt;ProjectName&gt; format.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Church.Package</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>ArenaIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="Project.csproj" File="Project.csproj" ReplaceParameters="true">
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UserControl1.ascx">UserControl1.ascx</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UserControl1.ascx.cs">UserControl1.ascx.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UserControl1.ascx.designer.cs">UserControl1.ascx.designer.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

@@ -1,0 +1,20 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Arena Package Project</Name>
+    <Description>Creates a new set of projects for developing an Arena package that has a Business Logic DLL and User Controls. The name for this package should be &lt;ChurchCode&gt;.&lt;PackageName&gt;</Description>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>10</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Church.Package</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>ArenaIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>RefreshCache.VisualStudio.Wizards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77282caec4977c54</Assembly>
+    <FullClassName>RefreshCache.VisualStudio.Wizards.ProjectWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>

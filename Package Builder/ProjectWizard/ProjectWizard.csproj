@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ADFA9424-8516-4DAA-BA9A-732E426A01A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RefreshCache.VisualStudio.Wizards</RootNamespace>
+    <AssemblyName>RefreshCache.VisualStudio.Wizards</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>RefreshCache.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="envdte80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaBLLProject\Class1.cs" />
+    <None Include="ArenaBLLProject\Properties\AssemblyInfo.cs" />
+    <None Include="ArenaSetupProject\Properties\AssemblyInfo.cs" />
+    <None Include="ArenaSetupProject\Setup.cs" />
+    <None Include="ArenaUserControlsProject\Properties\AssemblyInfo.cs" />
+    <None Include="ArenaUserControlsProject\UserControl1.ascx.cs">
+      <DependentUpon>UserControl1.ascx</DependentUpon>
+    </None>
+    <None Include="ArenaUserControlsProject\UserControl1.ascx.designer.cs">
+      <DependentUpon>UserControl1.ascx.cs</DependentUpon>
+    </None>
+    <Compile Include="ProjectWizard.cs" />
+    <Compile Include="PackageElementsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PackageElementsForm.Designer.cs">
+      <DependentUpon>PackageElementsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaBLLProject\ArenaBLLProject.zip" />
+    <None Include="ArenaPackageProject\ArenaPackageProject.zip" />
+    <None Include="ArenaSetupProject\ArenaSetupProject.zip" />
+    <None Include="ArenaUserControlsProject\ArenaUserControlsProject.zip" />
+    <None Include="RefreshCache.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PackageElementsForm.resx">
+      <DependentUpon>PackageElementsForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaBLLProject\ArenaIcon.ico" />
+    <None Include="ArenaBLLProject\MyTemplate.vstemplate" />
+    <None Include="ArenaBLLProject\Project.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaPackageProject\ArenaIcon.ico" />
+    <None Include="ArenaPackageProject\MyTemplate.vstemplate" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaSetupProject\ArenaIcon.ico" />
+    <None Include="ArenaSetupProject\MyTemplate.vstemplate" />
+    <None Include="ArenaSetupProject\Project.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArenaUserControlsProject\ArenaIcon.ico" />
+    <None Include="ArenaUserControlsProject\MyTemplate.vstemplate" />
+    <None Include="ArenaUserControlsProject\Project.csproj" />
+    <None Include="ArenaUserControlsProject\UserControl1.ascx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
