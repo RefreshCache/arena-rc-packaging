@@ -13,7 +13,7 @@ namespace Arena.Custom.$safeprojectname$.Setup
     public class Setup : Migration
     {
         [MigratorVersion(1, 0, 0, 1)]
-        public AddTable__cust_table_name : DatabaseMigrator
+        public class AddTable__cust_table_name : DatabaseMigrator
         {
             public override void Upgrade(Database db)
             {
