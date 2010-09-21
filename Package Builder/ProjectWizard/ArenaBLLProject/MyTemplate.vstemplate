@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Arena Full Project</Name>
+    <Name>Arena Class Project</Name>
     <Description>Creates a new project for developing a Business Layer Logic class. This is a single DLL that can be used by other code. Name the project by the &lt;ChurchCode&gt;.&lt;ProjectName&gt; format.</Description>
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType>

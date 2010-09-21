@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0F740167D484B4A47B0B993D54A8D57A"
-        "OwnerKey" = "8:_B32D4D61B552433D8B2CD1140817FE73"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_10EB80F0130540BD9F153DB74E951173"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -57,20 +51,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8ECD85F4ADEF1BACC578435783B9AA35"
-        "OwnerKey" = "8:_D3FCBF1EA0F6C76EEB0F789C66891D51"
+        "MsmKey" = "8:_8293F434720F496B9BC61A28EDF73A2A"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B32D4D61B552433D8B2CD1140817FE73"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_91F4E48E8BD7F35701BB0076D667263A"
+        "OwnerKey" = "8:_8293F434720F496B9BC61A28EDF73A2A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D3FCBF1EA0F6C76EEB0F789C66891D51"
         "OwnerKey" = "8:_0F740167D484B4A47B0B993D54A8D57A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D3FCBF1EA0F6C76EEB0F789C66891D51"
+        "OwnerKey" = "8:_91F4E48E8BD7F35701BB0076D667263A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EAC70276380D213E3435F2C6E22A96CC"
+        "OwnerKey" = "8:_1830D2368F5E4A6493CABC97366EF830"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EAC70276380D213E3435F2C6E22A96CC"
+        "OwnerKey" = "8:_EF0F6EB97ACA4C30AA48E662DAF9623E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -94,37 +106,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_91F4E48E8BD7F35701BB0076D667263A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_01305817FA66CE8E95250231FC067D32"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0F740167D484B4A47B0B993D54A8D57A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_EF0F6EB97ACA4C30AA48E662DAF9623E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EF0F6EB97ACA4C30AA48E662DAF9623E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B32D4D61B552433D8B2CD1140817FE73"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1830D2368F5E4A6493CABC97366EF830"
+        "OwnerKey" = "8:_8293F434720F496B9BC61A28EDF73A2A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -270,11 +270,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0F740167D484B4A47B0B993D54A8D57A"
-                    {
-                    "Name" = "8:Microsoft.VisualStudio.TemplateWizardInterface.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.VisualStudio.TemplateWizardInterface.dll"
             "TargetName" = "8:"
@@ -380,6 +375,37 @@
             "TargetName" = "8:dte80a.olb"
             "Tag" = "8:"
             "Folder" = "8:_3E307449145246BC9D7D3386F7195446"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_91F4E48E8BD7F35701BB0076D667263A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_91F4E48E8BD7F35701BB0076D667263A"
+                    {
+                    "Name" = "8:Microsoft.VisualStudio.TemplateWizardInterface.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.VisualStudio.TemplateWizardInterface.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5DD9651C944343F69762117B0D6C1A4E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -511,6 +537,17 @@
                         {
                         }
                     }
+                }
+            }
+            "{C7E34266-2C30-44B9-A9A3-4E394ABD6E18}:_5DD9651C944343F69762117B0D6C1A4E"
+            {
+            "Name" = "8:#1927"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:GAC"
+                "Folders"
+                {
                 }
             }
         }
@@ -1091,12 +1128,12 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B32D4D61B552433D8B2CD1140817FE73"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8293F434720F496B9BC61A28EDF73A2A"
             {
             "SourcePath" = "8:..\\ProjectWizard\\obj\\Debug\\RefreshCache.VisualStudio.Wizards.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_3E307449145246BC9D7D3386F7195446"
+            "Folder" = "8:_5DD9651C944343F69762117B0D6C1A4E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1110,7 +1147,7 @@
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:2"
+            "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{ADFA9424-8516-4DAA-BA9A-732E426A01A1}"
