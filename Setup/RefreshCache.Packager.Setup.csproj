@@ -101,6 +101,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\RefreshCache\Package Builder\pbcli.exe" ..\..\..\Packager\package.xml ..\..\..\Packager ..\..\..\RefreshCache.Packager.xml</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\RefreshCache\Package Builder\pbcli.exe" ..\..\..\package.xml ..\..\.. ..\..\..\RefreshCache.Packager.xml</PostBuildEvent>
   </PropertyGroup>
 </Project>
