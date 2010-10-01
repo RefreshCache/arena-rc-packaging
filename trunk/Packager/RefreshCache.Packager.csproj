@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\API.shfbproj" />
-    <Content Include="package.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documentation\RefreshCache.Packager.chm" />
