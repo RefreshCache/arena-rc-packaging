@@ -27,8 +27,16 @@ namespace RefreshCache.Packager.Builder
 				//
 				// Load the source file.
 				//
-				source = new XmlDocument();
-				source.Load(args[0]);
+                try
+                {
+                    source = new XmlDocument();
+                    source.Load(args[0]);
+                }
+                catch
+                {
+                    Console.WriteLine("Error trying to read the source XML file.");
+                    Environment.Exit(-1);
+                }
 
                 //
                 // Load the package.
