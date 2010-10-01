@@ -70,7 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RefreshCache.Packager.csproj">
+    <ProjectReference Include="..\Packager\RefreshCache.Packager.csproj">
       <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
       <Name>RefreshCache.Packager</Name>
     </ProjectReference>
@@ -101,6 +101,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\RefreshCache\Package Builder\pbcli.exe" ..\..\..\package.xml ..\..\..\ ..\..\..\RefreshCache.Packager.xml</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\RefreshCache\Package Builder\pbcli.exe" ..\..\..\Packager\package.xml ..\..\..\Packager ..\..\..\RefreshCache.Packager.xml</PostBuildEvent>
   </PropertyGroup>
 </Project>

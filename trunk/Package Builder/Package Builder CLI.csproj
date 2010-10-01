@@ -142,6 +142,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Packager\RefreshCache.Packager.csproj">
+      <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
+      <Name>RefreshCache.Packager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>

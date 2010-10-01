@@ -1,7 +1,7 @@
 <ArenaPackage version="2009.2.100.1401">
   <Readme></Readme>
   <Modules>
-    <Module temp_module_id="-1" module_url="UserControls/Custom/RC/PackageManager/PackageManager.ascx" module_name="Package Manager" module_desc="Provides a front-end interface to package management." allows_child_modules="0" image_path="" _source="../Administration/PackageManager.ascx" _source_image="" _system="0" />
+    <Module temp_module_id="-1" module_url="UserControls/Custom/RC/PackageManager/PackageManager.ascx" module_name="Package Manager" module_desc="Provides a front-end interface to package management." allows_child_modules="0" image_path="" _source="../../Arena.Custom.RC.PackageManager/ControlPanel.ascx" _source_image="" _system="0" />
   </Modules>
   <Pages>
     <Page temp_page_id="-1" page_order="2147483647" display_in_nav="1" page_name="Package Manager" page_desc="Interface to install and remove packages from the system." page_settings="" require_ssl="0" guid="8d5d0747-ea61-42e2-8ac5-2c7164abc371" system_flag="0" friendly_url="" validate_request="1" temp_parent_page_id="0">
@@ -20,5 +20,5 @@
     <Require Name="RC.Utilities" />
     <Changelog Version="1.0.0">Initial release of the RefreshCache Package Manager system.</Changelog>
   </Info>
-  <Migration _source="Setup/bin/Debug/RefreshCache.Packager.Setup.dll" />
+  <Migration _source="../Setup/bin/Debug/RefreshCache.Packager.Setup.dll" />
 </ArenaPackage>
