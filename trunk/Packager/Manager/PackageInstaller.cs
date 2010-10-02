@@ -695,11 +695,6 @@ namespace RefreshCache.Packager.Manager
         /// Update a single page in the database to match the new package
         /// information.
         /// </summary>
-        /// <remarks>
-        /// TODO: To do this properly we need a guid of some kind on each
-        /// module instance, we can't assume each page will have only one module
-        /// type on each page.
-        /// </remarks>
         /// <param name="oldPage">The old page that is being updated, never null.</param>
         /// <param name="newPage">The new page that should be updated to.</param>
         /// <param name="moduleInstances">The list of module instances that will need their settings updated later.</param>
