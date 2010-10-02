@@ -53,7 +53,6 @@ namespace RefreshCache.Packager
         /// <summary>
         /// Contains information about the package such as name, version,
         /// dependencies, etc.
-        /// TODO: This must be populated.
         /// </summary>
         public PackageInfo Info { get { return _Info; } }
         private PackageInfo _Info;
