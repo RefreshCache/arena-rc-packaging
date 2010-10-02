@@ -13,10 +13,15 @@ namespace RefreshCache.Packager.Manager
     class FileChange
     {
         /// <summary>
-        /// A reference to the information about the original file,
-        /// including it's full path.
+        /// The full path to the object we are saving the state of.
         /// </summary>
-        FileInfo Info { get; set; }
+        protected String FullName { get; set; }
+
+        /// <summary>
+        /// Wether or not this object existed before the operation
+        /// we performed.
+        /// </summary>
+        protected Boolean Exists;
 
         /// <summary>
         /// The original contents of the file. If the file did not exist
@@ -26,19 +31,27 @@ namespace RefreshCache.Packager.Manager
 
 
         /// <summary>
+        /// Create an empty class. Used by subclasses.
+        /// </summary>
+        protected FileChange(String name, Boolean exists)
+        {
+            FullName = name;
+            Exists = exists;
+        }
+
+
+        /// <summary>
         /// Create a new object instance from the FileInfo object. Also
         /// stores the contents of the original file (if it exists) for
         /// possible restoration later.
         /// </summary>
         /// <param name="original">A FileInfo object that identifies the original file.</param>
         public FileChange(FileInfo original)
+            : this(original.FullName, original.Exists)
         {
-            Info = new FileInfo(original.FullName);
-            Info.Refresh();
-
-            if (Info.Exists)
+            if (Exists)
             {
-                using (FileStream rdr = Info.OpenRead())
+                using (FileStream rdr = original.OpenRead())
                 {
                     Contents = new Byte[rdr.Length];
 
@@ -55,7 +68,7 @@ namespace RefreshCache.Packager.Manager
         /// </summary>
         public void Restore()
         {
-            FileInfo target = new FileInfo(Info.FullName);
+            FileInfo target = new FileInfo(FullName);
 
 
             if (Contents != null)
@@ -66,6 +79,40 @@ namespace RefreshCache.Packager.Manager
                     writer.Flush();
                 }
             }
+            else
+                target.Delete();
+        }
+    }
+
+
+    /// <summary>
+    /// Internal class that contains the information about a directory
+    /// that has been deleted or created.
+    /// </summary>
+    class DirectoryChange : FileChange
+    {
+        /// <summary>
+        /// Create a new DirectoryChange object that can later be used to restore
+        /// the directory to it's original state (i.e. exists or not).
+        /// </summary>
+        /// <param name="di">The directory whose state needs to be saved.</param>
+        public DirectoryChange(DirectoryInfo di)
+            : base(di.FullName, di.Exists)
+        {
+        }
+
+
+        /// <summary>
+        /// Restore a directory to it's original state. Either re-create it or
+        /// delete it.
+        /// </summary>
+        public void Restore()
+        {
+            DirectoryInfo target = new DirectoryInfo(FullName);
+
+
+            if (Exists)
+                target.Create();
             else
                 target.Delete();
         }

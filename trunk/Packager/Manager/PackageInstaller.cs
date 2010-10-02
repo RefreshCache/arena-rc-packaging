@@ -173,11 +173,12 @@ namespace RefreshCache.Packager.Manager
             {
                 FileInfo target = new FileInfo(pdb.RootPath + @"\" + f.Path);
 
-                _FileChanges.Add(new FileChange(target));
                 if (!target.Directory.Exists)
                 {
+                    _FileChanges.Add(new DirectoryChange(target.Directory));
                     target.Directory.Create();
                 }
+                _FileChanges.Add(new FileChange(target));
                 using (FileStream writer = target.Create())
                 {
                     writer.Write(f.Contents, 0, f.Contents.Length);
@@ -204,6 +205,15 @@ namespace RefreshCache.Packager.Manager
                     FileInfo target = new FileInfo(pdb.RootPath + @"\" + f.Path);
                     _FileChanges.Add(new FileChange(target));
                     target.Delete();
+
+                    //
+                    // If the directory is empty, nuke it.
+                    //
+                    if (target.Directory.GetFiles().Length == 0)
+                    {
+                        _FileChanges.Add(new DirectoryChange(target.Directory));
+                        target.Directory.Delete();
+                    }
                 }
             }
         }
@@ -1204,6 +1214,15 @@ namespace RefreshCache.Packager.Manager
                 fi = new FileInfo(pdb.RootPath + @"\" + f.Path);
                 _FileChanges.Add(new FileChange(fi));
                 fi.Delete();
+
+                //
+                // If we removed the last file in the directory, remove the
+                // directory as well.
+                //
+                if (fi.Directory.GetFiles().Length == 0)
+                {
+                    _FileChanges.Add(new DirectoryChange(fi.Directory));
+                }
             }
         }
 
@@ -1214,6 +1233,7 @@ namespace RefreshCache.Packager.Manager
         /// </summary>
         public void RevertFileChanges()
         {
+            _FileChanges.Reverse();
             foreach (FileChange fc in _FileChanges)
             {
                 try
@@ -1222,6 +1242,7 @@ namespace RefreshCache.Packager.Manager
                 }
                 catch { }
             }
+            _FileChanges.Clear();
         }
     }
 }
