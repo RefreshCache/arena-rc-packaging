@@ -141,10 +141,10 @@ namespace RefreshCache.Packager.Manager
 
     /// <summary>
     /// Represents a conflict with something that is going to be
-    [Serializable]
-    public class PackageLocalConflictException : Exception, ISerializable
     /// created by installing a package.
     /// </summary>
+    [Serializable]
+    public class PackageLocalConflictException : Exception, ISerializable
     {
         /// <summary>
         /// Create a new exception with a default error mesage.
