@@ -20,7 +20,7 @@ namespace RefreshCache.Packager.Builder
 			{
                 BuildMessageCollection messages;
                 XmlWriterSettings settings;
-                XmlDocument source;
+                XmlDocument source = null;
                 XmlWriter writer;
                 Package package;
 
