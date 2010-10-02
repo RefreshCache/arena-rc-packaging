@@ -123,7 +123,42 @@ namespace RefreshCache.Packager.Migrator
 			return result;
 		}
 
-		
+
+        /// <summary>
+        /// Execute a SQL statement that returns a single row/column value.
+        /// </summary>
+        /// <param name="query">A <see cref="String"/> which contains the SQL query to be executed.</param>
+        public object ExecuteScalar(String query)
+        {
+            object result = null;
+
+
+            TestOperationState();
+
+            //
+            // If we are running in verbose mode, then output the SQL query to the console
+            // as well.
+            //
+            if (Verbose)
+            {
+                Console.WriteLine(query);
+            }
+
+            //
+            // A dry run means we don't actually do anything, we just go through the actions.
+            //
+            if (!Dryrun)
+            {
+                _Command.CommandType = CommandType.Text;
+                _Command.Parameters.Clear();
+                _Command.CommandText = query;
+                result = _Command.ExecuteScalar();
+            }
+
+            return result;
+        }
+
+
 		/// <summary>
 		/// Execute a SQL statement that does not return any information.
 		/// </summary>

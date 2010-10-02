@@ -6,7 +6,8 @@ namespace RefreshCache.Packager.Manager
     /// <summary>
     /// Identifies some kind of version mismatch error during an operation.
     /// </summary>
-    public class PackageVersionException : Exception
+    [Serializable]
+    public class PackageVersionException : Exception, ISerializable
     {
         /// <summary>
         /// Create a new exception with a default error mesage.
@@ -50,7 +51,8 @@ namespace RefreshCache.Packager.Manager
     /// <summary>
     /// Identifies a dependency error occurred during a package operation.
     /// </summary>
-    public class PackageDependencyException : Exception
+    [Serializable]
+    public class PackageDependencyException : Exception, ISerializable
     {
         /// <summary>
         /// Create a new exception with a default error mesage.
@@ -95,7 +97,8 @@ namespace RefreshCache.Packager.Manager
     /// Identifies a request to do something with a package that is not
     /// installed on the system.
     /// </summary>
-    public class PackageNotInstalledException : Exception
+    [Serializable]
+    public class PackageNotInstalledException : Exception, ISerializable
     {
         /// <summary>
         /// Create a new exception with a default error mesage.
@@ -138,9 +141,10 @@ namespace RefreshCache.Packager.Manager
 
     /// <summary>
     /// Represents a conflict with something that is going to be
+    [Serializable]
+    public class PackageLocalConflictException : Exception, ISerializable
     /// created by installing a package.
     /// </summary>
-    public class PackageLocalConflictException : Exception
     {
         /// <summary>
         /// Create a new exception with a default error mesage.
