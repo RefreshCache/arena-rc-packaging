@@ -8,7 +8,7 @@ using RefreshCache.Packager;
 using RefreshCache.Packager.Migrator;
 
 
-namespace RefreshCache.Migrator.Tests
+namespace RefreshCache.Packager.Tests
 {
     [TestFixture]
     public class CoreTests
@@ -20,7 +20,7 @@ namespace RefreshCache.Migrator.Tests
         public void SetUp()
         {
             SqlConnection con;
-            String DataSource = "CONSTANTINE\\HDCArena";
+            String DataSource = "localhost";
 
 
             con = new SqlConnection("Data Source=" + DataSource + ";Initial Catalog=tempdb;Integrated Security=SSPI");
