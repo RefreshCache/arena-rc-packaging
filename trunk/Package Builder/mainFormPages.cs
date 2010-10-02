@@ -46,6 +46,8 @@ namespace RefreshCache.Packager.Builder
             tbModuleInstanceDetails.Validated += new EventHandler(tbModuleInstanceDetails_Validated);
             cbModuleInstanceShowTitle.Validated += new EventHandler(cbModuleInstanceShowTitle_Validated);
             cbModuleInstanceType.SelectedValueChanged += new EventHandler(cbModuleInstanceType_SelectedValueChanged);
+            tbModuleInstanceGuid.Validating += new CancelEventHandler(tbModuleInstanceGuid_Validating);
+            tbModuleInstanceGuid.Validated += new EventHandler(tbModuleInstanceGuid_Validated);
             DataGridViewComboBoxColumn box = (DataGridViewComboBoxColumn)dgModuleInstanceSettings.Columns["Type"];
             box.Items.AddRange(Enum.GetNames(typeof(ModuleInstanceSettingType)));
             box.Sorted = true;
@@ -388,6 +390,7 @@ namespace RefreshCache.Packager.Builder
                 tbModuleInstanceTemplateFrameName.Text = module.TemplateFrameName;
                 cbModuleInstanceType.SelectedValue = module.ModuleTypeID;
                 tbModuleInstanceDetails.Text = module.ModuleDetails;
+                tbModuleInstanceGuid.Text = module.Guid.ToString();
                 dgModuleInstanceSettings.RowCount = module.Settings.Count + 1;
 
                 tcPages.SelectedIndex = 1;
@@ -615,6 +618,49 @@ namespace RefreshCache.Packager.Builder
                 tvPages.SelectedNode.Text = instance.ModuleTitle;
             }
         }
+
+
+        /// <summary>
+        /// The user has entered a value for the module instance GUID and
+        /// we need to validate that it is a valid GUID value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void tbModuleInstanceGuid_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (tbModuleInstanceGuid.Text.Length > 0)
+                    new System.Guid(tbModuleInstanceGuid.Text);
+                errorProvider1.SetError(tbModuleInstanceGuid, "");
+            }
+            catch
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(tbModuleInstanceGuid, "Invalid GUID specified.");
+            }
+        }
+
+        /// <summary>
+        /// The GUID for the module instance has been validated and can
+        /// be saved.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void tbModuleInstanceGuid_Validated(object sender, EventArgs e)
+        {
+            ModuleInstance instance = SelectedModuleInstance();
+
+
+            if (instance != null && selectionChanging == false)
+            {
+                if (tbModuleInstanceGuid.Text.Length == 0)
+                    instance.Guid = System.Guid.NewGuid();
+                else
+                    instance.Guid = new System.Guid(tbModuleInstanceGuid.Text);
+            }
+        }
+
 
         #endregion
     }

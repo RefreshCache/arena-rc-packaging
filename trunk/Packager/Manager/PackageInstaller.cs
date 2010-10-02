@@ -673,10 +673,10 @@ namespace RefreshCache.Packager.Manager
             pdb.Command.CommandText = "INSERT INTO [port_module_instance] (" +
                 "[created_by], [modified_by], [module_id], [module_title]" +
                 ", [show_title], [template_frame_name], [template_frame_order]" +
-                ", [module_details], [page_id])" +
+                ", [module_details], [page_id], [module_instance_guid])" +
                 " VALUES ('PackageInstaller', 'PackageInstaller', @ModuleID, @ModuleTitle" +
                 ", @ShowTitle, @TemplateFrameName, @TemplateFrameOrder" +
-                ", @ModuleDetails, @PageID);" +
+                ", @ModuleDetails, @PageID, @ModuleInstanceGuid);" +
                 " SELECT CAST(IDENT_CURRENT('port_module_instance') AS int)";
             pdb.Command.Parameters.Clear();
             pdb.Command.Parameters.Add(new SqlParameter("@ModuleID", ModuleMap[mi.ModuleTypeID]));
@@ -686,6 +686,7 @@ namespace RefreshCache.Packager.Manager
             pdb.Command.Parameters.Add(new SqlParameter("@TemplateFrameOrder", mi.TemplateFrameOrder));
             pdb.Command.Parameters.Add(new SqlParameter("@ModuleDetails", mi.ModuleDetails));
             pdb.Command.Parameters.Add(new SqlParameter("@PageID", PageMap[mi.Page.PageID]));
+            pdb.Command.Parameters.Add(new SqlParameter("@ModuleInstanceGuid", mi.Guid));
             ModuleInstanceMap.Add(mi.ModuleInstanceID, Convert.ToInt32(pdb.Command.ExecuteScalar()));
         }
 
@@ -733,9 +734,9 @@ namespace RefreshCache.Packager.Manager
                     // Get the database ID of the module instance to delete.
                     //
                     pdb.Command.CommandType = CommandType.Text;
-                    pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [guid] = @Guid";
+                    pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [module_instance_guid] = @Guid";
                     pdb.Command.Parameters.Clear();
-//                    pdb.Command.Parameters.Add(new SqlParameter("@Guid", miOld.Guid));
+                    pdb.Command.Parameters.Add(new SqlParameter("@Guid", miOld.Guid));
                     module_instance_id = Convert.ToInt32(pdb.Command.ExecuteScalar());
 
                     //
@@ -760,7 +761,7 @@ namespace RefreshCache.Packager.Manager
 
                 foreach (ModuleInstance miNew in newPage.Modules)
                 {
-                    if (false /* miNew.Guid == miOld.Guid */)
+                    if (miNew.Guid == miOld.Guid)
                     {
                         newInstance = miNew;
                         break;
@@ -780,10 +781,10 @@ namespace RefreshCache.Packager.Manager
                     // Retrieve the database ID of the existing module instance.
                     //
                     pdb.Command.CommandType = CommandType.Text;
-                    pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [guid] = @Guid";
+                    pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [module_instance_guid] = @Guid";
                     pdb.Command.Parameters.Clear();
-//                    pdb.Command.Parameters.Add(new SqlParameter("@Guid", newInstance.Guid));
-//                    ModuleInstanceMap[newInstance.ModuleInstanceID] = Convert.ToInt32(pdb.Command.ExecuteScalar());
+                    pdb.Command.Parameters.Add(new SqlParameter("@Guid", newInstance.Guid));
+                    ModuleInstanceMap[newInstance.ModuleInstanceID] = Convert.ToInt32(pdb.Command.ExecuteScalar());
                 }
             }
 
@@ -797,7 +798,7 @@ namespace RefreshCache.Packager.Manager
 
                 foreach (ModuleInstance miOld in oldPage.Modules)
                 {
-                    if (true /* miNew.Guid == miOld.Guid */)
+                    if (miNew.Guid == miOld.Guid)
                     {
                         create = false;
                         break;

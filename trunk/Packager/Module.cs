@@ -433,6 +433,13 @@ namespace RefreshCache.Packager
         public List<ModuleInstanceSetting> Settings { get { return _Settings; } }
 
         /// <summary>
+        /// The unique identifier for this module instance. This will be
+        /// automatically generated when a new module instance is created but
+        /// can be updated to a specific GUID by the user.
+        /// </summary>
+        public Guid Guid { get; set; }
+
+        /// <summary>
         /// The Package object that owns this Module. This property
         /// should not be set directly as it is automatically set when
         /// you add this object to a Page's Modules member.
@@ -454,6 +461,7 @@ namespace RefreshCache.Packager
             ModuleDetails = "";
             ModuleTypeID = -1;
             _Settings = new List<ModuleInstanceSetting>();
+            Guid = Guid.NewGuid();
         }
 
         /// <summary>
@@ -470,6 +478,10 @@ namespace RefreshCache.Packager
             TemplateFrameName = node.Attributes["template_frame_name"].Value;
             ModuleDetails = node.Attributes["module_details"].Value;
             ModuleTypeID = Convert.ToInt32(node.Attributes["temp_module_id"].Value);
+            if (node.Attributes["module_instance_guid"] != null)
+                Guid = new Guid(node.Attributes["module_instance_guid"].Value);
+            else
+                Guid = Guid.NewGuid();
 
             _Settings = new List<ModuleInstanceSetting>();
             foreach (XmlNode child in node.ChildNodes)
@@ -551,6 +563,10 @@ namespace RefreshCache.Packager
 
             attrib = doc.CreateAttribute("module_settings");
             attrib.InnerText = ModuleSettings();
+            instNode.Attributes.Append(attrib);
+
+            attrib = doc.CreateAttribute("module_instance_guid");
+            attrib.InnerText = Guid.ToString();
             instNode.Attributes.Append(attrib);
 
             attrib = doc.CreateAttribute("temp_page_or_template_id");
