@@ -3,19 +3,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>
+    </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{59263421-02C7-4759-9ABB-AA42FC4960EC}</ProjectGuid>
+    <ProjectGuid>{27E6AC16-323F-4FE1-9AB1-F7DB793D4BA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Migrator_Tests</RootNamespace>
-    <AssemblyName>Migrator Tests</AssemblyName>
+    <RootNamespace>RefreshCache.Packager.Tests</RootNamespace>
+    <AssemblyName>RefreshCache.Packager.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,14 +38,15 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreTests.cs" />
@@ -55,16 +54,35 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_template.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_portal_page.sql" />
+    <EmbeddedResource Include="ArenaDB\util_sp_get_databaseVersion.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_module.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_module_instance.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_module_instance_setting.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\port_sp_del_module.sql" />
+    <EmbeddedResource Include="ArenaDB\port_sp_del_module_instance.sql" />
+    <EmbeddedResource Include="ArenaDB\port_sp_del_portal_page.sql" />
+    <EmbeddedResource Include="ArenaDB\port_sp_get_moduleByUrl.sql" />
+    <EmbeddedResource Include="ArenaDB\port_sp_save_module.sql" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Packager\RefreshCache.Packager.csproj">
       <Project>{EDF42407-6AB7-42ED-88CC-54E063A584F9}</Project>
       <Name>RefreshCache.Packager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Setup\RefreshCache.Packager.Setup.csproj">
-      <Project>{2E401713-C40F-4107-A99B-00E515D51E94}</Project>
-      <Name>RefreshCache.Packager.Setup</Name>
-    </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
