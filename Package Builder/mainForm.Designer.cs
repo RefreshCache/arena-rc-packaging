@@ -83,6 +83,8 @@
             this.tbVersions_Changelog = new System.Windows.Forms.TextBox();
             this.cbVersions_Version = new System.Windows.Forms.ComboBox();
             this.tabFiles = new System.Windows.Forms.TabPage();
+            this.tbFiles_MigrationSource = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.dgFiles = new System.Windows.Forms.DataGridView();
             this.path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.source = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -158,8 +160,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.tbFiles_MigrationSource = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.tbModuleInstanceGuid = new System.Windows.Forms.TextBox();
             this.tcMain.SuspendLayout();
             this.tabPackage.SuspendLayout();
             this.tabInfo.SuspendLayout();
@@ -571,6 +573,22 @@
             this.tabFiles.TabIndex = 0;
             this.tabFiles.Text = "Files";
             this.tabFiles.UseVisualStyleBackColor = true;
+            // 
+            // tbFiles_MigrationSource
+            // 
+            this.tbFiles_MigrationSource.Location = new System.Drawing.Point(99, 482);
+            this.tbFiles_MigrationSource.Name = "tbFiles_MigrationSource";
+            this.tbFiles_MigrationSource.Size = new System.Drawing.Size(405, 20);
+            this.tbFiles_MigrationSource.TabIndex = 23;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 485);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(87, 13);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Migration Source";
             // 
             // dgFiles
             // 
@@ -1041,6 +1059,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label30);
+            this.tabPage2.Controls.Add(this.tbModuleInstanceGuid);
             this.tabPage2.Controls.Add(this.label15);
             this.tabPage2.Controls.Add(this.dgModuleInstanceSettings);
             this.tabPage2.Controls.Add(this.label14);
@@ -1151,7 +1171,7 @@
             this.tbModuleInstanceDetails.Location = new System.Drawing.Point(134, 108);
             this.tbModuleInstanceDetails.Multiline = true;
             this.tbModuleInstanceDetails.Name = "tbModuleInstanceDetails";
-            this.tbModuleInstanceDetails.Size = new System.Drawing.Size(335, 106);
+            this.tbModuleInstanceDetails.Size = new System.Drawing.Size(335, 86);
             this.tbModuleInstanceDetails.TabIndex = 8;
             // 
             // label13
@@ -1280,14 +1300,14 @@
             this.toolStripSeparator1,
             this.exitMenu});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newMenu
             // 
             this.newMenu.Name = "newMenu";
             this.newMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newMenu.Size = new System.Drawing.Size(146, 22);
+            this.newMenu.Size = new System.Drawing.Size(151, 22);
             this.newMenu.Text = "New";
             this.newMenu.Click += new System.EventHandler(this.newMenu_Click);
             // 
@@ -1295,7 +1315,7 @@
             // 
             this.openMenu.Name = "openMenu";
             this.openMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openMenu.Size = new System.Drawing.Size(146, 22);
+            this.openMenu.Size = new System.Drawing.Size(151, 22);
             this.openMenu.Text = "Open";
             this.openMenu.Click += new System.EventHandler(this.openMenu_Click);
             // 
@@ -1303,7 +1323,7 @@
             // 
             this.saveMenu.Name = "saveMenu";
             this.saveMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMenu.Size = new System.Drawing.Size(146, 22);
+            this.saveMenu.Size = new System.Drawing.Size(151, 22);
             this.saveMenu.Text = "Save";
             this.saveMenu.Click += new System.EventHandler(this.saveMenu_Click);
             // 
@@ -1311,33 +1331,33 @@
             // 
             this.buildMenu.Name = "buildMenu";
             this.buildMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.buildMenu.Size = new System.Drawing.Size(146, 22);
+            this.buildMenu.Size = new System.Drawing.Size(151, 22);
             this.buildMenu.Text = "Build...";
             this.buildMenu.Click += new System.EventHandler(this.buildMenu_Click);
             // 
             // verifyMenu
             // 
             this.verifyMenu.Name = "verifyMenu";
-            this.verifyMenu.Size = new System.Drawing.Size(146, 22);
+            this.verifyMenu.Size = new System.Drawing.Size(151, 22);
             this.verifyMenu.Text = "Verify...";
             this.verifyMenu.Click += new System.EventHandler(this.verifyMenu_Click);
             // 
             // saveAsMenu
             // 
             this.saveAsMenu.Name = "saveAsMenu";
-            this.saveAsMenu.Size = new System.Drawing.Size(146, 22);
+            this.saveAsMenu.Size = new System.Drawing.Size(151, 22);
             this.saveAsMenu.Text = "Save As...";
             this.saveAsMenu.Click += new System.EventHandler(this.saveAsMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(148, 6);
             // 
             // exitMenu
             // 
             this.exitMenu.Name = "exitMenu";
-            this.exitMenu.Size = new System.Drawing.Size(146, 22);
+            this.exitMenu.Size = new System.Drawing.Size(151, 22);
             this.exitMenu.Text = "Exit";
             this.exitMenu.Click += new System.EventHandler(this.exitMenu_Click);
             // 
@@ -1395,21 +1415,22 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // tbFiles_MigrationSource
+            // label30
             // 
-            this.tbFiles_MigrationSource.Location = new System.Drawing.Point(99, 482);
-            this.tbFiles_MigrationSource.Name = "tbFiles_MigrationSource";
-            this.tbFiles_MigrationSource.Size = new System.Drawing.Size(405, 20);
-            this.tbFiles_MigrationSource.TabIndex = 23;
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(12, 203);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(116, 13);
+            this.label30.TabIndex = 11;
+            this.label30.Text = "Module Instance GUID";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label20
+            // tbModuleInstanceGuid
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 485);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(87, 13);
-            this.label20.TabIndex = 22;
-            this.label20.Text = "Migration Source";
+            this.tbModuleInstanceGuid.Location = new System.Drawing.Point(134, 200);
+            this.tbModuleInstanceGuid.Name = "tbModuleInstanceGuid";
+            this.tbModuleInstanceGuid.Size = new System.Drawing.Size(219, 20);
+            this.tbModuleInstanceGuid.TabIndex = 12;
             // 
             // mainForm
             // 
@@ -1576,5 +1597,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.TextBox tbFiles_MigrationSource;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox tbModuleInstanceGuid;
     }
 }
