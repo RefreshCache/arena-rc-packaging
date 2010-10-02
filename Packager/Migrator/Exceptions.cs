@@ -7,7 +7,8 @@ namespace RefreshCache.Packager.Migrator
     /// Identifies that an error occurred while running a database migration
     /// script against the database.
     /// </summary>
-    public class DatabaseMigrationException : Exception
+    [Serializable]
+    public class DatabaseMigrationException : Exception, ISerializable
     {
         /// <summary>
         /// Create a new exception with a default error mesage.

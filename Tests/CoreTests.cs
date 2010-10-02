@@ -2,7 +2,10 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using RefreshCache.Packager;
 using RefreshCache.Packager.Migrator;
@@ -214,27 +217,27 @@ namespace RefreshCache.Packager.Tests
         }
 
         [Test]
-        [Ignore("Test does not work, I may just not know how to do multiple key columns properly")]
+//        [Ignore("Test does not work, I may just not know how to do multiple key columns properly")]
         public void CreateTableWithForeignKeyMultipleColumns()
         {
             Table tb;
 
 
             tb = new Table("test_table1",
-                new Column("primary_key", ColumnType.Int, ColumnAttribute.PrimaryKeyIdentity),
-                new Column("value", ColumnType.Int, ColumnAttribute.NotNull | ColumnAttribute.Unique),
+                new Column("primary_key", ColumnType.Int, ColumnAttribute.NotNull),
+                new Column("value", ColumnType.Int, ColumnAttribute.NotNull),
                 new Column("value_key", ColumnType.VarChar, 20));
-            tb.Columns[2].Flags = ColumnAttribute.Unique | ColumnAttribute.NotNull;
+            tb.Constraints.Add(new PrimaryKeyConstraint("pk_test_table1", "primary_key", "value"));
             db.CreateTable(tb);
 
             tb = new Table("test_table2",
                 new Column("primary_key", ColumnType.Int, ColumnAttribute.PrimaryKeyIdentity),
                 new Column("secondary_key", ColumnType.Int),
-                new Column("third_key", ColumnType.VarChar, 20));
+                new Column("third_key", ColumnType.Int));
             tb.Constraints.Add(new ForeignKeyConstraint("fk_test_table2_test_table1",
                 new List<string> { "secondary_key", "third_key" },
                "test_table1",
-               new List<string> { "value", "value_key" }));
+               new List<string> { "primary_key", "value" }));
             db.CreateTable(tb);
 
             db.DropTable("test_table2");
@@ -395,7 +398,14 @@ namespace RefreshCache.Packager.Tests
             Database d;
 
             d = new Database(null);
+            d.ExecuteScalar("SELECT 1");
             Assert.True(d.Dryrun);
+        }
+
+        [Test]
+        public void DatabaseScalarValue()
+        {
+            Assert.True(Convert.ToInt32(db.ExecuteScalar("SELECT 1")) == 1);
         }
 
         [Test]
@@ -471,6 +481,20 @@ namespace RefreshCache.Packager.Tests
             db.DropTable("test_table");
         }
 
+        [Test]
+        public void DatabaseDropProcedure()
+        {
+            db.ExecuteNonQuery("CREATE PROCEDURE cust_sp_test_proc AS SELECT 1");
+            db.DropProcedure("cust_sp_test_proc");
+        }
+
+        [Test]
+        public void DatabaseDropFunction()
+        {
+            db.ExecuteNonQuery("CREATE FUNCTION cust_fn_test_func() RETURNS int AS BEGIN RETURN 1 END");
+            db.DropFunction("cust_fn_test_func");
+        }
+
         #endregion
 
         [Test]
@@ -484,6 +508,39 @@ namespace RefreshCache.Packager.Tests
             mig.Unconfigure(db, null, "CCCEV.CheckIn");
             mig.Unconfigure(db, null, null);
             mig.Downgrade(db, null);
+        }
+
+        [Test]
+        public void InvalidMigrator()
+        {
+            TestMigration.Ignored_Migration im = new TestMigration.Ignored_Migration();
+
+            Assert.IsNull(im.Version);
+        }
+
+        [Test]
+        public void MigratorExceptions()
+        {
+            String msg = "Test Message";
+            Exception inner = new Exception("Top Exception");
+            DatabaseMigrationException e, e2;
+
+
+            e = new DatabaseMigrationException();
+            e = new DatabaseMigrationException(msg);
+            Assert.AreEqual(msg, e.Message);
+
+            e = new DatabaseMigrationException(msg, inner);
+            Assert.AreEqual(msg, e.Message);
+            Assert.AreEqual(inner.Message, e.InnerException.Message);
+
+            BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.File));
+            MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, e);
+            stream.Position = 0;
+            e2 = (DatabaseMigrationException)formatter.Deserialize(stream);
+
+            Assert.AreEqual(e.Message, e2.Message);
         }
     }
 
@@ -575,6 +632,10 @@ namespace RefreshCache.Packager.Tests
                     db.ExecuteNonQuery("DELETE FROM cust_hdc_checkin_code WHERE [guid] = 'C9D83DC8-9E87-11DF-B968-12FCDED72085'");
                 }
             }
+        }
+
+        public class Ignored_Migration : DatabaseMigrator
+        {
         }
     }
 }
