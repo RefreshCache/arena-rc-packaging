@@ -85,6 +85,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Packages\BasicInstall-v1.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Packages\BasicInstall-v2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\secu_sp_del_permissionByKey.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\secu_permission.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ArenaDB\secu_template.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
