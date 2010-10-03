@@ -31,7 +31,6 @@ namespace RefreshCache.Packager.Tests
             SqlCommand cmd = con.CreateCommand();
             cmd.Transaction = con.BeginTransaction();
             db = new Database(cmd);
-            db.Verbose = true;
         }
 
         [TearDown]

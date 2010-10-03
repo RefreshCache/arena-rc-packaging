@@ -70,6 +70,8 @@ namespace RefreshCache.Packager.Manager
             try
             {
                 version = pdb.VersionOfPackage(package.Info.PackageName);
+                if (version == null)
+                    version = new PackageVersion("");
             }
             catch
             {
@@ -85,19 +87,22 @@ namespace RefreshCache.Packager.Manager
             //
             // Verify Arena version.
             //
-            try
+            if (package.Info.Arena != null)
             {
-                version = pdb.VersionOfArena();
+                try
+                {
+                    version = pdb.VersionOfArena();
+                }
+                catch
+                {
+                    version = new PackageVersion("");
+                }
+                try
+                {
+                    package.Info.Arena.ValidateVersion(version, "Arena");
+                }
+                catch (PackageDependencyException) { throw; }
             }
-            catch
-            {
-                version = new PackageVersion("");
-            }
-            try
-            {
-                package.Info.Arena.ValidateVersion(version, "Arena");
-            }
-            catch (PackageDependencyException) { throw; }
 
             //
             // Verify each required package meets version requirements.
@@ -968,12 +973,15 @@ namespace RefreshCache.Packager.Manager
                     {
                         Boolean create = true;
 
-                        foreach (ModuleInstanceSetting oldSetting in kvp.Value.Settings)
+                        if (kvp.Value != null)
                         {
-                            if (oldSetting.Name == newSetting.Name)
+                            foreach (ModuleInstanceSetting oldSetting in kvp.Value.Settings)
                             {
-                                create = false;
-                                break;
+                                if (oldSetting.Name == newSetting.Name)
+                                {
+                                    create = false;
+                                    break;
+                                }
                             }
                         }
 

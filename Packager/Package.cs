@@ -145,17 +145,25 @@ namespace RefreshCache.Packager
             //
             // Load the modules from the document.
             //
-            foreach (XmlNode m in doc.SelectSingleNode("//ArenaPackage/Modules").ChildNodes)
+            node = doc.SelectSingleNode("//ArenaPackage/Modules");
+            if (node != null)
             {
-                Modules.Add(new Module(m));
+                foreach (XmlNode m in node.ChildNodes)
+                {
+                    Modules.Add(new Module(m));
+                }
             }
 
             //
             // Load the pages from the document.
             //
-            foreach (XmlNode p in doc.SelectSingleNode("//ArenaPackage/Pages").ChildNodes)
+            node = doc.SelectSingleNode("//ArenaPackage/Pages");
+            if (node != null)
             {
-                Pages.Add(new PageInstance(p));
+                foreach (XmlNode p in node.ChildNodes)
+                {
+                    Pages.Add(new PageInstance(p));
+                }
             }
 
             //
