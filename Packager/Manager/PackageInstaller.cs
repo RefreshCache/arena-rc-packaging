@@ -262,7 +262,6 @@ namespace RefreshCache.Packager.Manager
                     //
                     if (remove)
                     {
-                        SqlDataReader rdr;
                         Int32 module_id;
                         Dictionary<Int32, Int32> module_instances;
 
@@ -283,14 +282,15 @@ namespace RefreshCache.Packager.Manager
                         pdb.Command.CommandText = "SELECT [module_instance_id],[page_id] FROM [port_module_instance] WHERE [module_id] = @ModuleID";
                         pdb.Command.Parameters.Clear();
                         pdb.Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
-                        rdr = pdb.Command.ExecuteReader();
-                        module_instances = new Dictionary<int, int>();
-                        while (rdr.Read())
+                        using (SqlDataReader rdr = pdb.Command.ExecuteReader())
                         {
-                            module_instances.Add(Convert.ToInt32(rdr["module_instance_id"]),
-                                Convert.ToInt32(rdr["page_id"]));
+                            module_instances = new Dictionary<int, int>();
+                            while (rdr.Read())
+                            {
+                                module_instances.Add(Convert.ToInt32(rdr["module_instance_id"]),
+                                    Convert.ToInt32(rdr["page_id"]));
+                            }
                         }
-                        rdr.Close();
 
                         //
                         // Walk through each module instance, delete it and then check
@@ -454,10 +454,11 @@ namespace RefreshCache.Packager.Manager
                     pdb.Command.CommandText = "port_sp_get_moduleByUrl";
                     pdb.Command.Parameters.Clear();
                     pdb.Command.Parameters.Add(new SqlParameter("@ModuleUrl", m.URL));
-                    SqlDataReader rdr = pdb.Command.ExecuteReader();
-
-                    ModuleMap.Add(m.ModuleID, Convert.ToInt32(rdr["module_id"]));
-                    rdr.Close();
+                    using (SqlDataReader rdr = pdb.Command.ExecuteReader())
+                    {
+                        rdr.Read();
+                        ModuleMap.Add(m.ModuleID, Convert.ToInt32(rdr["module_id"]));
+                    }
                 }
             }
         }
@@ -1057,7 +1058,6 @@ namespace RefreshCache.Packager.Manager
         /// <param name="pageID">The ID number of the page to remove from the database.</param>
         private void RemoveSinglePage(Int32 pageID)
         {
-            SqlDataReader rdr;
             List<Int32> ids;
 
 
@@ -1068,13 +1068,14 @@ namespace RefreshCache.Packager.Manager
             pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [page_id] = @PageID";
             pdb.Command.Parameters.Clear();
             pdb.Command.Parameters.Add(new SqlParameter("@PageID", pageID));
-            rdr = pdb.Command.ExecuteReader();
-            ids = new List<int>();
-            while (rdr.Read())
+            using (SqlDataReader rdr = pdb.Command.ExecuteReader())
             {
-                ids.Add(Convert.ToInt32(rdr[0].ToString()));
+                ids = new List<int>();
+                while (rdr.Read())
+                {
+                    ids.Add(Convert.ToInt32(rdr[0].ToString()));
+                }
             }
-            rdr.Close();
 
             //
             // Loop through and delete each module instance.
@@ -1101,13 +1102,14 @@ namespace RefreshCache.Packager.Manager
             pdb.Command.CommandText = "SELECT [page_id] FROM [port_portal_page] WHERE [parent_page_id] = @PageID";
             pdb.Command.Parameters.Clear();
             pdb.Command.Parameters.Add(new SqlParameter("@PageID", pageID));
-            rdr = pdb.Command.ExecuteReader();
-            ids = new List<int>();
-            while (rdr.Read())
+            using (SqlDataReader rdr = pdb.Command.ExecuteReader())
             {
-                ids.Add(Convert.ToInt32(rdr[0].ToString()));
+                ids = new List<int>();
+                while (rdr.Read())
+                {
+                    ids.Add(Convert.ToInt32(rdr[0].ToString()));
+                }
             }
-            rdr.Close();
 
             //
             // Loop through and delete each child page.
@@ -1146,7 +1148,6 @@ namespace RefreshCache.Packager.Manager
         {
             foreach (Module m in package.Modules)
             {
-                SqlDataReader rdr;
                 List<Int32> ids;
                 Int32 module_id;
 
@@ -1167,13 +1168,14 @@ namespace RefreshCache.Packager.Manager
                 pdb.Command.CommandText = "SELECT [module_instance_id] FROM [port_module_instance] WHERE [module_id] = @ModuleID";
                 pdb.Command.Parameters.Clear();
                 pdb.Command.Parameters.Add(new SqlParameter("@ModuleID", module_id));
-                rdr = pdb.Command.ExecuteReader();
-                ids = new List<int>();
-                while (rdr.Read())
+                using (SqlDataReader rdr = pdb.Command.ExecuteReader())
                 {
-                    ids.Add(Convert.ToInt32(rdr[0]));
+                    ids = new List<int>();
+                    while (rdr.Read())
+                    {
+                        ids.Add(Convert.ToInt32(rdr[0]));
+                    }
                 }
-                rdr.Close();
 
                 //
                 // Delete each module instance we found.

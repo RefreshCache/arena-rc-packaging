@@ -161,7 +161,7 @@ namespace RefreshCache.Packager.Manager
         public Package GetInstalledPackage(String packageName)
         {
             XmlDocument xdoc;
-            XmlReader rdr;
+            Package pkg = null;
 
 
             Command.CommandText = "cust_rc_packager_sp_get_package";
@@ -169,19 +169,15 @@ namespace RefreshCache.Packager.Manager
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Name", packageName));
 
-            rdr = Command.ExecuteXmlReader();
-            try
+            using (XmlReader rdr = Command.ExecuteXmlReader())
             {
                 xdoc = new XmlDocument();
                 xdoc.Load(rdr);
-            }
-            catch
-            {
-                xdoc = null;
-            }
-            rdr.Close();
 
-            return new Package(xdoc);
+                pkg = new Package(xdoc);
+            }
+
+            return pkg;
         }
 
 
@@ -228,7 +224,7 @@ namespace RefreshCache.Packager.Manager
 
 
             Command.CommandType = CommandType.StoredProcedure;
-            Command.CommandText = "cust_rc_packager_get_sp_packages_requiring";
+            Command.CommandText = "cust_rc_packager_sp_get_packages_requiring";
             Command.Parameters.Clear();
             Command.Parameters.Add(new SqlParameter("@Name", packageName));
             rdr = Command.ExecuteReader();
@@ -444,8 +440,16 @@ namespace RefreshCache.Packager.Manager
                 //
                 // Store the Package information in the database.
                 //
+                if (oldPackage != null)
+                {
+                    Command.CommandType = CommandType.Text;
+                    Command.CommandText = "DELETE FROM [cust_rc_packager_packages] WHERE [name] = @Name";
+                    Command.Parameters.Clear();
+                    Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
+                    Command.ExecuteNonQuery();
+                }
                 Command.CommandType = CommandType.Text;
-                Command.CommandText = "INSERT INTO cust_rc_packager_packages ([created_by], [modified_by], [name], [package]) VALUES ('Package Manager', 'Package Manager', @Name, @Package)";
+                Command.CommandText = "INSERT INTO [cust_rc_packager_packages] ([created_by], [modified_by], [name], [package]) VALUES ('Package Manager', 'Package Manager', @Name, @Package)";
                 Command.Parameters.Clear();
                 Command.Parameters.Add(new SqlParameter("@Name", package.Info.PackageName));
                 Command.Parameters.Add(new SqlParameter("@Package", new SqlXml(new XmlNodeReader(package.XmlPackage))));
@@ -461,7 +465,7 @@ namespace RefreshCache.Packager.Manager
                     db.Command.Transaction = null;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //
                 // Rollback file system changes.
@@ -485,7 +489,7 @@ namespace RefreshCache.Packager.Manager
                 //
                 // Throw the exception again.
                 //
-                throw;
+                throw e;
             }
         }
 
