@@ -11,6 +11,12 @@ namespace RefreshCache.Packager.Migrator
 	/// </summary>
 	public abstract class Migration
 	{
+        /// <summary>
+        /// If the Verbose property is set to true then all upgrade/downgrade
+        /// tasks are written to the console.
+        /// </summary>
+        public Boolean Verbose { get; set; }
+
 		/// <summary>
 		/// Retrieve the list of DatabaseMigrator nested classes inside of this class. The
 		/// list is sorted by version/step number, lowest to highest.
@@ -94,7 +100,10 @@ namespace RefreshCache.Packager.Migrator
 					continue;
 				
 				migrator.Upgrade(db);
-				Console.WriteLine("Upgrade Version: " + migrator.Version.ToString());
+                if (this.Verbose)
+                {
+                    Console.WriteLine("Upgrade Version: " + migrator.Version.ToString());
+                }
 			}
 		}
 
@@ -128,7 +137,10 @@ namespace RefreshCache.Packager.Migrator
 					continue;
 				
 				migrator.Downgrade(db);
-				Console.WriteLine("Downgrade Version: " + migrator.Version.ToString());
+                if (this.Verbose)
+                {
+                    Console.WriteLine("Downgrade Version: " + migrator.Version.ToString());
+                }
 			}
 		}
 		
@@ -162,7 +174,10 @@ namespace RefreshCache.Packager.Migrator
 					continue;
 				
 				migrator.Configure(db, dependency);
-				Console.WriteLine("Configure Version: " + migrator.Version.ToString());
+                if (this.Verbose)
+                {
+                    Console.WriteLine("Configure Version: " + migrator.Version.ToString());
+                }
 			}
 		}
 
@@ -201,7 +216,10 @@ namespace RefreshCache.Packager.Migrator
 					continue;
 				
 				migrator.Unconfigure(db, dependency);
-				Console.WriteLine("Unconfigure Version: " + migrator.Version.ToString());
+                if (this.Verbose)
+                {
+                    Console.WriteLine("Unconfigure Version: " + migrator.Version.ToString());
+                }
 			}
 		}
 	}

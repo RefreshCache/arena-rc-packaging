@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 using System.Xml;
 using NUnit.Framework;
 
@@ -19,6 +20,24 @@ namespace RefreshCache.Packager.Tests
         SqlConnection testConnection;
         String TempPath = null;
         static String DatabaseName = "RCUnitTestDatabase";
+
+
+        #region Helper Methods
+
+        private XmlDocument XmlFromResource(String resourceName)
+        {
+            using (Stream stream = GetType().Assembly.GetManifestResourceStream(GetType(), resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    XmlDocument xdoc = new XmlDocument();
+
+                    xdoc.Load(reader);
+
+                    return xdoc;
+                }
+            }
+        }
 
         private void ExecuteScript(String scriptName)
         {
@@ -45,6 +64,34 @@ namespace RefreshCache.Packager.Tests
                 command.ExecuteNonQuery();
             }
         }
+
+        private String MD5FromInstalledPath(String path)
+        {
+            StringBuilder sb = new StringBuilder();
+            byte[] hash;
+            MD5 hasher = MD5.Create();
+            int i;
+
+
+            using (Stream stream = new FileInfo(TempPath + @"\" + path).OpenRead())
+            {
+                hash = hasher.ComputeHash(stream);
+            }
+
+            for (i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("x2"));
+            }
+
+            return sb.ToString();
+        }
+
+        private Boolean VerifyFileMD5(String path, String shouldBe)
+        {
+            return shouldBe.Equals(MD5FromInstalledPath(path), StringComparison.OrdinalIgnoreCase);
+        }
+
+        #endregion
 
         [SetUp]
         public void Initialize()
@@ -123,6 +170,31 @@ namespace RefreshCache.Packager.Tests
 
             pdb = new PackageDatabase(TempPath, testConnection);
             pdb.InstallSystem(new Package[] { package1, package2 });
+        }
+
+        [Test]
+        public void TestBasicInstall()
+        {
+            PackageDatabase pdb;
+            XmlDocument xdoc;
+            Package pkg;
+
+
+            //
+            // Setup the basic system.
+            //
+            TestSystemInstall();
+
+            //
+            // Load the package.
+            //
+            xdoc = XmlFromResource("Packages.BasicInstall-v1.xml");
+            pkg = new Package(xdoc);
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+            pdb.InstallPackage(pkg);
+
+            Assert.True(VerifyFileMD5("UserControls/Custom/Module1.ascx", "0b274e8b3c034d2ab7eb788390973371"));
         }
     }
 }
