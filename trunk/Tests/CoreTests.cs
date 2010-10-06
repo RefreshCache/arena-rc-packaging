@@ -166,6 +166,13 @@ namespace RefreshCache.Packager.Tests
             v = new MigratorVersionAttribute(1, 3, 6, 5);
         }
 
+        [Test]
+        [ExpectedException(typeof(Exception))]
+        public void InvalidPackageVersion()
+        {
+            new PackageVersion("1.2.3.4.5");
+        }
+
         #endregion
 
         #region Create Table Tests
@@ -216,7 +223,6 @@ namespace RefreshCache.Packager.Tests
         }
 
         [Test]
-//        [Ignore("Test does not work, I may just not know how to do multiple key columns properly")]
         public void CreateTableWithForeignKeyMultipleColumns()
         {
             Table tb;
@@ -494,10 +500,38 @@ namespace RefreshCache.Packager.Tests
             db.DropFunction("cust_fn_test_func");
         }
 
+        [Test]
+        public void DatabaseVerbose()
+        {
+            Database d = new Database(null);
+            TextWriter stdout;
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+
+            d.Verbose = true;
+            stdout = Console.Out;
+            Console.SetOut(sw);
+            try
+            {
+                d.ExecuteScalar("SELECT 1");
+                Assert.AreEqual("SELECT 1" + Environment.NewLine, sb.ToString(), "ExecuteScalar did not output correct value.");
+                sb.Length = 0;
+
+                d.ExecuteNonQuery("CREATE");
+                Assert.AreEqual("CREATE" + Environment.NewLine, sb.ToString(), "ExecuteNonQuery did not output correct value.");
+            }
+            finally
+            {
+                Console.SetOut(stdout);
+            }
+        }
+
         #endregion
 
+        #region Migration Tests
+
         [Test]
-        public void RunMigrationTest()
+        public void RunMigration()
         {
             Migration mig = new TestMigration();
 
@@ -515,6 +549,58 @@ namespace RefreshCache.Packager.Tests
             TestMigration.Ignored_Migration im = new TestMigration.Ignored_Migration();
 
             Assert.IsNull(im.Version);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Exception))]
+        public void DuplicateStepMigrator()
+        {
+            DuplicateStepMigration dsm = new DuplicateStepMigration();
+
+            dsm.Configure(null, null, null);
+        }
+
+        [Test]
+        public void EmptyMigration()
+        {
+            EmptyMigration em = new EmptyMigration();
+
+            em.Configure(null, null, null);
+        }
+
+        [Test]
+        public void SequencedMigration()
+        {
+            SequencedMigration sm = new SequencedMigration();
+            TextWriter stdout;
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            String expected;
+
+            sm.Verbose = true;
+            stdout = Console.Out;
+            Console.SetOut(sw);
+            try
+            {
+                expected = "Upgrade Version: 2.0.0 Step 1" + Environment.NewLine +
+                    "Upgrade Version: 3.0.0 Step 1" + Environment.NewLine +
+                    "Configure Version: 2.0.0 Step 1" + Environment.NewLine +
+                    "Configure Version: 3.0.0 Step 1" + Environment.NewLine +
+                    "Unconfigure Version: 3.0.0 Step 1" + Environment.NewLine +
+                    "Unconfigure Version: 2.0.0 Step 1" + Environment.NewLine +
+                    "Downgrade Version: 3.0.0 Step 1" + Environment.NewLine +
+                    "Downgrade Version: 2.0.0 Step 1" + Environment.NewLine;
+                sm.Upgrade(null, new PackageVersion("1.0.0"));
+                sm.Configure(null, new PackageVersion("1.0.0"), null);
+                sm.Unconfigure(null, new PackageVersion("1.0.0"), null);
+                sm.Downgrade(null, new PackageVersion("1.0.0"));
+
+                Assert.AreEqual(expected, sb.ToString(), "Sequenced migration was not in the proper order.");
+            }
+            finally
+            {
+                Console.SetOut(stdout);
+            }
         }
 
         [Test]
@@ -541,6 +627,8 @@ namespace RefreshCache.Packager.Tests
 
             Assert.AreEqual(e.Message, e2.Message);
         }
+
+        #endregion
     }
 
     class TestMigration : Migration
@@ -549,7 +637,7 @@ namespace RefreshCache.Packager.Tests
         // Version 1.0.0 Step 1
         // Create the check code table.
         //
-        [MigratorVersionAttribute(1, 0, 0, 1)]
+        [MigratorVersion(1, 0, 0, 1)]
         public class Version1_0_0_step1 : DatabaseMigrator
         {
             public override void Upgrade(Database db)
@@ -570,7 +658,7 @@ namespace RefreshCache.Packager.Tests
         // Version 1.0.0 Step 2
         // Add the foreign key constraint.
         //
-        [MigratorVersionAttribute(1, 0, 0, 2)]
+        [MigratorVersion(1, 0, 0, 2)]
         public class Version1_0_0_step2 : DatabaseMigrator
         {
             public override void Upgrade(Database db)
@@ -591,7 +679,7 @@ namespace RefreshCache.Packager.Tests
         // Version 1.2.0 Step 1
         // No database changes were made for this version.
         //
-        [MigratorVersionAttribute(1, 2, 0, 1)]
+        [MigratorVersion(1, 2, 0, 1)]
         public class Version1_2_0_step1 : DatabaseMigrator
         {
         }
@@ -601,7 +689,7 @@ namespace RefreshCache.Packager.Tests
         // Add column guid to the cust_hdc_checkin_code table.
         // Add a lookup if we have the CCCEV.CheckIn package available.
         //
-        [MigratorVersionAttribute(1, 3, 5, 1)]
+        [MigratorVersion(1, 3, 5, 1)]
         public class Version1_3_5_step1 : DatabaseMigrator
         {
             public override void Upgrade(Database db)
@@ -634,6 +722,44 @@ namespace RefreshCache.Packager.Tests
         }
 
         public class Ignored_Migration : DatabaseMigrator
+        {
+        }
+    }
+
+    class SequencedMigration : Migration
+    {
+        [MigratorVersion(1, 0, 0, 1)]
+        public class Version1_0_0_step1 : DatabaseMigrator
+        {
+        }
+
+        [MigratorVersion(2, 0, 0, 1)]
+        public class Version2_0_0_step1 : DatabaseMigrator
+        {
+        }
+
+        [MigratorVersion(3, 0, 0, 1)]
+        public class Version3_0_0_step1 : DatabaseMigrator
+        {
+        }
+    }
+
+    class DuplicateStepMigration : Migration
+    {
+        [MigratorVersion(1, 0, 0, 1)]
+        public class Version1_0_0_stepA : DatabaseMigrator
+        {
+        }
+
+        [MigratorVersion(1, 0, 0, 1)]
+        public class Version1_0_0_stepB : DatabaseMigrator
+        {
+        }
+    }
+
+    class EmptyMigration : Migration
+    {
+        public class SomeOtherClass
         {
         }
     }

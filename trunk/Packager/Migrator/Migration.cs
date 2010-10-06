@@ -95,8 +95,12 @@ namespace RefreshCache.Packager.Migrator
 			{
 				//
 				// Skip versions that are less than or equal to the version we are upgrading from.
+                // Also check for the same version since 1.0.0 is less than 1.0.0 step 1.
 				//
-				if (migrator.Version.CompareTo(fromVersion) <= 0)
+				if (migrator.Version.CompareTo(fromVersion) <= 0 ||
+                    (migrator.Version.Major == fromVersion.Major &&
+                     migrator.Version.Minor == fromVersion.Minor &&
+                     migrator.Version.Revision == fromVersion.Revision))
 					continue;
 				
 				migrator.Upgrade(db);
@@ -130,11 +134,15 @@ namespace RefreshCache.Packager.Migrator
 			{
 				DatabaseMigrator migrator = Migrators[i];
 
-				//
-				// Skip versions that are less than or equal to the version we are downgrading to.
-				//
-				if (migrator.Version.CompareTo(toVersion) <= 0)
-					continue;
+                //
+                // Skip versions that are less than or equal to the version we are downgrading to.
+                // Special check on version match so that the step is ignored for an exact match.
+                //
+                if (migrator.Version.CompareTo(toVersion) <= 0 ||
+                    (migrator.Version.Major == toVersion.Major &&
+                     migrator.Version.Minor == toVersion.Minor &&
+                     migrator.Version.Revision == toVersion.Revision))
+                    continue;
 				
 				migrator.Downgrade(db);
                 if (this.Verbose)
@@ -167,11 +175,15 @@ namespace RefreshCache.Packager.Migrator
 
             foreach (DatabaseMigrator migrator in Migrators)
 			{
-				//
-				// Skip versions that are less than or equal to the version we are configuring from.
-				//
-				if (migrator.Version.CompareTo(fromVersion) <= 0)
-					continue;
+                //
+                // Skip versions that are less than or equal to the version we are upgrading from.
+                // Also check for the same version since 1.0.0 is less than 1.0.0 step 1.
+                //
+                if (migrator.Version.CompareTo(fromVersion) <= 0 ||
+                    (migrator.Version.Major == fromVersion.Major &&
+                     migrator.Version.Minor == fromVersion.Minor &&
+                     migrator.Version.Revision == fromVersion.Revision))
+                    continue;
 				
 				migrator.Configure(db, dependency);
                 if (this.Verbose)
@@ -211,9 +223,13 @@ namespace RefreshCache.Packager.Migrator
 
 				//
 				// Skip versions that are less than or equal to the version we are downgrading to.
-				//
-				if (migrator.Version.CompareTo(toVersion) <= 0)
-					continue;
+                // Special check on version match so that the step is ignored for an exact match.
+                //
+                if (migrator.Version.CompareTo(toVersion) <= 0 ||
+                    (migrator.Version.Major == toVersion.Major &&
+                     migrator.Version.Minor == toVersion.Minor &&
+                     migrator.Version.Revision == toVersion.Revision))
+                    continue;
 				
 				migrator.Unconfigure(db, dependency);
                 if (this.Verbose)
