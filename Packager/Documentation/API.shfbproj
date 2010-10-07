@@ -23,7 +23,7 @@
     </DocumentationSources>
     <KeepLogFile>False</KeepLogFile>
     <VendorName>RefreshCache</VendorName>
-    <VisibleItems>InheritedMembers, Protected, SealedProtected</VisibleItems>
+    <VisibleItems>InheritedMembers, Internals, Protected, SealedProtected</VisibleItems>
     <HelpTitle>RefreshCache Packager Framework for Arena</HelpTitle>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <SyntaxFilters>CSharp</SyntaxFilters>
