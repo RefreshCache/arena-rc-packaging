@@ -97,7 +97,7 @@
     <Version>2.0.0</Version>
     <Synopsis>A basic install test for the Unit Test system.</Synopsis>
     <Description>Not much else to say.</Description>
-    <Require MinVersion="2.0.0" Name="RC.PackageManager" />
+    <Require MinVersion="1.0.0" Name="RC.PackageManager" />
     <Recommend Name="RC.Utilities" Description="You should install this package too." />
     <Changelog Version="1.0.0">This is the initial release of this package.</Changelog>
     <Changelog Version="2.0.0">This is the second release of this package.</Changelog>

@@ -83,13 +83,13 @@ namespace RefreshCache.Packager
         /// <param name="prefix">The prefix applied to the error message.</param>
         public void ValidateVersion(PackageVersion version, String prefix)
         {
-            if (MinVersion != null && MinVersion.CompareTo(version) < 0)
+            if (MinVersion != null && MinVersion.CompareTo(version) > 0)
             {
                 throw new PackageDependencyException(String.Format(
                     "{0} version {1} does not meet minimum version requirement of {2}",
                     prefix, version.ToString(), MinVersion.ToString()));
             }
-            else if (MaxVersion != null && MaxVersion.CompareTo(version) > 0)
+            else if (MaxVersion != null && MaxVersion.CompareTo(version) < 0)
             {
                 throw new PackageDependencyException(String.Format(
                     "{0} version {1} exceeds maximum version requirement of {2}",
