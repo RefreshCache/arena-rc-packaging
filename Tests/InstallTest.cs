@@ -65,10 +65,10 @@ namespace RefreshCache.Packager.Tests
             }
         }
 
-        private String MD5FromInstalledPath(String path)
+        public static String MD5FromPath(String path)
         {
             StringBuilder sb = new StringBuilder();
-            FileInfo fi = new FileInfo(TempPath + @"\" + path);
+            FileInfo fi = new FileInfo(path);
             byte[] hash;
             MD5 hasher = MD5.Create();
             int i;
@@ -90,7 +90,12 @@ namespace RefreshCache.Packager.Tests
             return sb.ToString();
         }
 
-        private Boolean VerifyFileMD5(String path, String shouldBe)
+        public String MD5FromInstalledPath(String path)
+        {
+            return MD5FromPath(TempPath + @"\" + path);
+        }
+
+        public Boolean VerifyFileMD5(String path, String shouldBe)
         {
             String md5 = MD5FromInstalledPath(path);
 
@@ -144,6 +149,7 @@ namespace RefreshCache.Packager.Tests
 
         #endregion
 
+
         [SetUp]
         public void Initialize()
         {
@@ -195,6 +201,7 @@ namespace RefreshCache.Packager.Tests
             Directory.CreateDirectory(TempPath);
         }
 
+
         [TearDown]
         public void Cleanup()
         {
@@ -207,6 +214,7 @@ namespace RefreshCache.Packager.Tests
             Directory.Delete(TempPath, true);
             TempPath = null;
         }
+
 
         [Test]
         public void TestSystemInstall()
@@ -226,6 +234,7 @@ namespace RefreshCache.Packager.Tests
             pdb = new PackageDatabase(TempPath, testConnection);
             pdb.InstallSystem(new Package[] { package1, package2 });
         }
+
 
         [Test]
         public void TestBasicInstall()
@@ -264,6 +273,7 @@ namespace RefreshCache.Packager.Tests
             Assert.True(VerifyFileMD5("UserControls/Custom/HoverPopup.js", "69659372724be53044ce250a7db9f4d3"));
             Assert.True(VerifyFileMD5("UserControls/Custom/menuStyle.css", "5ba8d3764429245ea7538d01d88eff04"));
         }
+
 
         /// <summary>
         /// Test upgrading a package.
@@ -308,6 +318,7 @@ namespace RefreshCache.Packager.Tests
             Assert.True(VerifyFileMD5("UserControls/Custom/HoverPopup.js", "69659372724be53044ce250a7db9f4d3"));
             Assert.True(VerifyFileMD5("UserControls/Custom/menuStyle.css", "5ba8d3764429245ea7538d01d88eff04"));
         }
+
 
         /// <summary>
         /// Test removing a package.
@@ -404,6 +415,167 @@ namespace RefreshCache.Packager.Tests
             //
             command.CommandText = "SELECT COUNT(*) FROM port_module_instance_setting";
             Assert.AreEqual(module_instance_setting_count, command.ExecuteScalar(), "port_module_instance_setting rowcount is wrong.");
+        }
+
+
+        [Test]
+        public void TestInstalledPackages()
+        {
+            PackageDatabase pdb;
+            List<string> packages;
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestSystemInstall();
+            }
+            catch
+            {
+                throw new Exception("TestSystemInstall() failed.");
+            }
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+
+            packages = pdb.InstalledPackages();
+
+            Assert.IsTrue(packages.Contains("RC.Utilities"));
+            Assert.IsTrue(packages.Contains("RC.PackageManager"));
+        }
+
+
+        [Test]
+        public void TestInstalledPackageVersion()
+        {
+            PackageDatabase pdb;
+            XmlDocument xdoc;
+            Package pkg;
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestSystemInstall();
+            }
+            catch
+            {
+                throw new Exception("TestSystemInstall() failed.");
+            }
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+
+            xdoc = new XmlDocument();
+            xdoc.Load("../../../RefreshCache.Packager.xml");
+            pkg = new Package(xdoc);
+
+            Assert.AreEqual(pkg.Info.Version.ToString(), pdb.VersionOfPackage(pkg.Info.PackageName).ToString());
+        }
+
+
+        [Test]
+        public void TestArenaVersion()
+        {
+            PackageDatabase pdb;
+            String arenaVersion = "2010.1.100";
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestSystemInstall();
+            }
+            catch
+            {
+                throw new Exception("TestSystemInstall() failed.");
+            }
+
+            ExecuteQuery("EXEC sp_addextendedproperty @name = N'Arena_DatabaseVersion', @value = '" + arenaVersion + "'");
+            pdb = new PackageDatabase(TempPath, testConnection);
+
+            Assert.AreEqual(arenaVersion, pdb.VersionOfArena().ToString());
+        }
+
+
+        [Test]
+        public void TestPackagesRequiring()
+        {
+            PackageDatabase pdb;
+            List<string> packages;
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestBasicInstall();
+            }
+            catch
+            {
+                throw new Exception("TestBasicInstall() failed.");
+            }
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+            packages = pdb.PackagesRequiring("RC.PackageManager");
+
+            Assert.AreEqual(1, packages.Count);
+            Assert.IsTrue(packages.Contains("RC.TestBasicInstall"));
+        }
+
+
+        [Test]
+        public void TestPackagesRecommending()
+        {
+            PackageDatabase pdb;
+            List<string> packages;
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestBasicUpgrade();
+            }
+            catch
+            {
+                throw new Exception("TestBasicUpgrade() failed.");
+            }
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+            packages = pdb.PackagesRecommending("RC.Utilities");
+
+            Assert.AreEqual(1, packages.Count);
+            Assert.IsTrue(packages.Contains("RC.TestBasicInstall"));
+        }
+
+        
+        [Test]
+        public void TestIsPackageInstalled()
+        {
+            PackageDatabase pdb;
+
+
+            //
+            // Setup the basic system.
+            //
+            try
+            {
+                TestSystemInstall();
+            }
+            catch
+            {
+                throw new Exception("TestSystemInstall() failed.");
+            }
+
+            pdb = new PackageDatabase(TempPath, testConnection);
+            Assert.IsTrue(pdb.IsPackageInstalled("RC.PackageManager"));
         }
     }
 }

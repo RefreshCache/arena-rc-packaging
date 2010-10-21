@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CoreTests.cs" />
     <Compile Include="InstallTest.cs" />
+    <Compile Include="ManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
