@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreTests.cs" />
+    <Compile Include="FileCollectionTests.cs" />
     <Compile Include="FileTests.cs" />
     <Compile Include="InstallTest.cs" />
     <Compile Include="ManagerTests.cs" />
