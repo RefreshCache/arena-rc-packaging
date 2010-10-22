@@ -129,6 +129,7 @@ namespace RefreshCache.Packager
             Source = "";
             SourceImage = "";
             Description = "";
+            _Files = new FileCollection(Package);
         }
 
         /// <summary>
