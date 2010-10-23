@@ -54,6 +54,8 @@
     <Compile Include="FileTests.cs" />
     <Compile Include="InstallTest.cs" />
     <Compile Include="ManagerTests.cs" />
+    <Compile Include="ModuleCollectionTests.cs" />
+    <Compile Include="ModuleInstanceCollectionTests.cs" />
     <Compile Include="ModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsHelper.cs" />
