@@ -715,7 +715,7 @@ namespace RefreshCache.Packager
                 if (sb.Length == 0)
                     sb.Append(message.ToString());
                 else
-                    sb.Append("\n" + message.ToString());
+                    sb.Append(Environment.NewLine + message.ToString());
             }
 
             return sb.ToString();
