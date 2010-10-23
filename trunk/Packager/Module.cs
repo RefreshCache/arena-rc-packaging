@@ -365,18 +365,23 @@ namespace RefreshCache.Packager
         {
             get
             {
-                int order = 0;
+                int order = Int32.MaxValue;
 
                 foreach (ModuleInstance module in Page.Modules)
                 {
-                    if (this == module)
-                        return order;
-
                     if (module.TemplateFrameName == this.TemplateFrameName)
-                        order += 1;
+                    {
+                        if (order == Int32.MaxValue)
+                            order = 0;
+                        else
+                            order += 1;
+                    }
+
+                    if (this == module)
+                        break;
                 }
 
-                return Int32.MaxValue;
+                return order;
             }
         }
 
@@ -596,7 +601,7 @@ namespace RefreshCache.Packager
         /// of Arena.
         /// </summary>
         /// <returns>A string in the format of Name=Value;Name=Value</returns>
-        private String ModuleSettings()
+        internal String ModuleSettings()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -608,7 +613,7 @@ namespace RefreshCache.Packager
                 //
                 // Only include settings if they had a value set.
                 //
-                if (String.IsNullOrEmpty(value))
+                if (String.IsNullOrEmpty(value) == false)
                 {
                     if (sb.Length > 0)
                         sb.Append(";");
