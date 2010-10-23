@@ -54,6 +54,7 @@
     <Compile Include="Manager\FileChange.cs" />
     <Compile Include="Manager\PackageDatabase.cs" />
     <Compile Include="Manager\PackageInstaller.cs" />
+    <Compile Include="PackageChangelog.cs" />
     <Compile Include="PackageDependencies.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="File.cs" />
