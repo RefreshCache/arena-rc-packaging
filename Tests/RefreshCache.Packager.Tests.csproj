@@ -60,6 +60,7 @@
     <Compile Include="ModuleInstanceTests.cs" />
     <Compile Include="ModuleTests.cs" />
     <Compile Include="PackageChangelogTests.cs" />
+    <Compile Include="PackageInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsHelper.cs" />
   </ItemGroup>
