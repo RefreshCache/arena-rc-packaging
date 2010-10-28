@@ -17,5 +17,16 @@ namespace RefreshCache.Packager.Tests
             xattr.Value = value;
             node.Attributes.Append(xattr);
         }
+
+
+        protected void AddSimpleXmlNode(XmlNode node, String name, String Value)
+        {
+            XmlNode child;
+
+
+            child = node.OwnerDocument.CreateElement(name);
+            child.InnerText = Value;
+            node.AppendChild(child);
+        }
     }
 }
