@@ -44,49 +44,6 @@ namespace RefreshCache.Packager.Tests
         #region Version Tests
 
         [Test]
-        public void VersionsAreEqual()
-        {
-            PackageVersion v1, v2;
-
-            v1 = new PackageVersion("1.3.7");
-            v2 = new PackageVersion(1, 3, 7);
-
-            Assert.AreEqual(v1.Major, v2.Major);
-            Assert.AreEqual(v1.Minor, v2.Minor);
-            Assert.AreEqual(v1.Revision, v2.Revision);
-            Assert.True((v1.CompareTo(v2) == 0));
-        }
-
-        [Test]
-        public void VersionsAreNotEqual()
-        {
-            PackageVersion v;
-
-            v = new PackageVersion("1.3.7");
-            Assert.True((v.CompareTo(new PackageVersion("2.7.1")) != 0));
-            Assert.True((v.CompareTo(new PackageVersion("1.7.1")) != 0));
-            Assert.True((v.CompareTo(new PackageVersion("1.3.1")) != 0));
-        }
-
-        [Test]
-        public void VersionToString()
-        {
-            PackageVersion v;
-
-            v = new PackageVersion("1.3.7");
-            Assert.True(v.ToString().Equals("1.3.7"));
-        }
-
-        [Test]
-        public void VersionDefaultValues()
-        {
-            PackageVersion v;
-
-            v = new PackageVersion("");
-            Assert.True(v.CompareTo(new PackageVersion("0.0.0")) == 0);
-        }
-
-        [Test]
         public void VersionStepsAreEqual()
         {
             MigratorVersionStep v1, v2;
@@ -123,17 +80,6 @@ namespace RefreshCache.Packager.Tests
         }
 
         [Test]
-        public void VersionLessThanVersionStep()
-        {
-            PackageVersion v1;
-            MigratorVersionStep v2;
-
-            v1 = new PackageVersion("1.3.7");
-            v2 = new MigratorVersionStep(1, 3, 7, 6);
-            Assert.True((v1.CompareTo(v2) == -1));
-        }
-
-        [Test]
         public void VersionStepGreaterThanVersion()
         {
             MigratorVersionStep v1;
@@ -165,13 +111,6 @@ namespace RefreshCache.Packager.Tests
 
 
             v = new MigratorVersionAttribute(1, 3, 6, 5);
-        }
-
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void InvalidPackageVersion()
-        {
-            new PackageVersion("1.2.3.4.5");
         }
 
         #endregion
