@@ -447,7 +447,7 @@ namespace RefreshCache.Packager
         /// Creates a new, empty, PageSetting object that can be configured
         /// at a later point in time.
         /// </summary>
-        public PageSetting()
+        internal PageSetting()
         {
             Name = "";
             DisplayName = "";
@@ -458,11 +458,11 @@ namespace RefreshCache.Packager
         /// Creates a new PageSetting object with the specified setting name.
         /// </summary>
         /// <param name="name">The name this new setting will have.</param>
-        public PageSetting(String name)
+        internal PageSetting(String name)
+            : this()
         {
             Name = name;
             DisplayName = name;
-            Value = "";
         }
 
         /// <summary>
@@ -471,10 +471,9 @@ namespace RefreshCache.Packager
         /// </summary>
         /// <param name="name">The name of this setting (will also be used for the DisplayName).</param>
         /// <param name="value">Initial value of this setting.</param>
-        public PageSetting(String name, String value)
+        internal PageSetting(String name, String value)
+            : this(name)
         {
-            Name = name;
-            DisplayName = name;
             Value = value;
         }
 
@@ -485,7 +484,7 @@ namespace RefreshCache.Packager
         /// <param name="name">Identifies the name this setting should have.</param>
         /// <param name="displayname">The name that will be used to display this setting to the user.</param>
         /// <param name="value">Initial value for this setting.</param>
-        public PageSetting(String name, String displayname, String value)
+        internal PageSetting(String name, String displayname, String value)
         {
             Name = name;
             DisplayName = displayname;
