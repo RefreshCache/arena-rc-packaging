@@ -64,7 +64,9 @@
     <Compile Include="PackageRecommendationTests.cs" />
     <Compile Include="PackageRequirementTests.cs" />
     <Compile Include="PackageVersionTests.cs" />
+    <Compile Include="PageInstanceCollectionTests.cs" />
     <Compile Include="PageInstanceTests.cs" />
+    <Compile Include="PageSettingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsHelper.cs" />
   </ItemGroup>
