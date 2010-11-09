@@ -49,7 +49,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildMessageCollectionTests.cs" />
+    <Compile Include="BuildMessageTests.cs" />
     <Compile Include="CoreTests.cs" />
+    <Compile Include="XmlNodeExtensionsTests.cs" />
     <Compile Include="FileCollectionTests.cs" />
     <Compile Include="FileTests.cs" />
     <Compile Include="InstallTest.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="PageSettingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsHelper.cs" />
+    <Compile Include="VersionRequirementTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ArenaDB\port_template.sql" />

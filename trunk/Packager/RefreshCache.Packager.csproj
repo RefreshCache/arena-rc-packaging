@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildMessage.cs" />
     <Compile Include="Manager\Exceptions.cs" />
     <Compile Include="Manager\FileChange.cs" />
     <Compile Include="Manager\PackageDatabase.cs" />

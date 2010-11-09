@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace RefreshCache.Packager.Tests
 {
-    class TestsHelper
+    public class TestsHelper
     {
         protected void AddXmlAttribute(XmlNode node, String name, String value)
         {
