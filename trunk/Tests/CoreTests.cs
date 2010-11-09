@@ -573,50 +573,6 @@ namespace RefreshCache.Packager.Tests
         }
 
         #endregion
-
-
-        #region Build Messages
-
-        [Test]
-        public void BuildMessageWarningTest()
-        {
-            BuildMessage bm;
-
-
-            bm = new BuildMessage(BuildMessageType.Warning, "Test Message");
-            Assert.True(bm.ToString().IndexOf("Warning: ") == 0);
-        }
-
-
-        [Test]
-        public void BuildMessageErrorTest()
-        {
-            BuildMessage bm;
-
-
-            bm = new BuildMessage(BuildMessageType.Error, "Test Message");
-            Assert.True(bm.ToString().IndexOf("Error: ") == 0);
-        }
-
-
-        [Test]
-        public void BuildMessageCollectionTest()
-        {
-            BuildMessageCollection bmc = new BuildMessageCollection();
-            String msg, wMsg = "This is a warning.", eMsg = "This is an error.";
-
-
-            bmc.Add(new BuildMessage(BuildMessageType.Warning, wMsg));
-            bmc.Add(new BuildMessage(BuildMessageType.Error, eMsg));
-
-            Assert.AreEqual(2, bmc.Count, "Invalid message count.");
-            msg = bmc.ToString();
-
-            Assert.IsTrue(msg.IndexOf("Warning: " + wMsg) == 0);
-            Assert.IsTrue(msg.IndexOf("Error: " + eMsg) != 0);
-        }
-
-        #endregion
     }
 
     class TestMigration : Migration
