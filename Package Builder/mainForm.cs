@@ -51,6 +51,7 @@ namespace RefreshCache.Packager.Builder
         /// </summary>
         private void InitTabs()
         {
+			InitPackageTab();
             InitInfoTab();
             InitRequirementsTab();
             InitVersionsTab();
@@ -65,6 +66,7 @@ namespace RefreshCache.Packager.Builder
         /// </summary>
         private void UpdateTabs()
         {
+			UpdatePackageTab();
             UpdateInfoTab();
             UpdateRequirementsTab();
             UpdateVersionsTab();
@@ -126,7 +128,7 @@ namespace RefreshCache.Packager.Builder
             OpenFileDialog dialog = new OpenFileDialog();
 
 
-            dialog.Filter = "XML Files|*.xml";
+            dialog.Filter = "PBXML Files|*.pbxml";
             dialog.FilterIndex = 0;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -153,7 +155,7 @@ namespace RefreshCache.Packager.Builder
             if (tcMain.Focus() == false)
                 return;
 
-            dialog.Filter = "XML Files|*.xml";
+            dialog.Filter = "PBXML Files|*.pbxml";
             dialog.FilterIndex = 0;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
