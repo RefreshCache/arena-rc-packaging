@@ -11,9 +11,16 @@ namespace RefreshCache.Packager.Builder
         [STAThread()]
 		public static void Main (string[] args)
 		{
+            mainForm form;
+
+
         	Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new mainForm());
+
+            form = new mainForm();
+            if (args.Length > 0)
+                form.openFromFile(args[0]);
+			Application.Run(form);
 		}
 	}
 }

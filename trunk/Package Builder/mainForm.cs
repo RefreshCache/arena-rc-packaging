@@ -35,6 +35,7 @@ namespace RefreshCache.Packager.Builder
             // Setup all the top-level actions and events.
             //
             tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
+            this.FormClosing += new FormClosingEventHandler(mainForm_FormClosing);
 
             //
             // Initialize and prepare all tabs for use.
@@ -114,8 +115,41 @@ namespace RefreshCache.Packager.Builder
                 cbModuleInstanceType.SelectedValue = selectedValue;
         }
 
+        /// <summary>
+        /// The form is about to close, check if we need to do anything before it
+        /// closes such as ask the user about saving.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result;
+
+
+            //
+            // Ask the user that any unsaved changes might be lost before we continue.
+            // TODO: Consult a dirty bit later to see if we need to ask.
+            //
+            result = MessageBox.Show("Unsaved changes will be lost if you continue.\nDo you wish to continue?",
+                "Exit", MessageBoxButtons.YesNo);
+            if (result != DialogResult.Yes)
+                e.Cancel = true;
+        }
+
         private void newMenu_Click(object sender, EventArgs e)
         {
+            DialogResult result;
+
+
+            //
+            // Ask the user that any unsaved changes might be lost before we continue.
+            // TODO: Consult a dirty bit later to see if we need to ask.
+            //
+            result = MessageBox.Show("Unsaved changes will be lost if you continue.\nDo you wish to continue?",
+                "New Package", MessageBoxButtons.YesNo);
+            if (result != DialogResult.Yes)
+                return;
+
             currentFileName = null;
 
             package = new Package();
@@ -126,7 +160,17 @@ namespace RefreshCache.Packager.Builder
         private void openMenu_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            DialogResult result;
 
+
+            //
+            // Ask the user that any unsaved changes might be lost before we continue.
+            // TODO: Consult a dirty bit later to see if we need to ask.
+            //
+            result = MessageBox.Show("Unsaved changes will be lost if you continue.\nDo you wish to continue?",
+                "Open Package", MessageBoxButtons.YesNo);
+            if (result != DialogResult.Yes)
+                return;
 
             dialog.Filter = "PBXML Files|*.pbxml";
             dialog.FilterIndex = 0;
@@ -270,7 +314,7 @@ namespace RefreshCache.Packager.Builder
 
         #region Import/Export methods
 
-        private void openFromFile(String filename)
+        public void openFromFile(String filename)
         {
             StreamReader reader = new StreamReader(filename);
             XmlDocument doc = new XmlDocument();
@@ -285,7 +329,7 @@ namespace RefreshCache.Packager.Builder
             currentFileName = filename;
         }
 
-        private void saveToFile(String filename)
+        public void saveToFile(String filename)
         {
             //
             // Save the package to XML.
