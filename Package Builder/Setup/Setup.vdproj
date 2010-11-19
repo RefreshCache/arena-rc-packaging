@@ -81,20 +81,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EAC70276380D213E3435F2C6E22A96CC"
+        "MsmKey" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F1309301513EB72D03A48729C2867EC3"
         "OwnerKey" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EAC70276380D213E3435F2C6E22A96CC"
+        "MsmKey" = "8:_F1309301513EB72D03A48729C2867EC3"
         "OwnerKey" = "8:_FE64DCF1B480431594A0F17223AAE534"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -107,6 +107,24 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D3FCBF1EA0F6C76EEB0F789C66891D51"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FE64DCF1B480431594A0F17223AAE534"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F1309301513EB72D03A48729C2867EC3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -131,24 +149,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_448ACBED90A67BBCD527B93F5A1212A0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FE64DCF1B480431594A0F17223AAE534"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EAC70276380D213E3435F2C6E22A96CC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -254,7 +254,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                "FrameworkVersion" = "8:.NETFramework,Version=v3.5,Profile=Client"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=131000"
                 }
@@ -375,14 +375,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EAC70276380D213E3435F2C6E22A96CC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1309301513EB72D03A48729C2867EC3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:RefreshCache.Packager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EAC70276380D213E3435F2C6E22A96CC"
+                    "_F1309301513EB72D03A48729C2867EC3"
                     {
                     "Name" = "8:RefreshCache.Packager.dll"
                     "Attributes" = "3:512"
@@ -409,6 +409,29 @@
         }
         "FileType"
         {
+            "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_31F9512D0631475A90E2E5EC3C319B80"
+            {
+            "Name" = "8:Project Builder XML"
+            "Description" = "8:"
+            "Extensions" = "8:pbxml"
+            "MIME" = "8:"
+            "Icon" = "8:"
+            "IconIndex" = "3:0"
+                "Command"
+                {
+                "Command" = "8:_EFD0F464EC544F98A15452E54E56A9D6"
+                }
+                "Verbs"
+                {
+                    "{95C0C507-CBF0-42B8-B119-07219E384A4A}:_2AAC1F52BD6C4917A19045AFDFE3F477"
+                    {
+                    "Command" = "8:&Open"
+                    "Verb" = "8:open"
+                    "Arguments" = "8:\"%1\""
+                    "Order" = "3:0"
+                    }
+                }
+            }
         }
         "Folder"
         {
@@ -495,15 +518,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Package Builder"
-        "ProductCode" = "8:{CA134499-A96F-4BAD-9607-2FFC9088A725}"
-        "PackageCode" = "8:{1FF3B92D-FAEA-4562-AB77-9B333E79A58C}"
+        "ProductCode" = "8:{56E9624A-2391-42FE-AE6A-9A44538D1FF4}"
+        "PackageCode" = "8:{BA83E2EF-4B02-4F10-BE82-B19ABEF4B8C2}"
         "UpgradeCode" = "8:{A277A419-98FE-4758-BEF5-FDE116D5686D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:0.1.0"
         "Manufacturer" = "8:RefreshCache"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
