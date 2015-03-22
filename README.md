@@ -1,0 +1,1 @@
+This project aims to provide a full packaging framework toolset for developers and eventually end-users. The project includes a back-end framework for interacting with packages as well as a GUI front-end called Package Builder that allows the developer to quickly construct and deploy packages to users.
